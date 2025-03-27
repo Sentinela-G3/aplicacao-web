@@ -118,7 +118,7 @@ body {
 
 .container_section1{
     width: 45%;
-    height: 95%;
+    height: 75vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,18 +157,21 @@ body {
     width: 100% !important;
     display: flex;
     flex-direction: row !important;
+    
 }
 .nome input[type=text]{
     background-color: #b1acac;
     border-radius: 5px;
     height: 55%;
     width: 100%;
+    padding: 1rem;
 }
 select, input[type=text], input[type=password], input[type=number]{
     background-color: #b1acac;
     border-radius: 5px;
     height: 35%;
     font-size: 180%;
+    padding: 1rem;
 }
 label {
     font-size: 150%;
@@ -215,4 +218,14 @@ button:hover{
 }
 .button_min div button{
     height: 90% !important;
+}
+
+@media (max-width: 768px) {
+    .container_section1 {
+        width: 85%;
+    }
+
+    .btn-login {
+        font-size: 100%;
+    }
 }
