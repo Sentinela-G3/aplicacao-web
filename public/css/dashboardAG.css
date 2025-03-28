@@ -49,7 +49,7 @@ body {
   height: 100vh;
   margin-left: 20%;
   /* height: max-content; */
-  background-color: blue;
+  /* background-color: blue; */
   gap: 4vh;
 
   #list-filter {

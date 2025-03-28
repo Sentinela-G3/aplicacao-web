@@ -12,13 +12,15 @@
 /* NAVBAR */
 
 .container_navDashRT {
-  border-right: 0.5px solid rgba(128, 128, 128, 0.452);
+  /* border-right: 0.5px solid rgba(128, 128, 128, 0.452); */
   position: fixed;
   display: flex;
   height: var(--tamanho-altura-nav);
   width: 20%;
   flex-direction: column;
-
+  justify-content: space-around;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
+  
   .perfil {
     height: 30%;
     justify-content: space-around;
@@ -26,14 +28,18 @@
     width: 100%;
 
     .logo {
+      width: 100%;
       height: 30%;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 4vh;
+      font-size: 1.5rem;
+      font-weight: bolder;
       color: gray;
+
       img {
         height: 50px;
+        margin-right: 15px;
       }
     }
 
@@ -43,7 +49,7 @@
       justify-content: center;
       align-items: center;
       img {
-        height: 80px;
+        height: 100px;
       }
     }
     .texto_perfil {
@@ -54,38 +60,40 @@
   }
 
   .btn_nav {
-    height: 70%;
+    width: 100%;
+    /* height: 70%; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
 
     li {
       width: 100%;
-      border: 1px solid rgba(71, 104, 119, 0.2);
+      border-bottom: 1px solid rgba(71, 104, 119, 0.2);
       list-style: none;
       text-decoration: none;
       display: flex;
       align-items: center;
     }
+
     button {
       width: 100%;
-      height: 6vh;
-      font-size: 2vh;
+      height: 40px;
+      font-size: 0.9rem;
       background-color: #ffffff;
       border: none;
-    }
-    .btn_sair {
       &:hover {
-        color: rgb(255, 255, 255);
-        background-color: red;
-      }
-      button {
-        background-color: rgb(240, 140, 140);
+        font-size: 1rem;
+        background-color: #FBE969;
       }
     }
-    &:hover {
-      color: white;
-      background-color: rgb(175, 175, 175);
+
+    .btn_sair {
+      button {
+        background-color: white;
+        &:hover {
+            background-color: rgb(240, 140, 140);
+        }
+      }
     }
   }
 }
