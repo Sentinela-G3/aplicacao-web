@@ -1,6 +1,6 @@
 :root {
   --borda-padrao-box: 0.35vh #dde1e6 solid;
-  --fontsize-tipo1: 3.5vw;
+  --fontsize-tipo1: 3rem;
   --fontsize-tipo2: 3vw;
   --fontsize-tipo3: 2.25vw;
   --fontsize-tipo4: 1.5vw;
@@ -28,38 +28,44 @@ h4 {
 }
 
 * {
+  padding: 0;
   margin: 0;
   font-family: "Roboto", sans-serif;
 }
 
 body {
   display: flex;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .section1 {
   display: flex;
   flex-direction: column;
-  height: 300vh;
-  margin-left: 35%;
-  width: 100%;
-  align-items: center;
-  justify-content: start;
-  overflow: hidden;
+  /* width: 90%; */
+  width: 100vw;
+  height: 100vh;
+  margin-left: 25%;
+  /* height: max-content; */
+  /* background-color: blue; */
+  gap: 4vh;
+
+  h1 {
+    margin-top: 30px;
+  }
 }
 
-.su-section1 {
+/* .su-section1 {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 200vh;
   gap: 4vh;
-}
+} */
 
 .titulo_dashRT {
   display: flex;
   font-size: 35px;
-  padding: 30px;
+  /* padding: 30px; */
   color: rgb(71, 71, 71);
   height: 20px;
   width: 500px;
@@ -104,9 +110,10 @@ body {
   display: grid;
   grid-template-columns: 75%;
   gap: 3%;
-  width: max-content;
-  height: 150vh;
+  width: 80%;
+  height: 400px;
   margin-bottom: calc(2%);
+
 }
 
 #list-2 {
@@ -120,9 +127,9 @@ body {
   flex-direction: row;
   border: var(--borda-padrao-box);
   height: calc(50vh - 4vh);
-  width: 100%;
+  width: 500px;
   gap: 2.5vh;
-  padding: 2vh;
+  padding: 10px;
 }
 
 .list-data {
@@ -253,7 +260,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 75vw;
+  width: 100%;
   height: 80%;
   gap: 2%;
 }
@@ -261,7 +268,6 @@ body {
 .containerComponent h3 {
   width: 100%;
 }
-
 
 .width-100 {
   width: calc(100% - 5vh);
@@ -276,13 +282,12 @@ body {
   flex-wrap: wrap;
 }
 
-
 .heigth-55 {
-  height: calc(100% - 4vh); 
+  height: calc(100% - 4vh);
 }
 
 .heigth-35 {
-  height: calc(15%); 
+  height: calc(15%);
 }
 
 .card-chart {
@@ -294,7 +299,7 @@ body {
   gap: 2.5vh;
   padding: 2vh;
 }
-  
+
 .kpi-box {
   padding: 1vh;
   display: flex;
@@ -319,4 +324,4 @@ body {
 .ultimos_graficos {
   display: flex;
   width: fit-content;
-} 
+}

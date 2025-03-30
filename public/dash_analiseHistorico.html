@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="./css/table.css">
-    <link rel="stylesheet" href="./css/navbar.css">
-    <link rel="stylesheet" href="./css/dashboardAH.css">
-    <link rel="stylesheet" href="./dash_realTime.html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-
-    <title>Dashboard | Análise Geral</title>
-</head>
-
-
-<body class="body_dashRealTime" id="dash_RT">
-    <div class="container_navDashRT">
-        <nav>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="./css/table.css">
+        <link rel="stylesheet" href="./css/navbar.css">
+        <link rel="stylesheet" href="./css/dashboardAH.css">
+        <link rel="stylesheet" href="./dash_realTime.html">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <title>Dashboard | Análise Geral</title>
+    </head>
+    <body class="body_dashRealTime" id="dash_RT">
+        <!-- NAV-BAR START-->
+        <div class="container_navDashRT">
             <div class="perfil">
                 <div class="logo">
                     <img src="./assets/img/svgLogo.svg">
@@ -32,238 +25,239 @@
                     <img src="./assets/img/img_perfil_nav.jpg">
                 </div>
                 <div class="texto_perfil">
-                    <span>Olá, Boas-vindas!</span>
+                    <span>
+                        Olá,
+                        <b>Vinicius!</b>
+                    </span>
                 </div>
             </div>
             <div class="btn_nav">
                 <div class="btn_dash">
-                    <li><button onclick="btn_rt()">Análise em tempo real</button></li>
-                    <li><button onclick="btn_hist()"><b>Análise histórica</b></button></li>
-                    <li><button onclick="btn_geral()">Ańálise geral</button></li>
-                    <li><button onclick="btn_endereco()">Gerenciamento de Endereços</button></li>
-                    <li><button onclick="btn_func()">Gerenciamento de Funcionário</button></li>
-                    <li><button onclick="btn_disp()">Gerenciamento de Modelo</button></li>
-                    <li><button onclick="btn_maquina()">Gerenciamento de Maquina</button></li>
-                    <li><button onclick="btn_alerta()">Alertas</button></li>
+                    <li>
+                        <button onclick="btn_rt()">Análise em tempo real</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_hist()">
+                            <b>Análise histórica</b>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="btn_geral()">Análise geral</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_func()">Gerenciamento de Funcionário</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_disp()">Gerenciamento de Modelo</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_alerta()">Alertas</button>
+                    </li>
                 </div>
                 <div class="btn_sair">
                     <button onclick="sair()">Sair</button>
                 </div>
             </div>
-        </nav>
-    </div>
-
-    <div class="ordem_graficos">
-        <!-- GRAFICO 1 -->
-        <div class="section1">
-            <div class="sub-section1">
-                <h1>Análise histórica</h1>
-
-                <div id="list-filter" class="list">
-                    <div id="select_modelo" class="select_main">
-                        <input type="text" placeholder="Digite o N° Serial">
-                    </div>
-
-                    <div id="confirm_button"><span>PESQUISAR</span></div>
-                </div>
-
-                <h2>Informações obtidas com base no (Período)</h2>
-
-                <div id="list-cards" class="list">
-                    <div class="containerComponent">
-                        <div class="titulo_grafico">
-                            <h3>Processador</h3>
-                            <div>
-                                <span>Uso do processador no ultimo Mês</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="graficos_align">
-                        <div class="card-generic">
-                            <div class="list-data">
-                                <div class="data-box">
-                                    <span class="data-title">Frequência</span>
-                                    <span class="data">3.2GHz</span>
-                                </div>
-                                <div class="data-box">
-                                    <span class="data-title">Porcentagem de Uso</span>
-                                    <span class="data">66%</span>
-                                </div>
-                                <div class="data-box">
-                                    <span class="data-title">Tempo de Atividade</span>
-                                    <span class="data">13 horas e 15 minutos</span>
-                                </div>
-                            </div>
-
-                            <div class="chart-box">
-                                <h4 class="">Média de uso de Processador</h4>
-                                <div id="chart" class="chart-js">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ultimos_graficos">
-                            <div id="list-2" class="list">
-                                <div class="card-chart ">
-                                    <h4 class="width-100full">Quantidade de Alertas</h4>
-                                    <div id="chart1" class="chart-js">
-                                    </div>
-                                </div>
-                                <div class="kpi-box">
-                                    <span class="data-title">Total de Alertas</span>
-                                    <span class="data">60</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="containerComponent">
-                        <div class="titulo_grafico">
-                            <h3>Memória</h3>
-                            <div>
-                                <span>Uso da memória no ultimo Mês</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="graficos_align">
-                        <div class="card-generic">
-                            <div class="list-data">
-                                <div class="data-box">
-                                    <span class="data-title">Memória utiizada</span>
-                                    <span class="data">8 de 16GB</span>
-                                </div>
-                                <div class="data-box">
-                                    <span class="data-title">Porcentagem de Uso</span>
-                                    <span class="data">70%</span>
-                                </div>
-                            </div>
-
-                            <div class="chart-box">
-                                <h4 class="">Média de uso de Memória</h4>
-                                <div id="chart2" class="chart-js">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ultimos_graficos">
-                            <div id="list-2" class="list">
-                                <div class="card-chart ">
-                                    <h4 class="width-100full">Quantidade de Alertas</h4>
-                                    <div id="chart3" class="chart-js">
-                                    </div>
-                                </div>
-                                <div class="kpi-box">
-                                    <span class="data-title">Total de Alertas</span>
-                                    <span class="data">23</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="containerComponent">
-                        <div class="titulo_grafico">
-                            <h3>Rede</h3>
-                            <div>
-                                <span>Uso da rede no ultimo Mês</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="graficos_align">
-                        <div class="card-generic">
-                            <div class="list-data">
-                                <div class="data-box">
-                                    <span class="data-title">Velocidade de Download</span>
-                                    <span class="data">120mbps</span>
-                                </div>
-                                <div class="data-box">
-                                    <span class="data-title">Velocidade de Upload</span>
-                                    <span class="data">80mbps</span>
-                                </div>
-                            </div>
-
-                            <div class="chart-box">
-                                <h4 class="">Média de taxa de transferencia</h4>
-                                <div id="chart4" class="chart-js">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ultimos_graficos">
-                            <div id="list-2" class="list">
-                                <div class="card-chart ">
-                                    <h4 class="width-100full">Quantidade de Alertas</h4>
-                                    <div id="chart5" class="chart-js">
-                                    </div>
-                                </div>
-                                <div class="kpi-box">
-                                    <span class="data-title">Total de Alertas</span>
-                                    <span class="data">45</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="containerComponent">
-                        <div class="titulo_grafico">
-                            <h3>Disco</h3>
-                            <div>
-                                <span>Uso do Disco no ultimo Mês</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="graficos_align">
-                        <div class="card-generic">
-                            <div class="list-data">
-                                <div class="data-box">
-                                    <span class="data-title">Capacidade Livre</span>
-                                    <span class="data">610Gb</span>
-                                </div>
-                                <div class="data-box">
-                                    <span class="data-title">Capacidade em Uso</span>
-                                    <span class="data">10Gb</span>
-                                </div>
-                                <div class="data-box">
-                                    <span class="data-title">Capacidade em Total</span>
-                                    <span class="data">620Gb</span>
-                                </div>
-                            </div>
-
-                            <div class="chart-box">
-                                <h4 class="">Média de uso de Disco</h4>
-                                <div id="chart6" class="chart-js">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ultimos_graficos">
-                            <div id="list-2" class="list">
-                                <div class="card-chart">
-                                    <h4 class="width-100full">Quantidade de Alertas</h4>
-                                    <div id="chart7" class="chart-js">
-                                    </div>
-                                </div>
-                                <div class="kpi-box">
-                                    <span class="data-title">Total de Alertas</span>
-                                    <span class="data">45</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
         </div>
-    </div>
-</body>
-
+        <!-- NAV-BAR END -->
+        <!-- <div class="ordem_graficos"> -->
+            <!-- GRAFICO 1 -->
+            <div class="section1">
+                <!-- <div class="sub-section1"> -->
+                    <h1>Análise histórica</h1>
+                    <div id="list-filter" class="list">
+                        <div id="select_modelo" class="select_main">
+                            <input type="text" placeholder="Digite o N° Serial">
+                        </div>
+                        <div id="confirm_button">
+                            <span>PESQUISAR</span>
+                        </div>
+                    </div>
+                    <h2>Informações obtidas com base no (Período)</h2>
+                    <div id="list-cards" class="list">
+                        <div class="containerComponent">
+                            <div class="titulo_grafico">
+                                <h3>Processador</h3>
+                                <div>
+                                    <span>Uso do processador no ultimo Mês</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="graficos_align">
+                            <div class="card-generic">
+                                <div class="list-data">
+                                    <div class="data-box">
+                                        <span class="data-title">Frequência</span>
+                                        <span class="data">3.2GHz</span>
+                                    </div>
+                                    <div class="data-box">
+                                        <span class="data-title">Porcentagem de Uso</span>
+                                        <span class="data">66%</span>
+                                    </div>
+                                    <div class="data-box">
+                                        <span class="data-title">Tempo de Atividade</span>
+                                        <span class="data">13 horas e 15 minutos</span>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <h4 class="">Média de uso de Processador</h4>
+                                    <div id="chart" class="chart-js"></div>
+                                </div>
+                            </div>
+                            <div class="ultimos_graficos">
+                                <div id="list-2" class="list">
+                                    <div class="card-chart ">
+                                        <h4 class="width-100full">Quantidade de Alertas</h4>
+                                        <div id="chart1" class="chart-js"></div>
+                                    </div>
+                                    <div class="kpi-box">
+                                        <span class="data-title">Total de Alertas</span>
+                                        <span class="data">60</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="containerComponent">
+                            <div class="titulo_grafico">
+                                <h3>Memória</h3>
+                                <div>
+                                    <span>Uso da memória no ultimo Mês</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="graficos_align">
+                            <div class="card-generic">
+                                <div class="list-data">
+                                    <div class="data-box">
+                                        <span class="data-title">Memória utiizada</span>
+                                        <span class="data">8 de 16GB</span>
+                                    </div>
+                                    <div class="data-box">
+                                        <span class="data-title">Porcentagem de Uso</span>
+                                        <span class="data">70%</span>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <h4 class="">Média de uso de Memória</h4>
+                                    <div id="chart2" class="chart-js"></div>
+                                </div>
+                            </div>
+                            <div class="ultimos_graficos">
+                                <div id="list-2" class="list">
+                                    <div class="card-chart ">
+                                        <h4 class="width-100full">Quantidade de Alertas</h4>
+                                        <div id="chart3" class="chart-js"></div>
+                                    </div>
+                                    <div class="kpi-box">
+                                        <span class="data-title">Total de Alertas</span>
+                                        <span class="data">23</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="containerComponent">
+                            <div class="titulo_grafico">
+                                <h3>Rede</h3>
+                                <div>
+                                    <span>Uso da rede no ultimo Mês</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="graficos_align">
+                            <div class="card-generic">
+                                <div class="list-data">
+                                    <div class="data-box">
+                                        <span class="data-title">Velocidade de Download</span>
+                                        <span class="data">120mbps</span>
+                                    </div>
+                                    <div class="data-box">
+                                        <span class="data-title">Velocidade de Upload</span>
+                                        <span class="data">80mbps</span>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <h4 class="">Média de taxa de transferencia</h4>
+                                    <div id="chart4" class="chart-js"></div>
+                                </div>
+                            </div>
+                            <div class="ultimos_graficos">
+                                <div id="list-2" class="list">
+                                    <div class="card-chart ">
+                                        <h4 class="width-100full">Quantidade de Alertas</h4>
+                                        <div id="chart5" class="chart-js"></div>
+                                    </div>
+                                    <div class="kpi-box">
+                                        <span class="data-title">Total de Alertas</span>
+                                        <span class="data">45</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="containerComponent">
+                            <div class="titulo_grafico">
+                                <h3>Disco</h3>
+                                <div>
+                                    <span>Uso do Disco no ultimo Mês</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="graficos_align">
+                            <div class="card-generic">
+                                <div class="list-data">
+                                    <div class="data-box">
+                                        <span class="data-title">Capacidade Livre</span>
+                                        <span class="data">610Gb</span>
+                                    </div>
+                                    <div class="data-box">
+                                        <span class="data-title">Capacidade em Uso</span>
+                                        <span class="data">10Gb</span>
+                                    </div>
+                                    <div class="data-box">
+                                        <span class="data-title">Capacidade em Total</span>
+                                        <span class="data">620Gb</span>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <h4 class="">Média de uso de Disco</h4>
+                                    <div id="chart6" class="chart-js"></div>
+                                </div>
+                            </div>
+                            <div class="ultimos_graficos">
+                                <div id="list-2" class="list">
+                                    <div class="card-chart">
+                                        <h4 class="width-100full">Quantidade de Alertas</h4>
+                                        <div id="chart7" class="chart-js"></div>
+                                    </div>
+                                    <div class="kpi-box">
+                                        <span class="data-title">Total de Alertas</span>
+                                        <span class="data">45</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- </div> -->
+            </div>
+        <!-- </div> -->
+    </body>
 </html>
-
 <script>
 
-function btn_rt(){
+    function btn_rt() {
         window.location = './dash_realTime.html';
     }
 
-    function btn_hist(){
+    function btn_hist() {
         window.location = './dash_analiseHistorico.html';
     }
 
-    function btn_geral(){
+    function btn_geral() {
         window.location = './dash_analiseGeral.html';
     }
 
@@ -279,11 +273,11 @@ function btn_rt(){
         window.location = './cadastroMaquina.html';
     }
 
-    function btn_endereco(){
+    function btn_endereco() {
         window.location = './cadastroEndereco.html';
     }
 
-    function sair(){
+    function sair() {
         window.location = './index.html';
     }
 
@@ -519,7 +513,7 @@ function btn_rt(){
             height: '100%'
         }
     };
-    
+
     var options3 = {
         series: [{
             name: "Capacidade em Uso",
@@ -527,7 +521,7 @@ function btn_rt(){
         },
         {
             name: "Capacidade Livre",
-            data: [575,568,582,596,587,594,599,600,614,612,605,610]
+            data: [575, 568, 582, 596, 587, 594, 599, 600, 614, 612, 605, 610]
         }],
         chart: {
             height: 350,
@@ -593,7 +587,7 @@ function btn_rt(){
             height: '100%'
         }
     };
-    
+
 
 
     var chart = new ApexCharts(document.querySelector("#chart"), options);
@@ -631,10 +625,10 @@ function btn_rt(){
             }
         },
         margin: {
-            top: 10,    
-            right: 10,  
-            bottom: 10, 
-            left: 10    
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: 10
         }
 
     };
@@ -664,10 +658,10 @@ function btn_rt(){
             }
         },
         margin: {
-            top: 10,    
-            right: 10,  
-            bottom: 10, 
-            left: 10    
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: 10
         }
 
     };
@@ -697,10 +691,10 @@ function btn_rt(){
             }
         },
         margin: {
-            top: 10,    
-            right: 10,  
-            bottom: 10, 
-            left: 10    
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: 10
         }
 
     };
@@ -730,10 +724,10 @@ function btn_rt(){
             }
         },
         margin: {
-            top: 10,    
-            right: 10,  
-            bottom: 10, 
-            left: 10    
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: 10
         }
 
     };
@@ -746,9 +740,8 @@ function btn_rt(){
     var chart7 = new ApexCharts(document.querySelector("#chart7"), optionsD);
     // var chart5 = new ApexCharts(document.querySelector("#chart5"), options1);
     chart1.render();
-    
+
     chart3.render();
     chart5.render();
     chart7.render();
-
 </script>
