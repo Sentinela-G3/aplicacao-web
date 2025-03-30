@@ -49,7 +49,6 @@ fetch("/usuarios/autenticar", {
                 senhaServer: senha
             })
         }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
 
             if (resposta.ok) {
                 console.log(resposta);
@@ -58,23 +57,22 @@ fetch("/usuarios/autenticar", {
                     console.log(json);
                     console.log(JSON.stringify(json));
                     sessionStorage.idEmpresa = json.idEmpresa;
-                    sessionStorage.fkDono = json.fkDono;
                     sessionStorage.email = json.email;
-                    sessionStorage.fkCargo = json.fkCargo;
-                    sessionStorage.nivelAcesso = json.nivelAcesso;
+                    sessionStorage.tipoUsuario = json.tipoUsuario;
 
 
                     setTimeout(function () {
-                        window.location = "./dash_realTime.html"
-                    }, 1000); // apenas para exibir o loading
-
+                        window.location = "./dashboard/dash_realTime.html"
+                    }, 1000); 
                 });
-
-            } else {
-
-                console.log("Houve um erro ao tentar realizar o login!");
-
+            } else if (resposta.status == 403) {
+                alert("Login ou senha inválidos, tente novamente.");
                 resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            } else {
+              alert("Erro ao realizar o login.")
+              resposta.text().then(texto => {
                     console.error(texto);
                 });
             }

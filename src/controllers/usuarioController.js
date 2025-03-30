@@ -22,8 +22,7 @@ function autenticar(req, res) {
                         res.json({
                             idEmpresa: resultadoAutenticar[0].idEmpresa,
                             email: resultadoAutenticar[0].email,
-                            fkCargo: resultadoAutenticar[0].fkCargo,
-                            nivelAcesso: resultadoAutenticar[0].nivelAcesso
+                            nivelAcesso: resultadoAutenticar[0].tipoUsuario
                         })
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
