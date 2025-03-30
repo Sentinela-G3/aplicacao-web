@@ -1,7 +1,7 @@
 var database = require("../database/config");
 
-function cadastrar(nome, cnpj, categoria) {
-  var instrucaoSql = `INSERT INTO empresa (nomeFantasia, cnpj, categoria, dataInicio) VALUES ('${nome}', '${cnpj}', '${categoria}', now());`;
+function cadastrar(nome, cnpj, categoria, razaoSocial) {
+  var instrucaoSql = `INSERT INTO empresa (nomeFantasia, cnpj, categoria, dataInicio, status) VALUES ('${nome}', '${cnpj}', '${categoria}', now(), 1);`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }

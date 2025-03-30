@@ -9,10 +9,9 @@ function autenticar(email, senha) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrar(nome, email, cpf, contato, cargo, senha) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, cpf, contato, cargo, senha);
-    var instrucaoSql = `
-        INSERT INTO usuario (nome, email, cpf, contato, fkCargo, senha) VALUES ('${nome}', '${email}', '${cpf}', '${contato}', ${cargo}, SHA2('${senha}', 256));
+function cadastrar(nome, email, telefone, senha, fkEmpresa) {
+     var instrucaoSql = `
+        INSERT INTO usuario (nome, email, telefone, senha, fkEmpresa, tipoUsuario) VALUES ('${nome}', '${email}', '${telefone}', SHA2('${senha}', 256), ${fkEmpresa}, 1);
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
 

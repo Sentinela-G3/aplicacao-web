@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Sentinela</title>
+    <link rel="stylesheet" href="./css/cadastro.css">
+</head>
+
+<body>
+
+    <div class="container_section1">
+        <form id="etapa_empresa" class="formulario active">
+            <div class="logo big_logo">
+                <img src="./assets/img/Icon Container.svg">
+                <h1>Cadastro - Empresa</h1>
+            </div>
+            <label>Nome Fantasia:</label>
+            <input type="text" id="nome_fantasia" placeholder="Ex: TechNova">
+
+            <label>CNPJ:</label>
+            <input type="text" id="cnpj" maxlength="14" placeholder="Ex: 12345678000199">
+
+            <label>Razão Social:</label>
+            <input type="text" id="razao_social" placeholder="Ex: TechNova Ltda.">
+
+            <label>Categoria:</label>
+            <input type="text" id="categoria" placeholder="Ex: Tecnologia">
+
+            <div class="div_button">
+                <button type="button" onclick="validarEtapaEmpresa()">Próxima</button>
+            </div>
+        </form>
+
+        <form id="etapa_endereco" class="formulario" style="display:none">
+            <div class="logo big_logo">
+                <img src="./assets/img/Icon Container.svg">
+                <h1>Cadastro - Endereço</h1>
+            </div>
+            <label>Logradouro:</label>
+            <input type="text" id="logradouro" placeholder="Ex: Rua das Flores">
+
+            <label>CEP:</label>
+            <input type="text" id="cep" maxlength="8" placeholder="Ex: 12345678">
+
+            <label>Estado:</label>
+            <input type="text" maxlength="2" id="estado" placeholder="Ex: SP">
+
+            <label>Complemento:</label>
+            <input type="text" id="complemento" placeholder="Ex: Sala 101">
+
+            <div class="div_button">
+                <button type="button" onclick="voltarEtapa(1)">Voltar</button>
+                <button type="button" onclick="validarEtapaEndereco()">Próxima</button>
+            </div>
+        </form>
+
+        <form id="etapa_usuario" class="formulario" style="display:none">
+            <div class="logo big_logo">
+                <img src="./assets/img/Icon Container.svg">
+                <h1>Cadastro - Usuário administrador</h1>
+            </div>
+            <label>Nome:</label>
+            <input type="text" id="nome_usuario" placeholder="Ex: João Silva">
+
+            <label>Email:</label>
+            <input type="email" id="email" placeholder="fulano@sentinela.com">
+
+            <label>Telefone:</label>
+            <input type="text" id="telefone" maxlength="13" placeholder="11999999999">
+
+            <label>Senha:</label>
+            <input type="password" id="senha" placeholder="********">
+
+            <div class="div_button">
+                <button type="button" onclick="voltarEtapa(2)">Voltar</button>
+                <button type="button" onclick="validarEtapaUsuario()">Finalizar Cadastro</button>
+            </div>
+        </form>
+
+        <section id="etapa_conclusao" class="formulario" style="display:none;">
+            <div class="logo big_logo">
+                <img src="./assets/img/Icon Container.svg">
+                <h1>Cadastro Concluído</h1>
+            </div>
+            <div class="mensagem_conclusao">
+                <p>Sua empresa foi cadastrada no nosso sistema. Assim que o seu acesso for liberado, você será capaz de acessar nossa solução! Obrigado pela preferência.</p>
+            </div>
+            <div class="div_button">
+                <a href="./index.html" class="btn-voltar">Voltar para a tela inicial</a>
+            </div>
+        </section>
+
+        <a style="align-self: center;" href="index.html">Voltar para tela inicial</a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            preencherCamposEtapaEmpresa();
+            preencherCamposEtapaEndereco();
+            preencherCamposEtapaUsuario();
+        });
+
+
+        function validarEtapaEmpresa() {
+            const nomeFantasiaServer = document.getElementById('nome_fantasia').value.trim();
+            const cnpjServer = document.getElementById('cnpj').value.trim();
+            const razaoSocialServer = document.getElementById('razao_social').value.trim();
+            const categoriaServer = document.getElementById('categoria').value.trim();
+
+
+
+            if (!nomeFantasiaServer || !cnpjServer || !razaoSocialServer || !categoriaServer) {
+                alert('Por favor, preencha todos os campos da empresa.');
+                return false;
+            }
+
+            const cnpjRegex = /^\d{14}$/;
+            if (!cnpjRegex.test(cnpjServer)) {
+                alert('CNPJ inválido. Certifique-se de inserir 14 números sem pontuação.');
+                return false;
+            }
+
+            // Armazenando dados no localStorage
+            const dadosEmpresa = {
+                nomeFantasiaServer,
+                cnpjServer,
+                razaoSocialServer,
+                categoriaServer,
+            };
+
+            localStorage.setItem('empresa', JSON.stringify(dadosEmpresa));
+
+            trocarEtapa("etapa_empresa", "etapa_endereco");
+        }
+
+        function validarEtapaEndereco() {
+            const logradouro = document.getElementById('logradouro').value.trim();
+            const cep = document.getElementById('cep').value.trim();
+            const estado = document.getElementById('estado').value.trim();
+            const complemento = document.getElementById('complemento').value.trim();
+
+            if (!logradouro || !cep || !estado || !complemento) {
+                alert('Por favor, preencha todos os campos do endereço.');
+                return false;
+            }
+
+            const cepRegex = /^\d{8}$/;
+            if (!cepRegex.test(cep)) {
+                alert('CEP inválido. O formato correto é 12345678.');
+                return false;
+            }
+
+            const dadosEndereco = {
+                logradouro,
+                cep,
+                estado,
+                complemento,
+            };
+
+            localStorage.setItem('endereco', JSON.stringify(dadosEndereco));
+            trocarEtapa("etapa_endereco", "etapa_usuario")
+        }
+
+        function validarEtapaUsuario() {
+            const nomeUsuario = document.getElementById('nome_usuario').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefone = document.getElementById('telefone').value.trim();
+            const senha = document.getElementById('senha').value.trim();
+
+            if (!nomeUsuario || !email || !telefone || !senha) {
+                alert('Por favor, preencha todos os campos.');
+                return false;
+            }
+
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                alert('Email inválido. Verifique o formato.');
+                return false;
+            }
+
+            const telefoneRegex = /^\d{11}$/;
+            if (!telefoneRegex.test(telefone)) {
+                alert('Telefone inválido. O formato correto é 11999999999.');
+                return false;
+            }
+
+            if (senha.length < 6) {
+                alert('A senha precisa ter pelo menos 6 caracteres.');
+                return false;
+            }
+
+            const dadosUsuario = {
+                nomeUsuario,
+                email,
+                telefone,
+                senha,
+            };
+
+            localStorage.setItem('usuario', JSON.stringify(dadosUsuario));
+
+            // Dados capturados em localStorage
+            const dadosEmpresa = JSON.parse(localStorage.getItem('empresa'));
+
+
+            console.log(dadosEmpresa)
+
+
+            // Fazer chamada para API
+            // Primeiro, cadastrar empresa
+            fetch("/empresas/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "nomeFantasiaServer": dadosEmpresa.nomeFantasiaServer,
+                    "razaoSocialServer": dadosEmpresa.razaoSocialServer,
+                    "cnpjServer": dadosEmpresa.cnpjServer,
+                    "categoriaServer": dadosEmpresa.categoriaServer
+                })
+            })
+                .then((resposta => {
+                    if (resposta.ok) {
+                        console.log("Empresa cadastrada com sucesso")
+                        resposta.json()
+                            .then(dados => {
+                                const idNovaEmpresa = dados.insertId;
+                                // Agora, devemos cadastrar o endereço
+                                cadastrarEndereco(idNovaEmpresa)
+                            })
+                    } else {
+                        alert("Erro ao cadastrar empresa");
+                        console.error(`Erro ao cadastrar: ${resposta}`)
+                    }
+                }))
+                .catch((erro) => {
+                    alert("Erro ao cadastrar empresa");
+                    console.error(`Erro ao cadastrar: ${erro}`)
+                })
+        }
+
+        function cadastrarEndereco(idEmpresa) {
+            console.log(idEmpresa)
+            const dadosEndereco = JSON.parse(localStorage.getItem('endereco'));
+            console.log(dadosEndereco)
+
+            fetch("/empresas/cadastrarEndereco", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "logradouroServer": dadosEndereco.logradouro,
+                    "cepServer": dadosEndereco.cep,
+                    "estadoServer": dadosEndereco.estado,
+                    "complementoServer": dadosEndereco.complemento,
+                    "fkEmpresaServer": idEmpresa
+                })
+            })
+                .then((resposta => {
+                    if (resposta.ok) {
+                        console.log("Endereço cadastrado com sucesso")
+                        resposta.json()
+                            .then(dados => {
+                                const idNovaEmpresa = dados.insertId;
+                                // Agora, por fim, devemos cadastrar o usuário
+                                cadastrarUsuario(idEmpresa)
+                            })
+                    } else {
+                        alert("Erro ao cadastrar endereço");
+                        console.error(`Erro ao cadastrar: ${resposta}`)
+                    }
+                }))
+                .catch((erro) => {
+                    alert("Erro ao cadastrar endereço");
+                    console.error(`Erro ao cadastrar: ${erro}`)
+                })
+
+        }
+
+        function cadastrarUsuario(idEmpresa) {
+            usuarios = JSON.parse(localStorage.getItem('usuario'));
+            fetch("/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "nomeServer": usuarios.nomeUsuario,
+                    "emailServer": usuarios.email,
+                    "telefoneServer": usuarios.telefone,
+                    "senhaServer": usuarios.senha,
+                    "fkEmpresaServer": idEmpresa
+                })
+            })
+                .then((resposta => {
+                    if (resposta.ok) {
+                        trocarEtapa("etapa_usuario", "etapa_conclusao");
+                        localStorage.clear();
+                    } else {
+                        alert("Erro durante o processo, tente novamente.")
+                        console.error(resposta)
+                    }
+                }))
+                .catch((erro) => {
+                    alert("Erro ao cadastrar usuário");
+                    console.error(`Erro ao cadastrar: ${erro}`)
+                })
+        }
+
+        function voltarEtapa(etapa) {
+            if (etapa == 1) {
+                // Etapa == 1 é a primeira etapa (cadastro de empresa)
+                trocarEtapa("etapa_endereco", "etapa_empresa");
+                preencherCamposEtapaEmpresa();
+            } else if (etapa == 2) {
+                // Etapa == 2 é a segunda etapa (cadastro de endereço)
+                trocarEtapa("etapa_usuario", "etapa_endereco");
+                preencherCamposEtapaEndereco();
+
+            }
+        }
+
+        function trocarEtapa(idOcultar, idMostrar) {
+            const elementoOcultar = document.getElementById(idOcultar);
+            const elementoMostrar = document.getElementById(idMostrar);
+
+            if (elementoOcultar && elementoMostrar) {
+                elementoOcultar.style.display = 'none';
+                elementoMostrar.style.display = 'flex';
+            } else {
+                console.warn('Elemento(s) não encontrado(s). Verifique os IDs fornecidos.');
+            }
+        }
+
+        function preencherCamposEtapaEmpresa() {
+            const dadosEmpresa = JSON.parse(localStorage.getItem('empresa'));
+
+            if (dadosEmpresa) {
+                document.getElementById('nome_fantasia').value = dadosEmpresa.nomeFantasiaServer;
+                document.getElementById('cnpj').value = dadosEmpresa.cnpjServer;
+                document.getElementById('razao_social').value = dadosEmpresa.razaoSocialServer;
+                document.getElementById('categoria').value = dadosEmpresa.categoriaServer;
+            }
+        }
+
+        function preencherCamposEtapaEndereco() {
+            const dadosEndereco = JSON.parse(localStorage.getItem('endereco'));
+
+            if (dadosEndereco) {
+                document.getElementById('logradouro').value = dadosEndereco.logradouro;
+                document.getElementById('cep').value = dadosEndereco.cep;
+                document.getElementById('estado').value = dadosEndereco.estado;
+                document.getElementById('complemento').value = dadosEndereco.complemento;
+            }
+        }
+
+        function preencherCamposEtapaUsuario() {
+            const dadosUsuario = JSON.parse(localStorage.getItem('usuario'));
+
+            if (dadosUsuario) {
+                document.getElementById('nome_usuario').value = dadosUsuario.nomeUsuario;
+                document.getElementById('email').value = dadosUsuario.email;
+                document.getElementById('telefone').value = dadosUsuario.telefone;
+                document.getElementById('senha').value = dadosUsuario.senha;
+            }
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

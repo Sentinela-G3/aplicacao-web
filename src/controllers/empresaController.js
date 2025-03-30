@@ -2,10 +2,13 @@ var empresaModel = require("../models/empresaModel");
 
 function cadastrar(req, res) {
   var nome = req.body.nomeFantasiaServer;
+  var razaoSocial = req.body.razaoSocialServer;
   var cnpj = req.body.cnpjServer;
   var categoria = req.body.categoriaServer;
 
-  empresaModel.cadastrar(nome, cnpj, categoria)
+  console.log(nome, razaoSocial, cnpj, categoria)
+
+  empresaModel.cadastrar(nome, cnpj, categoria, razaoSocial)
                   .then(
                       function (resultado) {
                           res.json(resultado);
