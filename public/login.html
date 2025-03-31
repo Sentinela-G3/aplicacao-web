@@ -1,86 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/login.css">
-    <title>Login Sentinela</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/login.css">
+  <title>Login Sentinela</title>
 </head>
+
 <body>
-    
-    <div class="container_section1">
-        <div class="logo big_logo">
-          <img src="./assets/img/Icon Container.svg">
-          <h1>Login</h1>
-        </div>
-        <div class="formulario">
-          <div>
-            <label class="">Email:</label>
-            <div class="nome">
-              <input type="text" class="" id="input_email" placeholder="fulano@sentinela.com">
-            </div>
-          </div>
-          <div>
-            <label class="">Senha:</label>
-            <input type="password" class="" id="input_senha" placeholder="********">
-          </div>
-        </div>
-        <div class="div_button">
-          <button class="btn-login" onclick="login()">Logar</button>
-          <a href="./cadastro.html" class="troca-tela">Cadastrar-se</a>  
-          <a href="./index.html" class="troca-tela">Voltar para tela inicial</a>
+
+  <div class="container_section1">
+    <div class="logo big_logo">
+      <img src="./assets/img/Icon Container.svg">
+      <h1>Login</h1>
+    </div>
+    <div class="formulario">
+      <div>
+        <label class="">Email:</label>
+        <div class="nome">
+          <input type="text" class="" id="input_email" placeholder="fulano@sentinela.com">
         </div>
       </div>
+      <div>
+        <label class="">Senha:</label>
+        <input type="password" class="" id="input_senha" placeholder="********">
+      </div>
+    </div>
+    <div class="div_button">
+      <button class="btn-login" onclick="login()">Logar</button>
+      <a href="./cadastro.html" class="troca-tela">Cadastrar-se</a>
+      <a href="./index.html" class="troca-tela">Voltar para tela inicial</a>
+    </div>
+  </div>
 </body>
+
 </html>
 
 <script>
 
-function login(){
-var email = input_email.value;
-var senha = input_senha.value;
+  function login() {
+    var email = input_email.value;
+    var senha = input_senha.value;
 
-fetch("/usuarios/autenticar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emailServer: email,
-                senhaServer: senha
-            })
-        }).then(function (resposta) {
+    fetch("/usuarios/autenticar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        emailServer: email,
+        senhaServer: senha
+      })
+    }).then(function (resposta) {
 
-            if (resposta.ok) {
-                console.log(resposta);
+      if (resposta.ok) {
+        console.log(resposta);
 
-                resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
-                    sessionStorage.idEmpresa = json.idEmpresa;
-                    sessionStorage.email = json.email;
-                    sessionStorage.tipoUsuario = json.tipoUsuario;
+        resposta.json().then(json => {
+          const dados = json.resultadoAutenticar[0];
+          const statusEmpresa = dados.status;
+          console.log(dados)
+
+          if (statusEmpresa == 1) {
+            alert("O acesso da sua empresa está inativo. Quando o contrato for fechado, seu acesso será liberado.")
+          } else {
+            sessionStorage.idEmpresa = dados.idEmpresa;
+            sessionStorage.idUsuario = dados.idUsuario;
+            sessionStorage.email = dados.email;
+            sessionStorage.tipoUsuario = dados.tipoUsuario;
+            sessionStorage.nomeUsuario = dados.nomeUsuario;
 
 
-                    setTimeout(function () {
-                        window.location = "./dashboard/dash_realTime.html"
-                    }, 1000); 
-                });
-            } else if (resposta.status == 403) {
-                alert("Login ou senha inválidos, tente novamente.");
-                resposta.text().then(texto => {
-                    console.error(texto);
-                });
-            } else {
-              alert("Erro ao realizar o login.")
-              resposta.text().then(texto => {
-                    console.error(texto);
-                });
-            }
+            setTimeout(function () {
+               window.location = "./dashboard/dash_realTime.html"
+            }, 1000);
+          }
 
-        }).catch(function (erro) {
-            console.log(erro);
-        })
-}
+
+        });
+      } else if (resposta.status == 403) {
+        alert("Login ou senha inválidos, tente novamente.");
+        resposta.text().then(texto => {
+          console.error(texto);
+        });
+      } else {
+        alert("Erro ao realizar o login.")
+        resposta.text().then(texto => {
+          console.error(texto);
+        });
+      }
+
+    }).catch(function (erro) {
+      console.log(erro);
+    })
+  }
 
 </script>
