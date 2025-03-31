@@ -1,60 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/table.css">
-    <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/dashboardAG.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-
-    <title>Dashboard | Análise Geral</title>
-</head>
-
-
-<body class="body_dashRealTime" id="dash_RT">
-    <div class="container_navDashRT">
-        <nav>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="./css/table.css">
+        <link rel="stylesheet" href="./css/navbar.css">
+        <link rel="stylesheet" href="./css/dashboardAG.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <title>Dashboard | Análise Geral</title>
+    </head>
+    <body class="body_dashRealTime" id="dash_RT">
+      <!-- NAV-BAR START-->
+        <div class="container_navDashRT">
             <div class="perfil">
                 <div class="logo">
                     <img src="../assets/img/svgLogo.svg">
                     <span>Sentinela</span>
                 </div>
                 <div class="imagem_perfil">
-                    <img src="../assets/img/img_perfil_nav.jpg">
+                    <img src="./assets/img/image.png" alt="Mariana">
+                    <!-- <img src="./assets/img/usuario-icon.png" alt="Usuário"> -->
+                    <!-- <img src="./assets/img/img_perfil_nav.jpg"> -->
                 </div>
                 <div class="texto_perfil">
-                    <span>Olá, Boas-vindas!</span>
+                    <span>Olá,
+                        <b>Mariana!</b>
+                    </span>
                 </div>
             </div>
             <div class="btn_nav">
                 <div class="btn_dash">
-                    <li><button onclick="btn_rt()">Análise em tempo real</button></li>
-                    <li><button onclick="btn_hist()">Análise histórica</button></li>
-                    <li><button onclick="btn_geral()"><b>Ańálise geral</b></button></li>
-                    <li><button onclick="btn_endereco()">Gerenciamento de Endereços</button></li>
-                    <li><button onclick="btn_func()">Gerenciamento de Funcionário</button></li>
-                    <li><button onclick="btn_disp()">Gerenciamento de Modelo</button></li>
-                    <li><button onclick="btn_maquina()">Gerenciamento de Maquina</button></li>
-                    <li><button onclick="btn_alerta()">Alertas</button></li>
+                    <li>
+                        <button onclick="btn_rt()" class="agora">Dashboard</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_rt()">Dispositivos</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_rt()">Alertas</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_rt()">Relátorio</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_rt()">Gerenciamento</button>
+                    </li>
+                    <!-- <li>
+                        <button onclick="btn_rt()">Análise em tempo real</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_hist()">Análise histórica</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_geral()">
+                            <b>Análise geral</b>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_func()">Gerenciamento de Funcionário</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_disp()">Gerenciamento de Modelo</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_alerta()">Alertas</button>
+                    </li> -->
                 </div>
                 <div class="btn_sair">
-                    <button onclick="sair()">Sair</button>
+                    <button onclick="sair()">Sair
+                        <img src="./assets/img/sair.png" alt="Sair">
+                    </button>
                 </div>
             </div>
-        </nav>
-    </div>
-
-    <div class="section1">
+        </div>
+        <!-- NAV-BAR END -->
+        <!-- SEÇÂO START> -->
         <div class="sub-section1">
             <h1>Análise de Dados Geral</h1>
-
             <div id="list-filter" class="list">
                 <div id="select_modelo" class="select_main">
                     <select name="" id="">
@@ -78,16 +108,14 @@
                 <div id="input_data" class="select_main">
                     <input type="date">
                 </div>
-
-                <div id="confirm_button"><span>PESQUISAR</span></div>
+                <div id="confirm_button">
+                    <span>PESQUISAR</span>
+                </div>
             </div>
-
             <h2>Informações obtidas com base no (periodo)</h2>
-
             <div id="list-cards" class="list">
                 <div class="card-generic">
                     <span class="component-name">Processador</span>
-
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Frequência</span>
@@ -103,7 +131,6 @@
                 </div>
                 <div class="card-generic">
                     <span class="component-name">Memória</span>
-
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Capacidade Total</span>
@@ -125,7 +152,6 @@
                 </div>
                 <div class="card-generic">
                     <span class="component-name">Armazenamento</span>
-
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Capacidade Total</span>
@@ -141,7 +167,6 @@
                 </div>
                 <div class="card-generic">
                     <span class="component-name">Rede</span>
-
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Veloc. Envio</span>
@@ -162,9 +187,7 @@
                     </div>
                 </div>
             </div>
-
             <h2>Componentes com maior números de alerta</h2>
-
             <div id="list-table" class="list">
                 <div id="grid-kpi-table" class="list">
                     <div id="kpi-table">
@@ -176,7 +199,6 @@
                         <span class="kpi-data">115</span>
                     </div>
                 </div>
-
                 <table class="table">
                     <thead class="table_head">
                         <td class="table_title">Quantidade</td>
@@ -211,46 +233,39 @@
                 </table>
             </div>
         </div>
-
-
-
-
-</body>
-
+        <!-- SEÇÂO END -->
+    </body>
 </html>
-
 <script>
+  function btn_rt() {
+    window.location = "./dash_realTime.html";
+  }
 
-function btn_rt(){
-        window.location = './dash_realTime.html';
-    }
+  function btn_hist() {
+    window.location = "./dash_analiseHistorico.html";
+  }
 
-    function btn_hist(){
-        window.location = './dash_analiseHistorico.html'
-    }
+  function btn_geral() {
+    window.location = "./dash_analiseGeral.html";
+  }
 
-    function btn_geral(){
-        window.location = './dash_analiseGeral.html';
-    }
+  function btn_func() {
+    window.location = "./cadastroFuncionario.html";
+  }
 
-    function btn_func() {
-        window.location = './cadastroFuncionario.html';
-    }
+  function btn_disp() {
+    window.location = "./cadastroModelo.html";
+  }
 
-    function btn_disp() {
-        window.location = './cadastroModelo.html';
-    }
+  function btn_maquina() {
+    window.location = "./cadastroMaquina.html";
+  }
 
-    function btn_maquina() {
-        window.location = './cadastroMaquina.html';
-    }
+  function btn_endereco() {
+    window.location = "./cadastroEndereco.html";
+  }
 
-    function btn_endereco(){
-        window.location = './cadastroEndereco.html';
-    }
-
-    function sair(){
-        window.location = '../index.html';
-    }
-
+  function sair() {
+    window.location = "./index.html";
+  }
 </script>
