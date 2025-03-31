@@ -36,8 +36,8 @@
     <div class="div_button">
       <button onclick="cadastrar()">Cadastrar</button>
       <a href="../index.html" class="troca-tela">Voltar para tela inicial</a>
-      <a href="../edicaoFuncionario.html" class="troca-tela">Editar funcionário</a>
-      <a href="../dash_realTime.html" class="troca-tela">Voltar para dashboard</a>
+      <a href="./edicaoFuncionario.html" class="troca-tela">Editar funcionário</a>
+      <a href="./dash_realTime.html" class="troca-tela">Voltar para dashboard</a>
     </div>
   </div>
 </div>
@@ -87,7 +87,7 @@ function cadastrar(){
 function verificarIdEmpresa(){
   if(isNaN(parseInt(sessionStorage.idEmpresa))){
     alert("Erro na verifição do ID da sua empresa, realize o login novamente.")
-    window.location = "./login.html";
+    window.location = "../login.html";
   }
 }
 
