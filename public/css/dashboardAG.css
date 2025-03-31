@@ -1,15 +1,3 @@
-/* :root {
-  --borda-padrao-box: 0.35vh #dde1e6 solid;
-  --fontsize-tipo1: 3.5vw;
-  --fontsize-tipo2: 3vw;
-  --fontsize-tipo3: 2.25vw;
-  --fontsize-tipo4: 1.5vw;
-  --fontsize-tipo5: 1vw;
-  --fontsize-tipo6: 0.9vw;
-  --textcolor-cinza1: #697077;
-  --color-amarelo: #fbe969;
-  --color-cinza1: #dde1e6;
-} */
 
 * {
   margin: 0;
@@ -21,38 +9,20 @@ body {
   display: flex;
 }
 
-/* .section1 {
-  border: 1px solid green;
-  display: flex;
-  flex-direction: column;
-  height: max-content;
-  margin-left: 20%;
-  width: 100vw;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
-  background-color: red;
-} */
-
 .sub-section1 {
   display: flex;
   flex-direction: column;
-  /* width: 90%; */
   width: 100%;
   height: 100%;
   margin-left: 25%;
-  /* height: max-content; */
-  /* background-color: blue; */
   gap: 4vh;
 
   h1 {
-    /* font-size: var(--fontsize-tipo1); */
     margin-top: 30px;
     font-size: 3rem;
   }
 
   h2 {
-    /* font-size: var(--fontsize-tipo3); */
     font-size: 2rem;
   }
 
@@ -224,9 +194,3 @@ body {
     font-size: var(--fontsize-tipo5);
   }
 }
-
-/* .title_select {
-  width: 100%;
-
-  font-size: var(--fontsize-tipo6);
-} */

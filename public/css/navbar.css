@@ -9,23 +9,20 @@
   --tamanho-footer: 30vh;
 }
 
-
 /* NAVBAR */
 .container_navDashRT {
-  /* border-right: 0.5px solid rgba(128, 128, 128, 0.452); */
   position: fixed;
   display: flex;
   height: var(--tamanho-altura-nav);
   width: 20%;
   flex-direction: column;
   justify-content: space-around;
+  background-color: #333333;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
-  
+
   .perfil {
-    height: 30%;
-    justify-content: space-around;
-    /* width: var(--tamanho-largura-nav); */
     width: 100%;
+    height: 30%;
 
     .logo {
       width: 100%;
@@ -35,7 +32,8 @@
       align-items: center;
       font-size: 1.5rem;
       font-weight: bolder;
-      color: gray;
+      /* color: gray; */
+      color: white;
 
       img {
         height: 50px;
@@ -48,50 +46,108 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
       img {
-        height: 100px;
+        height: 70%;
+        /* width: 40%; */
       }
     }
     .texto_perfil {
       /* border-bottom: 0.5px solid rgba(128, 128, 128, 0.452); */
       text-align: center;
       font-size: 20px;
+      color: white;
     }
   }
 
   .btn_nav {
     width: 100%;
-    /* height: 70%; */
+    height: 50%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    /* align-items: center; */
+    /* justify-content: space-around; */
+    justify-content: space-between;
+    /* background-color: red; */
 
     li {
       width: 100%;
-      border-bottom: 1px solid rgba(71, 104, 119, 0.2);
+      /* border-bottom: 1px solid rgba(71, 104, 119, 0.2); */
+      margin-bottom: 10px;
       list-style: none;
       text-decoration: none;
       display: flex;
+      justify-content: center;
       align-items: center;
+
+      .agora {
+        font-size: 1rem;
+        background-color: #fbe969;
+        color: black;
+
+        &:hover {
+          font-size: 1rem;
+          background-color: #fce852;
+          /* color: black; */
+        }
+      }
     }
 
     button {
-      width: 100%;
+      width: 80%;
       height: 40px;
       font-size: 0.9rem;
-      background-color: #ffffff;
+      /* background-color: #ffffff; */
+      background-color: #454545;
       border: none;
+      color: white;
+      border-radius: 5px;
+
       &:hover {
         font-size: 1rem;
-        background-color: #FBE969;
+        background-color: #686868;
+        /* color: black; */
       }
     }
 
     .btn_sair {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+
       button {
-        background-color: white;
+        width: 80%;
+        height: 40px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        background-color: #fbe969;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #fbe969;
+        border-radius: 5px;
+
         &:hover {
-            background-color: rgb(240, 140, 140);
+          background-color: #333333;
+          color: white;
+
+          img {
+            filter: invert(1);
+          }
+        }
+
+        /* background-color: white;
+        &:hover {
+          background-color: rgb(240, 140, 140);
+        } */
+        img {
+          margin-left: 5px;
+          height: 20px;
+
+          /* &:hover {
+            filter: invert(1);
+          } */
         }
       }
     }
