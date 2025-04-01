@@ -17,7 +17,6 @@ body{
 
 /* NAVBAR */
 .container_navDashRT {
-  position: fixed;
   display: flex;
   height: var(--tamanho-altura-nav);
   width: 20%;

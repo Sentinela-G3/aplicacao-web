@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Sentinela</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/gerenc_funcionarios.css">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ </head>
+
+<body style="display: flex;">
+    <!-- NAV-BAR START-->
+    <div class="container_navDashRT">
+        <div class="perfil">
+            <div class="logo">
+                <img src="../assets/img/svgLogo.svg">
+                <span>Sentinela</span>
+            </div>
+            <div class="imagem_perfil">
+                <img src="../assets/img/image.png" alt="Mariana">
+                <!-- <img src="./assets/img/usuario-icon.png" alt="Usuário"> -->
+                <!-- <img src="./assets/img/img_perfil_nav.jpg"> -->
+            </div>
+            <div class="texto_perfil">
+                <span>Olá,
+                    <b id="nome_usuario">Mariana!</b>
+                </span>
+            </div>
+        </div>
+        <div class="btn_nav">
+            <div class="btn_dash">
+                <li>
+                    <button onclick="btn_rt()" >Dashboard</button>
+                </li>
+                <li>
+                    <button onclick="btn_rt()">Dispositivos</button>
+                </li>
+                <li>
+                    <button onclick="btn_rt()">Alertas</button>
+                </li>
+                <li>
+                    <button onclick="btn_rt()">Relátorio</button>
+                </li>
+                <li>
+                    <button onclick="btn_rt()" class="agora">Colaboradores</button>
+                </li>
+                <!-- <li>
+                  <button onclick="btn_rt()">Análise em tempo real</button>
+              </li>
+              <li>
+                  <button onclick="btn_hist()">Análise histórica</button>
+              </li>
+              <li>
+                  <button onclick="btn_geral()">
+                      <b>Análise geral</b>
+                  </button>
+              </li>
+              <li>
+                  <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
+              </li>
+              <li>
+                  <button onclick="btn_func()">Gerenciamento de Funcionário</button>
+              </li>
+              <li>
+                  <button onclick="btn_disp()">Gerenciamento de Modelo</button>
+              </li>
+              <li>
+                  <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
+              </li>
+              <li>
+                  <button onclick="btn_alerta()">Alertas</button>
+              </li> -->
+            </div>
+            <div class="btn_sair">
+                <button onclick="sair()">Sair
+                    <img src="../assets/img/sair.png" alt="Sair">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Gerenciamento de Colaboradores</h1>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Pesquisar colaborador...">
+            <button class="add-btn">+ Criar Novo Colaborador</button>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>João Silva</h2>
+                <p><strong>Tipo de Usuário:</strong> 1</p>
+                <p><strong>Criado em:</strong> 10/03/2024</p>
+                <div class="buttons">
+                    <button class="edit"><i class="fas fa-edit"></i></button>
+                    <button class="delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Maria Oliveira</h2>
+                <p><strong>Tipo de Usuário:</strong> 2</p>
+                <p><strong>Criado em:</strong> 12/02/2024</p>
+                <div class="buttons">
+                    <button class="edit"><i class="fa-solid fa-house"></i></button>
+                    <button class="delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Pedro Santos</h2>
+                <p><strong>Tipo de Usuário:</strong> 3</p>
+                <p><strong>Criado em:</strong> 05/01/2024</p>
+                <div class="buttons">
+                    <button class="edit"><i class="fas fa-edit"></i></button>
+                    <button class="delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    // Verificando sessão do usuário
+    if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.email || !sessionStorage.tipoUsuario || !sessionStorage.nomeUsuario) {
+        alert("Sua sessão expirou! Logue-se novamente.");
+        window.location.href = "../login.html";
+    }
+
+    const usuario = {
+        idEmpresa: sessionStorage.idEmpresa,
+        idUsuario: sessionStorage.idUsuario,
+        email: sessionStorage.email,
+        tipoUsuario: sessionStorage.tipoUsuario,
+        nomeUsuario: sessionStorage.nomeUsuario
+    };
+
+    // Plotando nome no menu lateral
+    const b_nome_usuario = document.getElementById("nome_usuario");
+    b_nome_usuario.innerHTML = usuario.nomeUsuario;
+
+</script>
