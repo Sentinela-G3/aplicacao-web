@@ -16,7 +16,6 @@
   height: var(--tamanho-altura-nav);
   width: 20%;
   flex-direction: column;
-  justify-content: space-around;
   background-color: #333333;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
 
@@ -49,6 +48,10 @@
 
       img {
         height: 70%;
+        border-radius: 10px;
+        border: 4px solid #fbe969;
+
+
         /* width: 40%; */
       }
     }
@@ -63,6 +66,7 @@
   .btn_nav {
     width: 100%;
     height: 50%;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     /* align-items: center; */
@@ -104,7 +108,6 @@
       border-radius: 5px;
 
       &:hover {
-        font-size: 1rem;
         background-color: #686868;
         /* color: black; */
       }
@@ -118,14 +121,14 @@
       button {
         width: 80%;
         height: 40px;
-        font-size: 0.9rem;
+        font-size: 1.1rem;
         font-weight: bold;
         background-color: #fbe969;
         color: black;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #fbe969;
+        border: 2px solid #fbe969;
         border-radius: 5px;
 
         &:hover {
