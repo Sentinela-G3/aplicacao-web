@@ -6,16 +6,22 @@ function cadastrar(nome, cnpj, categoria, razaoSocial) {
   return database.executar(instrucaoSql);
 }
 
-function cadastrarEndereco(logradouro, cep, estado, complemento, fkEmpresa){
+function validarCnpj(cnpj) {
+  var instrucaoSql = `SELECT * FROM empresa WHERE cnpj = '${cnpj}'`;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+function cadastrarEndereco(logradouro, cep, estado, complemento, fkEmpresa) {
   var instrucaoSql = `INSERT INTO endereco (logradouro, cep, estado, complemento, fkEmpresa) VALUES ('${logradouro}', '${cep}', '${estado}', '${complemento}', ${fkEmpresa});`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
 
-function excluirEndereco(idEndereco){
+function excluirEndereco(idEndereco) {
   var instrucaoSql = `UPDATE endereco set status = 'inativo' where idEndereco = ${idEndereco};`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
 
-module.exports = { cadastrar, cadastrarEndereco, excluirEndereco };
+module.exports = { cadastrar, validarCnpj, cadastrarEndereco, excluirEndereco };
