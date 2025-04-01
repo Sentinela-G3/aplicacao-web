@@ -1,5 +1,11 @@
 /* VARIÁVEIS DE TAMANHO */
 
+body{
+  padding: 0;
+  margin: 0;
+}
+
+
 :root {
   --tamanho-largura-nav: 35vh;
   --tamanho-largura-dash: 200vh;
@@ -87,6 +93,7 @@
       .agora {
         font-size: 1rem;
         background-color: #fbe969;
+        font-weight: 600;
         color: black;
 
         &:hover {

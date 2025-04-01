@@ -9,6 +9,8 @@
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard | Tempo Real</title>
+        <script src="../scripts/redirecionamentoMenu.js"></script>
+
     </head>
     <body class="body_dashRealTime" id="dash_RT">
         <!-- NAV-BAR START-->
@@ -56,7 +58,9 @@
                     </li>
                 </div>
                 <div class="btn_sair">
-                    <button onclick="sair()">Sair</button>
+                    <button onclick="sair()">Sair
+                        <img src="../assets/img/sair.png" alt="Sair">
+                    </button>
                 </div>
             </div>
         </div>
@@ -223,39 +227,6 @@
     </body>
 </html>
 <script>
-
-function btn_rt(){
-        window.location = './dash_realTime.html';
-    }
-
-    function btn_hist(){
-        window.location = './dash_analiseHistorico.html'
-    }
-
-    function btn_geral(){
-        window.location = './dash_analiseGeral.html';
-    }
-
-    function btn_func() {
-        window.location = './cadastroFuncionario.html';
-    }
-
-    function btn_disp() {
-        window.location = './cadastroModelo.html';
-    }
-
-    function btn_maquina() {
-        window.location = './cadastroMaquina.html';
-    }
-
-    function btn_endereco(){
-        window.location = './cadastroEndereco.html';
-    }
-
-    function sair(){
-        window.location = '../index.html';
-    }
-
     // Gráficos
     // Bateria
     var options = {
