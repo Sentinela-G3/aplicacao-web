@@ -11,8 +11,8 @@
 }
 
 h1 {
-    font-size: 32px;
-    margin-bottom: 15px;
+    font-size: 45px;
+    margin-bottom: 10px;
 }
 
 .filtros {
@@ -23,6 +23,7 @@ h1 {
 .filtros-label {
     font-weight: bold;
     margin-bottom: 10px;
+    font-size: 20px;
 }
 
 .filtros-grupo {
@@ -32,6 +33,21 @@ h1 {
     display: flex;
 }
 
+.btn_aplicar{
+    background-color: #fae969;
+    font-weight: bold;
+    width: 10%;
+    border-radius: 5px ;
+    border: none;
+    transition: 0.3s all;
+    font-size: 16px;
+}
+
+.btn_aplicar:hover{
+    background-color: #ffd82a;
+
+}
+
 .filtro-btn {
     border: none;
     cursor: pointer;
@@ -39,46 +55,78 @@ h1 {
 }
 
 .filtro-ativo {
-    background-color: #FFE366;
+    background-color: #fae969;
     font-weight: bold;
     width: 40%;
     border-radius: 5px 0 0 5px ;
-
+    cursor: default;
+    font-size: 16px;
 }
 
 .filtro-inativo {
     background-color: #E8E8E8;
     width: 60%;
     border-radius: 0 5px 5px 0;
+    text-align: center;
+    font-size: 16px;
+}
 
+#select-status option{
+    background: #fff6ce;
+    color: black;
 }
 
 .busca {
     display: flex;
     justify-content: flex-end;
     height: 40px;
-    width: 58%;
+    width: 54%;
     padding: 0;
-    
+    border-radius: 5px;
+}
 
+.icon_search{
+    background-color: #fae969;
+    height: 100%;
+    width: 11%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+    transition: 0.3s all;
+
+    &:hover{
+        background-color: #ffd82a;
+    }
 }
 
 .busca-input {
     width: 60%;
-    padding: 8px 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     display: flex;
     align-items: center;
-
+    border: none;
 }
 
 .busca-input input {
     border: none;
-    width: 100%;
+    width: 89%;
     background: transparent;
     outline: none;
-    margin-left: 10px;
+    background-color: #E8E8E8;
+    height: 100%;
+    padding: 5px 5px;
+    box-sizing: border-box;
+    border-radius: 0 5px 5px 0;
+    font-size: 16px;
+
+    
+
+    &::placeholder{
+        color: black;
+    }
 }
 
 .tabela-container {
@@ -95,7 +143,7 @@ table {
 }
 
 thead {
-    background-color: #FFE366;
+    background-color: #fae969;
     position: sticky;
     top: 0;
 }
@@ -137,6 +185,6 @@ td {
 }
 
 .search-icon {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
 }
