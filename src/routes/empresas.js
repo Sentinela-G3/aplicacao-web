@@ -12,6 +12,10 @@ router.post("/validarCnpj", function (req, res) {
   empresaController.validarCnpj(req, res);
 });
 
+router.post("/validarEmail", function (req, res) {
+  empresaController.validarEmail(req, res);
+});
+
 router.post("/cadastrarEndereco", function (req, res) {
   empresaController.cadastrarEndereco(req, res);
 });

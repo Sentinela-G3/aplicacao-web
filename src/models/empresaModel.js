@@ -12,6 +12,12 @@ function validarCnpj(cnpj) {
   return database.executar(instrucaoSql);
 }
 
+function validarEmail(email) {
+  var instrucaoSql = `SELECT * FROM usuario WHERE email = '${email}'`;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 function cadastrarEndereco(logradouro, cep, estado, complemento, fkEmpresa) {
   var instrucaoSql = `INSERT INTO endereco (logradouro, cep, estado, complemento, fkEmpresa) VALUES ('${logradouro}', '${cep}', '${estado}', '${complemento}', ${fkEmpresa});`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -24,4 +30,4 @@ function excluirEndereco(idEndereco) {
   return database.executar(instrucaoSql);
 }
 
-module.exports = { cadastrar, validarCnpj, cadastrarEndereco, excluirEndereco };
+module.exports = { cadastrar, validarCnpj, validarEmail, cadastrarEndereco, excluirEndereco };

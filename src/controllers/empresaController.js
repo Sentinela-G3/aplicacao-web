@@ -24,22 +24,34 @@ function cadastrar(req, res) {
 }
 
 function validarCnpj(req, res) {
-  var cnpj = req.body.validarCnpj;
+  var cnpj = req.body.cnpjServer;
 
   console.log("Validando CNPJ:", cnpj);
 
   empresaModel
     .validarCnpj(cnpj)
     .then(function (resultado) {
-        if (resultado.length > 0) {
-            return res.status(400).json({ mensagem: "CNPJ já cadastrado!" });
-        } else {
-            cadastrar(req, res);
-        }
+      return res.status(200).json(resultado);
     })
     .catch(function (erro) {
-        console.log("\nErro ao validar CNPJ:", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
+      console.log("\nErro ao validar CNPJ:", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function validarEmail(req, res) {
+  var email = req.body.emailServer;
+
+  console.log("Validando CNPJ:", email);
+
+  empresaModel
+    .validarEmail(email)
+    .then(function (resultado) {
+      return res.status(200).json(resultado);
+    })
+    .catch(function (erro) {
+      console.log("\nErro ao validar Email:", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
     });
 }
 
@@ -86,6 +98,7 @@ function excluirEndereco(req, res) {
 module.exports = {
   cadastrar,
   validarCnpj,
+  validarEmail,
   cadastrarEndereco,
   excluirEndereco,
 };
