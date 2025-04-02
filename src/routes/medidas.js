@@ -11,4 +11,8 @@ router.get("/tempo-real/:idAquario", function (req, res) {
     medidaController.buscarMedidasEmTempoReal(req, res);
 })
 
+router.get("/infoCPU/:idUsuario", function (req,res){
+    medidaController.obterInfosCPU(rqe,res)
+})
+
 module.exports = router;

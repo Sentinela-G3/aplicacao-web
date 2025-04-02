@@ -99,80 +99,92 @@
                 </div>
             </div>
             <h2>Informações obtidas com base no (periodo)</h2>
+
+
             <div id="list-cards" class="list">
                 <div class="card-generic">
                     <span class="component-name">Processador</span>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Frequência</span>
-                            <span class="data">50%</span>
+                            <span class="data" id="idFrequencia"></span>
                         </div>
                     </div>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Porcentagem Uso</span>
-                            <span class="data">45%</span>
+                            <span class="data" id="idPorctUsoCpu"></span>
                         </div>
                     </div>
                 </div>
+
+
                 <div class="card-generic">
                     <span class="component-name">Memória</span>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Capacidade Total</span>
-                            <span class="data">64gb</span>
+                            <span class="data" id="idCapTotalMem"></span>
                         </div>
                     </div>
                     <div class="data-box">
                         <div class="sub-data-box">
-                            <span class="data-title">Capacidade Disp.</span>
-                            <span class="data">47gb</span>
+                            <span class="data-title">Capacidade Disponivel</span>
+                            <span class="data" id="idCapDisp"></span>
                         </div>
                     </div>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Porcentagem de Uso</span>
-                            <span class="data">67%</span>
+                            <span class="data" id="idPorcUsoMem"></span>
                         </div>
                     </div>
                 </div>
+
+
                 <div class="card-generic">
                     <span class="component-name">Armazenamento</span>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Capacidade Total</span>
-                            <span class="data">3tb</span>
+                            <span class="data" id="idCapTotalArm"></span>
                         </div>
                     </div>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Capacidade Disp.</span>
-                            <span class="data">720gb</span>
+                            <span class="data"></span>
                         </div>
                     </div>
                 </div>
+
+
                 <div class="card-generic">
                     <span class="component-name">Rede</span>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Veloc. Envio</span>
-                            <span class="data">180mbps</span>
+                            <span class="data" id="idVelEnvio"></span>
                         </div>
                     </div>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Veloc. Instalação</span>
-                            <span class="data">150mbps</span>
+                            <span class="data" id="idVelDwnld"></span>
                         </div>
                     </div>
                     <div class="data-box">
                         <div class="sub-data-box">
                             <span class="data-title">Tipo</span>
-                            <span class="data">Dado</span>
+                            <span class="data" id="idTipo">Dado</span>
                         </div>
                     </div>
+
+
                 </div>
             </div>
+
+
             <h2>Componentes com maior números de alerta</h2>
             <div id="list-table" class="list">
                 <div id="grid-kpi-table" class="list">
@@ -196,7 +208,7 @@
                         <td class="table_data">Processador</td>
                         <td class="table_data">Ryzen 5 7200u</td>
                     </tbody>
-                    <tbody class="table_body">
+                    <!-- <tbody class="table_body">
                         <td class="table_data">32</td>
                         <td class="table_data">Bateria</td>
                         <td class="table_data">Samsung A320</td>
@@ -215,7 +227,7 @@
                         <td class="table_data">7</td>
                         <td class="table_data">Memória RAM</td>
                         <td class="table_data">Asgard 3200mhz</td>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
         </div>
@@ -223,5 +235,26 @@
     </body>
 </html>
 <script>
+
+function obterInfoCPU() {
+    var idUsuario = sessionStorage.idUsuario;
+
+    fetch(`/medidas/personagemFavorito/${idUsuario}`)
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("Erro ao obter personagem favorito.");
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        // Aqui você pode manipular a resposta, que contém o nome do personagem
+        console.log("Personagem favorito: ", data.nome);
+        // Exibir o nome do personagem favorito na tela
+        document.getElementById('persoFav').innerText = `${data.nome}`;
+      })
+      .catch(function (error) {
+        console.error("Erro ao obter o personagem favorito:", error);
+      });
+  }
     
 </script>
