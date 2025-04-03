@@ -1,6 +1,30 @@
 const { json } = require("express");
 var usuarioModel = require("../models/usuarioModel");
 
+function buscarPorId(req, res) {
+    const idUsuario = req.params.idUsuario;
+
+    if(!idUsuario) {
+        res.status(400).send("ID Usuário não encontrado");
+        return;
+    }
+
+    usuarioModel.buscarPorId(idUsuario)
+    .then((usuario => {
+        res.status(200).json({
+            usuario
+        })
+    }))
+    .catch(
+        function (erro) {
+            console.log(erro);
+            console.log("\nHouve um erro ao realizar a busca! Erro: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        }
+    );
+
+}
+
 function autenticar(req, res) {
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
@@ -46,6 +70,7 @@ function cadastrar(req, res) {
     var telefone = req.body.telefoneServer;
     var senha = req.body.senhaServer;
     var fkEmpresa = req.body.fkEmpresaServer;
+    var tipoUsuario = req.body.tipoUsuarioServer; // Novo campo
 
     // Faça as validações dos valores
     if (nome == undefined) {
@@ -58,9 +83,11 @@ function cadastrar(req, res) {
         res.status(400).send("Sua senha está undefined!");
     } else if (fkEmpresa == undefined) {
         res.status(400).send("Sua fkEmpresa está undefined!");
+    } else if (tipoUsuario == undefined) {
+        res.status(400).send("O tipo de usuário está undefined!");
     } else {
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, email, telefone, senha, fkEmpresa)
+        usuarioModel.cadastrar(nome, email, telefone, senha, fkEmpresa, tipoUsuario)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -78,161 +105,75 @@ function cadastrar(req, res) {
     }
 }
 
-function obterFkEndereco(req, res){
-    var email = req.body.emailServer;
+function listarPorEmpresa(req, res) {
+    var fkEmpresa = req.params.fkEmpresa;
 
-    usuarioModel.obterFkEndereco(email)
-    .then(
-        function (resultado) {
-            res.json(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao tentar obter os endereços! Erro: ",
-                erro.sqlMessage
-            );
+    if (!fkEmpresa) {
+        res.status(400).send("O ID da empresa está indefinido!");
+        return;
+    }
+
+    usuarioModel.listarPorEmpresa(fkEmpresa)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(404).send("Nenhum usuário encontrado para esta empresa.");
+            }
+        })
+        .catch(erro => {
+            console.error("Erro ao buscar usuários:", erro);
             res.status(500).json(erro.sqlMessage);
-        }
-    );
-}   
+        });
+}
 
-function cadastrarUsuarioEndereco(req, res){
-    var fkUsuario = req.body.fkUsuarioServer;
-    var fkEndereco = req.body.enderecoServer;
+function deletar(req, res) {
+    var idFuncionario = req.params.idFuncionario;
 
-    usuarioModel.cadastrarUsuarioEndereco(fkUsuario, fkEndereco)
-    .then(
-        function (resultado) {
-            res.json(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao tentar cadastrar o endereço do usuário! Erro: ",
-                erro.sqlMessage
-            );
+    if (!idFuncionario) {
+        res.status(400).send("O ID do funcionário está indefinido!");
+        return;
+    }
+
+    usuarioModel.deletar(idFuncionario)
+        .then(() => {
+            res.status(200).json({ mensagem: "Usuário deletado com sucesso" });
+        })
+        .catch(erro => {
+            console.error("Erro ao buscar usuários:", erro);
             res.status(500).json(erro.sqlMessage);
-        }
-    );
+        });
 
 }
 
-function obterFkCargo(req, res){
+function atualizar(req, res) {
+    const idFuncionario = req.params.idFuncionario;
 
-    usuarioModel.obterFkCargo()
-    .then(
-        function (resultado) {
-            res.json(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao tentar obter os cargos! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
-    );
+    const { nomeServer, emailServer, telefoneServer, tipoUsuarioServer } = req.body;
+
+    if (!idFuncionario) {
+        return res.status(400).send("ID do funcionário não fornecido.");
+    }
+
+    if (!nomeServer || !emailServer || !telefoneServer || !tipoUsuarioServer) {
+        return res.status(400).send("Todos os campos devem ser preenchidos.");
+    }
+
+    usuarioModel.atualizar(idFuncionario, nomeServer, emailServer, telefoneServer, tipoUsuarioServer)
+        .then(() => res.status(200).send("Usuário atualizado com sucesso."))
+        .catch(error => {
+            console.error("Erro ao atualizar usuário:", error);
+            res.status(500).send(error.sqlMessage);
+        });
 }
 
-function obterIdFuncionario(req, res){
-    var nivelAcesso = req.body.nivelAcessoServer;
 
-    usuarioModel.obterIdFuncionario(nivelAcesso)
-    .then(
-        function (resultado) {
-            res.json(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao tentar obter os funcionarios! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
-    );
-}
-
-function editarFuncionario(req, res){
-    var idUsuario = req.body.idUsuarioServer;
-    var contato = req.body.contatoServer;
-    var fkCargo = req.body.fkCargoServer;
-    var fkEndereco = req.body.fkEnderecoServer;
-    var fkEnderecoNovo = req.body.fkEnderecoNovoServer;
-    
-    usuarioModel.editarFuncionario(idUsuario, contato, fkCargo, fkEndereco, fkEnderecoNovo)
-    .then(
-        function (resultado) {
-            res.json(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao tentar editar os funcionarios! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
-    );    
-}
-
-function editarFuncionarioAdd(req, res){
-    var idUsuario = req.body.idUsuarioServer;
-    var fkEndereco = req.body.fkEnderecoServer;
-
-    usuarioModel.editarFuncionarioAdd(idUsuario, fkEndereco)
-    .then(
-        function (resultado) {
-            res.json(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao tentar editar os funcionarios! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
-    );    
-}
-
-function editarFuncionarioDel(req, res){
-    var idUsuario = req.body.idUsuarioServer;
-    var fkEndereco = req.body.fkEnderecoServer;
-
-    usuarioModel.editarFuncionarioDel(idUsuario, fkEndereco)
-    .then(
-        function (resultado) {
-            res.json(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao tentar editar os funcionarios! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
-    );    
-}
 
 module.exports = {
     autenticar,
     cadastrar,
-    obterFkEndereco,
-    cadastrarUsuarioEndereco,
-    obterFkCargo,
-    obterIdFuncionario,
-    editarFuncionario,
-    editarFuncionarioAdd,
-    editarFuncionarioDel
+    listarPorEmpresa,
+    deletar,
+    atualizar,
+    buscarPorId
 }

@@ -11,7 +11,7 @@ function btn_geral(){
 }
 
 function btn_func() {
-    window.location = './cadastroFuncionario.html';
+    window.location = './gerenciar_funcionarios.html';
 }
 
 function btn_disp() {
