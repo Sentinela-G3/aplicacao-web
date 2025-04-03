@@ -181,6 +181,10 @@ body{
   margin-left: 0;
 }
 
+.navBar-mobile{
+  display: none;
+}
+
 
 @media (max-width: 450px) {
   .container_navDashRT{
