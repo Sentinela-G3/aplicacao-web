@@ -188,3 +188,15 @@ td {
     width: 18px;
     height: 18px;
 }
+
+
+@media (max-width: 450px) {
+    .conteudo{
+    display: none;
+  }
+  .conteudo-mobile{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+  }
+}

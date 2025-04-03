@@ -1,208 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/navbar.css">
-        <link rel="stylesheet" href="../css/alertas.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        <title>Dashboard | Análise Geral</title>
-        <script src="../scripts/redirecionamentoMenu.js"></script>
-    </head>
-    <body class="body_alertas" >
-      <!-- NAV-BAR START-->
-        <div class="container_navDashRT">
-            <div class="perfil">
-                <div class="logo">
-                    <img src="../assets/img/svgLogo.svg">
-                    <span>Sentinela</span>
-                </div>
-                <div class="imagem_perfil">
-                    <img src="../assets/img/img_perfil_nav.jpg">
-                </div>
-                <div class="texto_perfil">
-                    <span>
-                        Olá,
-                        <b>Vinicius!</b>
-                    </span>
-                </div>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/alertas.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Dashboard | Análise Geral</title>
+    <script src="../scripts/redirecionamentoMenu.js"></script>
+    <script src="../scripts/animacaoMenuMobile.js"></script>
+</head>
+
+<body class="body_alertas">
+    <!-- NAV-BAR START-->
+    <div class="container_navDashRT">
+        <div class="perfil">
+            <div class="logo">
+                <img src="../assets/img/svgLogo.svg">
+                <span>Sentinela</span>
             </div>
-            <div class="btn_nav">
-                <div class="btn_dash">
-                    <li>
-                        <button onclick="btn_rt()" >Análise em tempo real</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_hist()">Análise histórica</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_geral()" >Análise geral</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_func()">Gerenciamento de Funcionário</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_disp()">Gerenciamento de Modelo</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_alerta()" class="agora">Alertas</button>
-                    </li>
-                </div>
-                <div class="btn_sair">
-                    <button onclick="sair()">Sair
-                        <img src="../assets/img/sair.png" alt="Sair">
-                    </button>
-                </div>
+            <div class="imagem_perfil">
+                <img src="../assets/img/img_perfil_nav.jpg">
+            </div>
+            <div class="texto_perfil">
+                <span>
+                    Olá,
+                    <b>Vinicius!</b>
+                </span>
             </div>
         </div>
-        <!-- NAV-BAR END -->
-        <!-- SEÇÂO START> -->
-        <div class="conteudo">
-            <h1>Alertas</h1>
-    
-            <div class="filtros-label">Filtros</div>
-            <div class="filtros">
-                
-                <div class="filtros-grupo">
-                    <button class="filtro-btn filtro-ativo">Status</button>
-                    <select name="select-status" id="select-status" class="filtro-btn filtro-inativo">
-                        <option value="">Todos</option>
-                        <option value="">Resolvido</option>
-                        <option value="">Em andamento</option>
-                        <option value="">Aberto</option>
-                    </select>
-                </div>
-                
-                <div class="filtros-grupo">
-                    <button class="filtro-btn filtro-ativo">Período</button>
-                    <button class="filtro-btn filtro-inativo">Todos</button>
-                </div>
-                
-                <button class="btn_aplicar"> Aplicar</button>
-                
-                <div class="busca">
-                    <div class="busca-input">
-                        <div class="icon_search">
-                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="22" y1="22" x2="17.65" y2="17.65"></line>
-                            </svg>
-                        </div>
-                        <input type="text" placeholder="Insira Chave ou ID do Dispositivo">
+        <div class="btn_nav">
+            <div class="btn_dash">
+                <li>
+                    <button onclick="btn_rt()">Análise em tempo real</button>
+                </li>
+                <li>
+                    <button onclick="btn_hist()">Análise histórica</button>
+                </li>
+                <li>
+                    <button onclick="btn_geral()">Análise geral</button>
+                </li>
+                <li>
+                    <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
+                </li>
+                <li>
+                    <button onclick="btn_func()">Gerenciamento de Funcionário</button>
+                </li>
+                <li>
+                    <button onclick="btn_disp()">Gerenciamento de Modelo</button>
+                </li>
+                <li>
+                    <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
+                </li>
+                <li>
+                    <button onclick="btn_alerta()" class="agora">Alertas</button>
+                </li>
+            </div>
+            <div class="btn_sair">
+                <button onclick="sair()">Sair
+                    <img src="../assets/img/sair.png" alt="Sair">
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- NAV-BAR END -->
+    <!-- SEÇÂO START> -->
+    <div class="conteudo">
+        <h1>Alertas</h1>
+
+        <div class="filtros-label">Filtros</div>
+        <div class="filtros">
+
+            <div class="filtros-grupo">
+                <button class="filtro-btn filtro-ativo">Status</button>
+                <select name="select-status" id="select-status" class="filtro-btn filtro-inativo">
+                    <option value="">Todos</option>
+                    <option value="">Resolvido</option>
+                    <option value="">Em andamento</option>
+                    <option value="">Aberto</option>
+                </select>
+            </div>
+
+            <div class="filtros-grupo">
+                <button class="filtro-btn filtro-ativo">Período</button>
+                <button class="filtro-btn filtro-inativo">Todos</button>
+            </div>
+
+            <button class="btn_aplicar"> Aplicar</button>
+
+            <div class="busca">
+                <div class="busca-input">
+                    <div class="icon_search">
+                        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="22" y1="22" x2="17.65" y2="17.65"></line>
+                        </svg>
                     </div>
+                    <input type="text" placeholder="Insira Chave ou ID do Dispositivo">
                 </div>
             </div>
-            
-            
-            <div class="tabela-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Chave</th>
-                            <th>Descrição</th>
-                            <th>ID Dispositivo</th>
-                            <th>Hora de abertura</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>SUPSEN-986</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234321</td>
-                            <td>30/03/2025 às 01:04</td>
-                            <td><span class="status-badge status-resolvido">Resolvido</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-986</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234321</td>
-                            <td>30/03/2025 às 01:04</td>
-                            <td><span class="status-badge status-andamento">Em andamento</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-986</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234321</td>
-                            <td>30/03/2025 às 01:04</td>
-                            <td><span class="status-badge status-aberto">Aberto</span></td>
-                        </tr>
-                        <!-- Adicionando mais linhas para demonstrar a barra de rolagem -->
-                        <tr>
-                            <td>SUPSEN-987</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234322</td>
-                            <td>30/03/2025 às 01:05</td>
-                            <td><span class="status-badge status-aberto">Aberto</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-988</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234323</td>
-                            <td>30/03/2025 às 01:06</td>
-                            <td><span class="status-badge status-andamento">Em andamento</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-989</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234324</td>
-                            <td>30/03/2025 às 01:07</td>
-                            <td><span class="status-badge status-resolvido">Resolvido</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-990</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234325</td>
-                            <td>30/03/2025 às 01:08</td>
-                            <td><span class="status-badge status-aberto">Aberto</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-991</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234326</td>
-                            <td>30/03/2025 às 01:09</td>
-                            <td><span class="status-badge status-andamento">Em andamento</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-992</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234327</td>
-                            <td>30/03/2025 às 01:10</td>
-                            <td><span class="status-badge status-resolvido">Resolvido</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-993</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234328</td>
-                            <td>30/03/2025 às 01:11</td>
-                            <td><span class="status-badge status-aberto">Aberto</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-993</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234328</td>
-                            <td>30/03/2025 às 01:11</td>
-                            <td><span class="status-badge status-aberto">Aberto</span></td>
-                        </tr>
-                        <tr>
-                            <td>SUPSEN-993</td>
-                            <td>Um aumento inesperado na temperatura foi identificado</td>
-                            <td>1234328</td>
-                            <td>30/03/2025 às 01:11</td>
-                            <td><span class="status-badge status-aberto">Aberto</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+        </div>
+
+
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Chave</th>
+                        <th>Descrição</th>
+                        <th>ID Dispositivo</th>
+                        <th>Hora de abertura</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SUPSEN-986</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234321</td>
+                        <td>30/03/2025 às 01:04</td>
+                        <td><span class="status-badge status-resolvido">Resolvido</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-986</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234321</td>
+                        <td>30/03/2025 às 01:04</td>
+                        <td><span class="status-badge status-andamento">Em andamento</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-986</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234321</td>
+                        <td>30/03/2025 às 01:04</td>
+                        <td><span class="status-badge status-aberto">Aberto</span></td>
+                    </tr>
+                    <!-- Adicionando mais linhas para demonstrar a barra de rolagem -->
+                    <tr>
+                        <td>SUPSEN-987</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234322</td>
+                        <td>30/03/2025 às 01:05</td>
+                        <td><span class="status-badge status-aberto">Aberto</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-988</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234323</td>
+                        <td>30/03/2025 às 01:06</td>
+                        <td><span class="status-badge status-andamento">Em andamento</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-989</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234324</td>
+                        <td>30/03/2025 às 01:07</td>
+                        <td><span class="status-badge status-resolvido">Resolvido</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-990</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234325</td>
+                        <td>30/03/2025 às 01:08</td>
+                        <td><span class="status-badge status-aberto">Aberto</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-991</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234326</td>
+                        <td>30/03/2025 às 01:09</td>
+                        <td><span class="status-badge status-andamento">Em andamento</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-992</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234327</td>
+                        <td>30/03/2025 às 01:10</td>
+                        <td><span class="status-badge status-resolvido">Resolvido</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-993</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234328</td>
+                        <td>30/03/2025 às 01:11</td>
+                        <td><span class="status-badge status-aberto">Aberto</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-993</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234328</td>
+                        <td>30/03/2025 às 01:11</td>
+                        <td><span class="status-badge status-aberto">Aberto</span></td>
+                    </tr>
+                    <tr>
+                        <td>SUPSEN-993</td>
+                        <td>Um aumento inesperado na temperatura foi identificado</td>
+                        <td>1234328</td>
+                        <td>30/03/2025 às 01:11</td>
+                        <td><span class="status-badge status-aberto">Aberto</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- SEÇÂO END -->
+
+
+    <!-- SEÇÂO START MOBILE -->
+    <div class="navBar-mobile" id="navBar-mobile">
+        <div class="logo-iconMenu">
+            <div class="logo-mobile">
+                <img src="../assets/img/svgLogo.svg">
+                <span>Sentinela</span>
+            </div>
+            <button class="menu-btn" id="menu-btn" onclick="animacaoMenu()">
+                <svg width="35" height="25" viewBox="0 0 40 30" fill="black" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="40" height="5" rx="2" fill="#fae969"/>
+                      <rect y="12" width="40" height="5" rx="2" fill="#fae969"/>
+                      <rect y="24" width="40" height="5" rx="2" fill="#fae969"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="box-perfil" id="box-perfil">
+            <div class="imagem_perfil">
+                <img src="../assets/img/img_perfil_nav.jpg">
+            </div>
+            <div class="texto_perfil">
+                <span>
+                    Olá,
+                    <b>Vinicius!</b>
+                </span>
             </div>
         </div>
-        <!-- SEÇÂO END -->
-    </body>
+
+        <div class="options-menu-mobile" id="options-menu-mobile">
+            <div class="btn_dash">
+                <li>
+                    <button onclick="btn_rt()">Análise em tempo real</button>
+                </li>
+                <li>
+                    <button onclick="btn_hist()">Análise histórica</button>
+                </li>
+                <li>
+                    <button onclick="btn_geral()">Análise geral</button>
+                </li>
+                <li>
+                    <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
+                </li>
+                <li>
+                    <button onclick="btn_func()">Gerenciamento de Funcionário</button>
+                </li>
+                <li>
+                    <button onclick="btn_disp()">Gerenciamento de Modelo</button>
+                </li>
+                <li>
+                    <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
+                </li>
+                <li>
+                    <button onclick="btn_alerta()" class="agora">Alertas</button>
+                </li>
+            </div>
+            <div class="btn_sair">
+                <button onclick="sair()">Sair
+                    <img src="../assets/img/sair.png" alt="Sair">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="conteudo-mobile">
+
+    </div>
+</body>
+
 </html>
