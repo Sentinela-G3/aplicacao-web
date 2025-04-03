@@ -3,7 +3,7 @@ var database = require("../database/config")
 function autenticar(email, senha) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function autenticar(): ", email, senha)
     var instrucaoSql = `
-         SELECT idUsuario, usuario.nome as nome, email, tipoUsuario, idEmpresa, empresa.status FROM usuario join empresa on idEmpresa = fkEmpresa WHERE email = '${email}' AND senha = SHA2('${senha}', 256);
+         SELECT idUsuario, colaborador.nome as nome, email, tipoUsuario, idEmpresa, empresa.status FROM colaborador join empresa on idEmpresa = fkEmpresa WHERE email = '${email}' AND senha = SHA2('${senha}', 256);
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -11,8 +11,8 @@ function autenticar(email, senha) {
 
 function cadastrar(nome, email, telefone, senha, fkEmpresa, tipoUsuario) {
     var instrucaoSql = `
-        INSERT INTO usuario (nome, email, telefone, senha, fkEmpresa, tipoUsuario) 
-        VALUES ('${nome}', '${email}', '${telefone}', SHA2('${senha}', 256), ${fkEmpresa}, ${tipoUsuario});
+        INSERT INTO colaborador (fkEmpresa, nome, email, telefone, senha, tipoUsuario, dataCriacao) 
+        VALUES (${fkEmpresa}, '${nome}', '${email}', '${telefone}', SHA2('${senha}', 256), ${tipoUsuario}, NOW());
     `;
     
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
