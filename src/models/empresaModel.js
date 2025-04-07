@@ -6,8 +6,8 @@ function cadastrar(nome, cnpj, categoria, razaoSocial) {
   return database.executar(instrucaoSql);
 }
 
-function cadastrarEndereco(logradouro, cep, estado, complemento, fkEmpresa){
-  var instrucaoSql = `INSERT INTO enderecoEmpresa (logradouro, cep, estado, complemento, fkEmpresa) VALUES ('${logradouro}', '${cep}', '${estado}', '${complemento}', ${fkEmpresa});`;
+function cadastrarEndereco(logradouro, numero, cep, estado, cidade, complemento, fkEmpresa){
+  var instrucaoSql = `INSERT INTO enderecoEmpresa (logradouro, numero, cep, estado, cidade, complemento, fkEmpresa) VALUES ('${logradouro}', '${numero}', '${cep}', '${estado}', '${cidade}', '${complemento}', ${fkEmpresa});`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }

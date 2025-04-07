@@ -41,11 +41,17 @@
             <label>Logradouro:</label>
             <input type="text" id="logradouro" placeholder="Ex: Rua das Flores">
 
+            <label>Número:</label>
+            <input type="text" id="numero" placeholder="Ex: 511">
+
             <label>CEP:</label>
             <input type="text" id="cep" maxlength="8" placeholder="Ex: 12345678">
 
             <label>Estado:</label>
             <input type="text" maxlength="2" id="estado" placeholder="Ex: SP">
+
+            <label>Cidade:</label>
+            <input type="text" id="cidade" placeholder="Ex: São Paulo">
 
             <label>Complemento:</label>
             <input type="text" id="complemento" placeholder="Ex: Sala 101">
@@ -136,11 +142,13 @@
 
         function validarEtapaEndereco() {
             const logradouro = document.getElementById('logradouro').value.trim();
+            const numero = document.getElementById('numero').value.trim();
             const cep = document.getElementById('cep').value.trim();
             const estado = document.getElementById('estado').value.trim();
+            const cidade = document.getElementById('cidade').value.trim();
             const complemento = document.getElementById('complemento').value.trim();
 
-            if (!logradouro || !cep || !estado || !complemento) {
+            if (!logradouro || !numero|| !cep || !estado || !complemento || !cidade) {
                 alert('Por favor, preencha todos os campos do endereço.');
                 return false;
             }
@@ -153,8 +161,10 @@
 
             const dadosEndereco = {
                 logradouro,
+                numero,
                 cep,
                 estado,
+                cidade,
                 complemento,
             };
 
@@ -252,8 +262,10 @@
                 },
                 body: JSON.stringify({
                     "logradouroServer": dadosEndereco.logradouro,
+                    "numeroServer": dadosEndereco.numero,
                     "cepServer": dadosEndereco.cep,
                     "estadoServer": dadosEndereco.estado,
+                    "cidadeServer": dadosEndereco.cidade,
                     "complementoServer": dadosEndereco.complemento,
                     "fkEmpresaServer": idEmpresa
                 })
@@ -351,8 +363,10 @@
 
             if (dadosEndereco) {
                 document.getElementById('logradouro').value = dadosEndereco.logradouro;
+                document.getElementById('numero').value = dadosEndereco.numero;
                 document.getElementById('cep').value = dadosEndereco.cep;
                 document.getElementById('estado').value = dadosEndereco.estado;
+                document.getElementById('cidade').value = dadosEndereco.cidade;
                 document.getElementById('complemento').value = dadosEndereco.complemento;
             }
         }
