@@ -135,10 +135,8 @@ body {
   flex-direction: column;
   align-items: center;
   border: var(--borda-padrao-box);
-  width: calc(100% - 4vh);
-  height: calc(100% - 4vh);
+  width: 67vw;
   gap: 2.5vh;
-  padding: 2vh;
 
   .component-name {
     width: 100%;
@@ -194,3 +192,38 @@ body {
     font-size: var(--fontsize-tipo5);
   }
 }
+
+#modelos-id{
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 95%;
+}
+
+#modelos-id td, #modelos-id th{
+  padding: 15px;
+}
+
+#modelos-id tr:hover {background-color: #ededed;}
+
+table th{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #c9c9c9;
+  color: black;
+}
+
+table{
+  border: 1px solid #c9c9c9;
+  border-collapse: collapse;
+}
+
+.tabela-maquinas th{
+  background-color: #FBE969;
+}
+
+.tabela-maquinas td{
+  border: 1.5px solid #C2C2C2;
+}
+
+

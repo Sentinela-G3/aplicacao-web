@@ -70,19 +70,19 @@
         <!-- NAV-BAR END -->
         <!-- SEÇÂO START> -->
         <div class="sub-section1">
-            <h1>Análise de Dados Geral</h1>
+            <h1>Visão geral</h1>
             <div id="list-filter" class="list">
-                <div id="select_modelo" class="select_main">
-                    <select name="" id="">
+                <!-- <div id="select_modelo" class="select_main"> -->
+                    <!-- <select name="" id="">
                         <option selected disabled value="">Selecione o Modelo</option>
                         <option value="">Modelo 1</option>
                         <option value="">Modelo 2</option>
                         <option value="">Modelo 3</option>
                         <option value="">Modelo 4</option>
-                    </select>
-                </div>
-                <div id="select_periodo" class="select_main">
-                    <select name="" id="">
+                    </select> -->
+                <!-- </div> -->
+                <!-- <div id="select_periodo" class="select_main"> -->
+                    <!-- <select name="" id="">
                         <option selected disabled value="">Selecione o Período</option>
                         <option value="">3 dias</option>
                         <option value="">7 dias</option>
@@ -90,35 +90,37 @@
                         <option value="">30 dias</option>
                         <option value="">Outro</option>
                     </select>
-                </div>
-                <div id="input_data" class="select_main">
-                    <input type="date">
-                </div>
-                <div id="confirm_button">
+                </div> -->
+                <!-- <div id="input_data" class="select_main"> -->
+                    <!-- <input type="date"> -->
+                <!-- </div> -->
+                <!-- <div id="confirm_button">
                     <span>PESQUISAR</span>
-                </div>
+                </div> -->
             </div>
-            <h2>Informações obtidas com base no (periodo)</h2>
 
 
-            <div id="list-cards" class="list">
-                <div class="card-generic">
-                    <span class="component-name">Processador</span>
-                    <div class="data-box">
-                        <div class="sub-data-box">
-                            <span class="data-title">Frequência</span>
-                            <span class="data" id="idFrequencia"></span>
-                        </div>
-                    </div>
-                    <div class="data-box">
-                        <div class="sub-data-box">
-                            <span class="data-title">Porcentagem Uso</span>
-                            <span class="data" id="idPorctUsoCpu"></span>
-                        </div>
-                    </div>
-                </div>
-
-
+            <table id="modelos-id">
+                <tr>
+                    <th>Modelos Ativos</th>
+                    <th>CPU</th>
+                    <th>Disco</th>
+                    <th>Capacidade do Disco</th>
+                    <th>Quantidade de Alertas na Semana</th>
+                    <th>alertas</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>
+                        <button>mlem</button>
+                    </td>
+                </tr>
+            </table>
+<!-- 
                 <div class="card-generic">
                     <span class="component-name">Memória</span>
                     <div class="data-box">
@@ -139,10 +141,10 @@
                             <span class="data" id="idPorcUsoMem"></span>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
 
-                <div class="card-generic">
+                <!-- <div class="card-generic">
                     <span class="component-name">Armazenamento</span>
                     <div class="data-box">
                         <div class="sub-data-box">
@@ -156,10 +158,10 @@
                             <span class="data"></span>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
 
-                <div class="card-generic">
+                <!-- <div class="card-generic">
                     <span class="component-name">Rede</span>
                     <div class="data-box">
                         <div class="sub-data-box">
@@ -179,56 +181,45 @@
                             <span class="data" id="idTipo">Dado</span>
                         </div>
                     </div>
+                </div> -->
 
-
+            <div class="list">
+                <div id="select_modelo" class="select_main"> 
+                    <select name="" id="">
+                        <option selected disabled value="">Selecione o Modelo</option>
+                        <option value="">Modelo 1</option>
+                        <option value="">Modelo 2</option>
+                        <option value="">Modelo 3</option>
+                        <option value="">Modelo 4</option>
+                    </select> 
                 </div>
             </div>
 
 
-            <h2>Componentes com maior números de alerta</h2>
             <div id="list-table" class="list">
-                <div id="grid-kpi-table" class="list">
-                    <div id="kpi-table">
-                        <span class="kpi-title">Média de alertas</span>
-                        <span class="kpi-data">23/Dia</span>
+                <table id="modelos-id" class="tabela-maquinas">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tempo de Uso</th>
+                        <th>Setor</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                </table>
+                <div id="alertas-container">
+                    <div class="alertas-box">
+                        Alertas da Semana
                     </div>
-                    <div id="kpi-table">
-                        <span class="kpi-title">Total de alertas</span>
-                        <span class="kpi-data">115</span>
+                    <div class="alertas-box">
+                        Alertas em Aberto
                     </div>
                 </div>
-                <table class="table">
-                    <thead class="table_head">
-                        <td class="table_title">Quantidade</td>
-                        <td class="table_title">Categoria</td>
-                        <td class="table_title">Especificação</td>
-                    </thead>
-                    <tbody class="table_body">
-                        <td class="table_data">43</td>
-                        <td class="table_data">Processador</td>
-                        <td class="table_data">Ryzen 5 7200u</td>
-                    </tbody>
-                    <!-- <tbody class="table_body">
-                        <td class="table_data">32</td>
-                        <td class="table_data">Bateria</td>
-                        <td class="table_data">Samsung A320</td>
-                    </tbody>
-                    <tbody class="table_body">
-                        <td class="table_data">23</td>
-                        <td class="table_data">Memória RAM</td>
-                        <td class="table_data">Asgard 3200mhz</td>
-                    </tbody>
-                    <tbody class="table_body">
-                        <td class="table_data">10</td>
-                        <td class="table_data">Memória RAM</td>
-                        <td class="table_data">Asgard 3200mhz</td>
-                    </tbody>
-                    <tbody class="table_body">
-                        <td class="table_data">7</td>
-                        <td class="table_data">Memória RAM</td>
-                        <td class="table_data">Asgard 3200mhz</td>
-                    </tbody> -->
-                </table>
+                <div>
+                    seila grafico
+                </div>
             </div>
         </div>
         <!-- SEÇÂO END -->
