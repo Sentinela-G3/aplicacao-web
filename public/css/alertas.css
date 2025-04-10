@@ -33,6 +33,29 @@ h1 {
     display: flex;
 }
 
+.filtros-grupo2 {
+    width: 50%;
+    height: 40px;
+    margin-right: 1%;
+    display: flex;
+}
+
+.filtro-titulo{
+    background-color: #fae969;
+    font-weight: bold;
+    width: 40%;
+    border-radius: 5px 0 0 5px ;
+    cursor: default;
+    font-size: 16px;
+}
+
+.filtro-data{
+    background-color: #E8E8E8;
+    width: 20%;
+    text-align: center;
+    font-size: 16px;
+}
+
 .btn_aplicar{
     background-color: #fae969;
     font-weight: bold;
@@ -66,7 +89,7 @@ h1 {
 .filtro-inativo {
     background-color: #E8E8E8;
     width: 60%;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0; 
     text-align: center;
     font-size: 16px;
 }
