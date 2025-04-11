@@ -1,18 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro Sentinela</title>
-    <link rel="stylesheet" href="../css/cadastros.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro Sentinela</title>
+  <link rel="stylesheet" href="../css/cadEndereco.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <script src="../scripts/redirecionamentoMenu.js"></script>
+  <title>Gerenciar Endereço</title>
 </head>
+
 <body>
-    
-  <div class="container_section1">
-    <div class="logo">
-      <img src="../assets/img/Icon Container.svg">
-      <h1>Cadastrar endereço</h1>
+  <!-- NAV-BAR START-->
+  <div class="container_navDashRT">
+    <div class="perfil">
+      <div class="logo">
+        <img src="../assets/img/svgLogo.svg">
+        <span>Sentinela</span>
+      </div>
+      <div class="imagem_perfil">
+        <img src="../assets/img/img_perfil_nav.jpg">
+      </div>
+      <div class="texto_perfil">
+        <span>
+          Olá,
+          <b>Vinicius!</b>
+        </span>
+      </div>
     </div>
+    <div class="btn_nav">
+      <div class="btn_dash">
+        <li>
+          <button onclick="btn_rt()">Análise em tempo real</button>
+        </li>
+        <li>
+          <button onclick="btn_hist()">
+            <b>Análise histórica</b>
+          </button>
+        </li>
+        <li>
+          <button onclick="btn_geral()">Análise geral</button>
+        </li>
+        <li>
+          <button onclick="btn_endereco()" class="agora">Gerenciamento de Endereços</button>
+        </li>
+        <li>
+          <button onclick="btn_func()">Gerenciamento de Funcionário</button>
+        </li>
+        <li>
+          <button onclick="btn_disp()">Gerenciamento de Modelo</button>
+        </li>
+        <li>
+          <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
+        </li>
+        <li>
+          <button onclick="btn_alerta()">Alertas</button>
+        </li>
+      </div>
+      <div class="btn_sair">
+        <button onclick="sair()">Sair
+          <img src="../assets/img/sair.png" alt="Sair">
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- NAV-BAR END -->
+
+  <div class="container_section1">
+    <h1>Cadastrar endereço</h1>
+
     <div class="formulario">
       <div>
         <label class="">logradouro:</label>
@@ -40,14 +97,14 @@
       <a href="./dash_realTime.html" class="troca-tela">Voltar para dashboard</a>
     </div>
   </div>
-</div>
 
 </body>
+
 </html>
 
 <script>
-verificarIdEmpresa()
-function cadastrar(){
+  verificarIdEmpresa()
+  function cadastrar() {
     var logradouro = input_logradouro.value;
     var cep = input_cep.value;
     var estado = input_estado.value;
@@ -82,13 +139,13 @@ function cadastrar(){
         console.log(`#ERRO: ${resposta}`);
         finalizarAguardar();
       });
-}
-
-function verificarIdEmpresa(){
-  if(isNaN(parseInt(sessionStorage.idEmpresa))){
-    alert("Erro na verifição do ID da sua empresa, realize o login novamente.")
-    window.location = "../login.html";
   }
-}
+
+  // function verificarIdEmpresa(){
+  //   if(isNaN(parseInt(sessionStorage.idEmpresa))){
+  //     alert("Erro na verifição do ID da sua empresa, realize o login novamente.")
+  //     window.location = "../login.html";
+  //   }
+  // }
 
 </script>
