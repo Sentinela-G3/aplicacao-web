@@ -1,0 +1,130 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+:root {
+    --borda-padrao-box: 0.35vh #dde1e6 solid;
+    --fontsize-tipo1: 2.5rem;
+    --fontsize-tipo2: 2rem;
+    --fontsize-tipo3: 1.75rem;
+    --fontsize-tipo4: 1.5rem;
+    --fontsize-tipo5: 1rem;
+    --fontsize-tipo6: 0.9rem;
+    --textcolor-cinza1: #697077;
+    --color-amarelo: #fbe969;
+    --color-cinza1: #dde1e6;
+}
+
+h1 {
+    font-size: var(--fontsize-tipo1);
+}
+
+h2 {
+    font-size: var(--fontsize-tipo3);
+}
+
+h3 {
+    font-size: var(--fontsize-tipo4);
+}
+
+h4 {
+    font-size: var(--fontsize-tipo5);
+}
+
+body {
+    display: flex;
+}
+
+.content {
+    margin-left: 25%;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    height: 80%;
+    width: 90%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: center;
+    gap: 3%;
+}
+
+.titulo_chamado {
+    display: flex;
+    flex-direction: column;
+    background-color: #f1f1f1;
+    border: 1px solid #c1c7cd;
+    border-radius: 5px;
+    padding: 3%;
+    
+    & h2 {
+        margin-bottom: 1%;
+    }
+
+    & input {
+        border: none;
+        border-bottom: 2px solid #c1c7cd;
+        outline: none;
+        font-size: 16px;
+        background-color: transparent;
+        width: 95%;
+        align-self: center;
+    }
+}
+
+.descricao {
+    display: flex;
+    flex-direction: column;
+    background-color: #E6E6E6;
+    border: 1px solid #c1c7cd;
+    border-radius: 5px;
+    padding: 3%;
+    height: 70%;
+}
+
+.linha {
+    display: flex;
+    justify-content: space-between;
+    height: fit-content;
+
+    & h2 {
+        margin-bottom: 3%;
+    }
+
+    & button {
+        margin-bottom: 3%;
+    }
+}
+
+.iptcaixa {
+    border: none;
+    background-color: #f1f1f1;
+    height: 100%;
+    width: 100%;
+    resize: none;
+    font-size: 16px;
+}
+
+.enviar {
+    display: flex;
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+}
+
+button {
+    border: none;
+    background-color: #fbe969;
+    padding-left: 3%;
+    padding-right: 3%;
+    width: fit-content;
+    height: 70%;
+    font-size: 16px;
+    border-radius: 5px;
+}
