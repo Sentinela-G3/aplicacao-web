@@ -31,6 +31,11 @@ function btn_alerta(){
 
 }
 
+function btn_alerta(){
+    window.location = './chamados.html';
+
+}
+
 function sair(){
     window.location = '../index.html';
 }

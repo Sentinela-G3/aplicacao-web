@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamados</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/chamados.css">
+    <script src="../scripts/redirecionamentoMenu.js"></script>
+    <script src="../scripts/animacaoMenuMobile.js"></script>
+</head>
+
+<body>
+    <!-- NAV-BAR START-->
+    <div class="container_navDashRT">
+        <div class="perfil">
+            <div class="logo">
+                <img src="../assets/img/svgLogo.svg">
+                <span>Sentinela</span>
+            </div>
+            <div class="imagem_perfil">
+                <img src="../assets/img/img_perfil_nav.jpg">
+            </div>
+            <div class="texto_perfil">
+                <span>
+                    Olá,
+                    <b>Garibaldo!</b>
+                </span>
+            </div>
+        </div>
+        <div class="btn_nav">
+            <div class="btn_dash">
+                <li>
+                    <button onclick="btn_rt()">Análise em tempo real</button>
+                </li>
+                <li>
+                    <button onclick="btn_hist()">Análise histórica</button>
+                </li>
+                <li>
+                    <button onclick="btn_geral()">Análise geral</button>
+                </li>
+                <li>
+                    <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
+                </li>
+                <li>
+                    <button onclick="btn_func()">Gerenciamento de Funcionário</button>
+                </li>
+                <li>
+                    <button onclick="btn_disp()">Gerenciamento de Modelo</button>
+                </li>
+                <li>
+                    <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
+                </li>
+                <li>
+                    <button onclick="btn_alerta()">Alertas</button>
+                </li>
+                <li>
+                    <button onclick="btn_chamado()" class="agora">Chamados</button>
+                </li>
+            </div>
+            <div class="btn_sair">
+                <button onclick="sair()">Sair
+                    <img src="../assets/img/sair.png" alt="Sair">
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- NAV-BAR END -->
+
+    <div class="content">
+        <h1>Abrir um Chamado</h1>
+        <div class="container">
+            <div class="titulo_chamado">
+                <h2>Título</h2>
+                <input placeholder="Título do chamado" id="ipt_titulo">
+            </div>
+            <div class="descricao">
+                <div class="linha">
+                    <h2>Descrição</h2>
+                    <button onclick="anexar_imagem()">Anexar Imagem <img src="" alt=""></button>
+                </div>
+                <textarea id="ipt_descricao" class="iptcaixa"></textarea>
+            </div>
+            <div class="enviar">
+                <button onclick="enviar()">Enviar</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
