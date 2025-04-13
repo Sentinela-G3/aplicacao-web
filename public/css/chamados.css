@@ -59,23 +59,28 @@ body {
 .titulo_chamado {
     display: flex;
     flex-direction: column;
-    background-color: #f1f1f1;
+    background-color: #E6E6E6;
     border: 1px solid #c1c7cd;
     border-radius: 5px;
     padding: 3%;
-    
-    & h2 {
-        margin-bottom: 1%;
-    }
 
     & input {
         border: none;
-        border-bottom: 2px solid #c1c7cd;
+        background-color: #ffffff;
         outline: none;
         font-size: 16px;
-        background-color: transparent;
-        width: 95%;
+        width: 100%;
+        height:40px ;
         align-self: center;
+        border-radius: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+        border: 1px solid transparent; 
+
+        &:focus-within {
+            border: 1px solid #ffe730;
+        }
+
     }
 }
 
@@ -93,23 +98,25 @@ body {
     display: flex;
     justify-content: space-between;
     height: fit-content;
-
-    & h2 {
-        margin-bottom: 3%;
-    }
-
-    & button {
-        margin-bottom: 3%;
-    }
+    margin-bottom: 5px;
 }
 
 .iptcaixa {
     border: none;
-    background-color: #f1f1f1;
+    background-color: #ffffff;
     height: 100%;
     width: 100%;
     resize: none;
     font-size: 16px;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid transparent; 
+}
+
+.iptcaixa:focus {
+    border: 1px solid #ffe730;
+    outline: none; /* opcional: remove contorno azul padrão */
 }
 
 .enviar {
@@ -122,10 +129,54 @@ body {
 button {
     border: none;
     background-color: #fbe969;
-    padding-left: 3%;
-    padding-right: 3%;
+    padding: 0 7% ;
+    box-sizing: border-box;
     width: fit-content;
-    height: 70%;
-    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    font-size: 18px;
     border-radius: 5px;
+    font-weight: 600;
+
+    &:hover{
+    background-color: #ffe730;
+
+    }
+}
+
+.file-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.file-label {
+    background-color: #fbe969;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+}
+
+.file-label:hover {
+    background-color: #ffe730;
+}
+
+#fileInput {
+    display: none;
+}
+
+#fileName {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #333;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

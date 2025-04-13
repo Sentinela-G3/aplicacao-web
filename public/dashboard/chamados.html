@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="../css/chamados.css">
     <script src="../scripts/redirecionamentoMenu.js"></script>
     <script src="../scripts/animacaoMenuMobile.js"></script>
+
+    
 </head>
 
 <body>
@@ -78,9 +80,13 @@
             <div class="descricao">
                 <div class="linha">
                     <h2>Descrição</h2>
-                    <button onclick="anexar_imagem()">Anexar Imagem <img src="" alt=""></button>
+                    <div class="file-container">
+                        <span id="fileName">Nenhum arquivo selecionado</span>
+                        <label for="fileInput" class="file-label">Anexar Imagem</label>
+                        <input type="file" id="fileInput" accept="image/*">
+                    </div>
                 </div>
-                <textarea id="ipt_descricao" class="iptcaixa"></textarea>
+                <textarea id="ipt_descricao" class="iptcaixa" placeholder="Descreva aqui..."></textarea>
             </div>
             <div class="enviar">
                 <button onclick="enviar()">Enviar</button>
@@ -90,3 +96,16 @@
 </body>
 
 </html>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length > 0) {
+        fileName.textContent = fileInput.files[0].name;
+      } else {
+        fileName.textContent = "Nenhum arquivo selecionado";
+      }
+    });
+  </script>
