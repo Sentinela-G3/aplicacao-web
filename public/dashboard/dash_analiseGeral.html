@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/table.css">
-        <link rel="stylesheet" href="../css/navbar.css">
-        <link rel="stylesheet" href="../css/dashboardAG.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        <title>Dashboard | Análise Geral</title>
-        <script src="../scripts/redirecionamentoMenu.js"></script>
 
-    </head>
-    <body class="body_dashRealTime" id="dash_RT">
-      <!-- NAV-BAR START-->
-      <div class="container_navDashRT">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/table.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/dashboardAG.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Dashboard | Análise Geral</title>
+    <script src="../scripts/redirecionamentoMenu.js"></script>
+
+</head>
+
+<body class="body_dashRealTime" id="dash_RT">
+    <!-- NAV-BAR START-->
+    <div class="container_navDashRT">
         <div class="perfil">
             <div class="logo">
                 <img src="../assets/img/svgLogo.svg">
@@ -34,7 +38,7 @@
         <div class="btn_nav">
             <div class="btn_dash">
                 <li>
-                    <button onclick="btn_rt()" >Análise em tempo real</button>
+                    <button onclick="btn_rt()">Análise em tempo real</button>
                 </li>
                 <li>
                     <button onclick="btn_hist()">
@@ -67,22 +71,22 @@
             </div>
         </div>
     </div>
-        <!-- NAV-BAR END -->
-        <!-- SEÇÂO START> -->
-        <div class="sub-section1">
-            <h1>Visão geral</h1>
-            <div id="list-filter" class="list">
-                <!-- <div id="select_modelo" class="select_main"> -->
-                    <!-- <select name="" id="">
+    <!-- NAV-BAR END -->
+    <!-- SEÇÂO START> -->
+    <div class="sub-section1">
+        <h1>Visão geral</h1>
+        <div id="list-filter" class="list">
+            <!-- <div id="select_modelo" class="select_main"> -->
+            <!-- <select name="" id="">
                         <option selected disabled value="">Selecione o Modelo</option>
                         <option value="">Modelo 1</option>
                         <option value="">Modelo 2</option>
                         <option value="">Modelo 3</option>
                         <option value="">Modelo 4</option>
                     </select> -->
-                <!-- </div> -->
-                <!-- <div id="select_periodo" class="select_main"> -->
-                    <!-- <select name="" id="">
+            <!-- </div> -->
+            <!-- <div id="select_periodo" class="select_main"> -->
+            <!-- <select name="" id="">
                         <option selected disabled value="">Selecione o Período</option>
                         <option value="">3 dias</option>
                         <option value="">7 dias</option>
@@ -91,36 +95,29 @@
                         <option value="">Outro</option>
                     </select>
                 </div> -->
-                <!-- <div id="input_data" class="select_main"> -->
-                    <!-- <input type="date"> -->
-                <!-- </div> -->
-                <!-- <div id="confirm_button">
+            <!-- <div id="input_data" class="select_main"> -->
+            <!-- <input type="date"> -->
+            <!-- </div> -->
+            <!-- <div id="confirm_button">
                     <span>PESQUISAR</span>
                 </div> -->
-            </div>
+        </div>
 
 
-            <table id="modelos-id">
-                <tr>
-                    <th>Modelos Ativos</th>
-                    <th>CPU</th>
-                    <th>Disco</th>
-                    <th>Capacidade do Disco</th>
-                    <th>Quantidade de Alertas na Semana</th>
-                    <th>alertas</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>
-                        <button>mlem</button>
-                    </td>
-                </tr>
-            </table>
-<!-- 
+        <table id="modelos-id">
+            <tr>
+                <th>Modelo</th>
+                <th>CPU</th>
+                <th>RAM (GB)</th>
+                <th>Disco</th>
+                <th>Capacidade do Disco (GB)</th>
+                <th>Tempo de Uso (dias)</th>
+            </tr>
+            <tbody id="corpo-tabela-modelos">
+                <!-- As linhas da tabela serão preenchidas aqui -->
+            </tbody>
+        </table>
+        <!-- 
                 <div class="card-generic">
                     <span class="component-name">Memória</span>
                     <div class="data-box">
@@ -144,7 +141,7 @@
                 </div> -->
 
 
-                <!-- <div class="card-generic">
+        <!-- <div class="card-generic">
                     <span class="component-name">Armazenamento</span>
                     <div class="data-box">
                         <div class="sub-data-box">
@@ -161,7 +158,7 @@
                 </div> -->
 
 
-                <!-- <div class="card-generic">
+        <!-- <div class="card-generic">
                     <span class="component-name">Rede</span>
                     <div class="data-box">
                         <div class="sub-data-box">
@@ -183,69 +180,171 @@
                     </div>
                 </div> -->
 
-            <div class="list">
-                <div id="select_modelo" class="select_main"> 
-                    <select name="" id="">
-                        <option selected disabled value="">Selecione o Modelo</option>
-                        <option value="">Modelo 1</option>
-                        <option value="">Modelo 2</option>
-                        <option value="">Modelo 3</option>
-                        <option value="">Modelo 4</option>
-                    </select> 
-                </div>
+        <div class="list">
+            <div id="select_modelo" class="select_main">
+                <select name="" id="">
+                    <option selected disabled value="">Selecione o Modelo</option>
+                    <option value="">Modelo 1</option>
+                    <option value="">Modelo 2</option>
+                    <option value="">Modelo 3</option>
+                    <option value="">Modelo 4</option>
+                </select>
             </div>
+        </div>
 
 
+        <div class="containerBaixo">
+            <table id="modelos-id" class="tabela-maquinas">
+                <tr>
+                    <th>ID</th>
+                    <th>Tempo de Uso</th>
+                    <th>Setor</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </table>
             <div id="list-table" class="list">
-                <table id="modelos-id" class="tabela-maquinas">
-                    <tr>
-                        <th>ID</th>
-                        <th>Tempo de Uso</th>
-                        <th>Setor</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                </table>
                 <div id="alertas-container">
                     <div class="alertas-box">
-                        Alertas da Semana
+                        <h5>Alertas da Semana</h5>
+                        <h2>X</h2>
                     </div>
                     <div class="alertas-box">
-                        Alertas em Aberto
+                        <h5>Alertas em Aberto</h5>
+                        <h2>X</h2>
                     </div>
                 </div>
-                <div>
+                <div class="grafico-box">
                     seila grafico
                 </div>
             </div>
         </div>
-        <!-- SEÇÂO END -->
-    </body>
+    </div>
+    <!-- SEÇÂO END -->
+</body>
+
 </html>
 <script>
 
-function obterInfoCPU() {
-    var idUsuario = sessionStorage.idUsuario;
+    window.onload = listarModelosDetalhados()
 
-    fetch(`/medidas/personagemFavorito/${idUsuario}`)
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Erro ao obter personagem favorito.");
-        }
-        return response.json();
-      })
-      .then(function (data) {
-        // Aqui você pode manipular a resposta, que contém o nome do personagem
-        console.log("Personagem favorito: ", data.nome);
-        // Exibir o nome do personagem favorito na tela
-        document.getElementById('persoFav').innerText = `${data.nome}`;
-      })
-      .catch(function (error) {
-        console.error("Erro ao obter o personagem favorito:", error);
-      });
-  }
-    
+    function listarModelosDetalhados() {
+        console.log("fkEmpresaServer enviado:", { fkEmpresaServer: 1 });
+        fetch("/maquinas/listarModelosDetalhados", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fkEmpresaServer: 1 }) 
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Falha na requisição. Status: " + res.status);
+            }
+            return res.json(); 
+        })
+        .then(data => {
+            const tbody = document.getElementById("corpo-tabela-modelos");
+            tbody.innerHTML = ""; 
+            if (Array.isArray(data)) {
+                data.forEach(maquina => {
+                    const tr = document.createElement("tr");
+                
+                    tr.innerHTML = `
+                        <td>${maquina.modelo}</td>
+                        <td>${maquina.cpu}</td>
+                        <td>${maquina.ram_gb}</td>
+                        <td>${maquina.disco}</td>
+                        <td>${maquina.capacidade_disco_gb}</td>
+                        <td>${maquina.dias_uso}</td>
+                    `;
+
+                    tbody.appendChild(tr); 
+                });
+            } else {
+                console.error("Dados recebidos não são um array.");
+            }
+        })
+        .catch(err => {
+            console.error("Erro ao buscar modelos detalhados:", err);
+        });
+    }
+
+    function obterInfosMaquina() {
+        var idUsuario = sessionStorage.idUsuario;
+
+        fetch(`/medidas/personagemFavorito/${idUsuario}`)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Erro ao obter personagem favorito.");
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                console.log("Personagem favorito: ", data.nome);
+                document.getElementById('persoFav').innerText = `${data.nome}`;
+            })
+            .catch(function (error) {
+                console.error("Erro ao obter o personagem favorito:", error);
+            });
+    }
+
+    function obterAlertasSemana() {
+        var idUsuario = sessionStorage.idUsuario;
+
+        fetch(`/medidas/personagemFavorito/${idUsuario}`)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Erro ao obter personagem favorito.");
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                console.log("Personagem favorito: ", data.nome);
+                document.getElementById('persoFav').innerText = `${data.nome}`;
+            })
+            .catch(function (error) {
+                console.error("Erro ao obter o personagem favorito:", error);
+            });
+    }
+
+    function obterAlertasAberto() {
+        var idUsuario = sessionStorage.idUsuario;
+
+        fetch(`/medidas/personagemFavorito/${idUsuario}`)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Erro ao obter personagem favorito.");
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                console.log("Personagem favorito: ", data.nome);
+                document.getElementById('persoFav').innerText = `${data.nome}`;
+            })
+            .catch(function (error) {
+                console.error("Erro ao obter o personagem favorito:", error);
+            });
+    }
+
+    function obterDadosGrafico() {
+        var idUsuario = sessionStorage.idUsuario;
+
+        fetch(`/medidas/personagemFavorito/${idUsuario}`)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Erro ao obter personagem favorito.");
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                console.log("Personagem favorito: ", data.nome);
+                document.getElementById('persoFav').innerText = `${data.nome}`;
+            })
+            .catch(function (error) {
+                console.error("Erro ao obter o personagem favorito:", error);
+            });
+    }
+
 </script>

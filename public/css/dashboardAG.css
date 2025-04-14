@@ -32,12 +32,10 @@ body {
     align-items: end;
   }
   #list-table {
-    flex-direction: column;
-    min-width: 50%;
-    width: 60%;
-    gap: 5vh;
+    flex-direction: row;
+    width: 80%;
     margin-bottom: 50px;
-
+    align-items: center;
   }
   #list-cards {
     display: grid;
@@ -226,4 +224,42 @@ table{
   border: 1.5px solid #C2C2C2;
 }
 
+.containerBaixo{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: start;
+}
 
+.alertas-container{
+  display: flex;
+}
+
+.alertas-box{
+  height: 150px;
+  width: 150px;
+  border: solid #C2C2C2;
+  margin: 5px;
+  align-items: center;
+}
+
+.alertas-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  font-size: 15px;
+}
+
+.grafico-box{
+  height: 308px;
+  width: 300px;
+  border: solid #C2C2C2;
+  align-items: center;
+}
+
+#list-table{
+  gap: 10px;
+}

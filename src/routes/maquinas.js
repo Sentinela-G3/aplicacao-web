@@ -23,4 +23,8 @@ router.post("/excluir", function(req, res){
     maquinaController.excluir(req, res)
 })
 
+router.post("/listarModelosDetalhados", function (req, res) {
+    maquinaController.listarModelosDetalhados(req, res);
+  });
+
 module.exports = router;

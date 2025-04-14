@@ -12,6 +12,36 @@ function obterFkModelo(fkEmpresa){
   return database.executar(instrucaoSql);
 }
 
+function listarModelosDetalhados(fkEmpresa) {
+  var instrucaoSql = `
+SELECT 
+  m.modelo,
+  
+  (SELECT modeloComponente FROM componente 
+   WHERE fkMaquina = m.idmaquina AND tipo = 'CPU' LIMIT 1) AS cpu,
+
+  (SELECT valor FROM componente 
+   WHERE fkMaquina = m.idmaquina AND tipo = 'RAM' LIMIT 1) AS ram_gb,
+
+  (SELECT modeloComponente FROM componente 
+   WHERE fkMaquina = m.idmaquina AND tipo = 'DISCO' LIMIT 1) AS disco,
+
+  (SELECT valor FROM componente 
+   WHERE fkMaquina = m.idmaquina AND tipo = 'DISCO' LIMIT 1) AS capacidade_disco_gb,
+
+  (SELECT TIMESTAMPDIFF(DAY, MIN(h.dataCaptura), NOW())
+   FROM componente c
+   JOIN historico h ON h.fkComponente = c.idcomponente
+   WHERE c.fkMaquina = m.idmaquina) AS dias_uso
+
+FROM maquina m
+WHERE m.fkEmpresa = 1 AND m.status = 1;
+  `;
+
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 function obterMaquinas(fkEmpresa){
   var instrucaoSql = `SELECT maquina.* from maquina join modelo on fkModelo = idModelo join empresa on fkEmpresa = idEmpresa where fkEmpresa = ${fkEmpresa} and maquina.status = 'ativo';`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -38,5 +68,6 @@ module.exports =
   obterFkModelo,
   obterMaquinas,
   excluir,
-  editar
+  editar,
+  listarModelosDetalhados
 }
