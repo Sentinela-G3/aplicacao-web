@@ -89,6 +89,11 @@
     cursor: pointer;
     transition: background-color 0.3s;
   }
+
+  a, #troca-tela{
+    text-decoration: none;
+    color: #000;
+  }
   button:hover {
     background-color: #dcd076;
   }

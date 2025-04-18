@@ -1,39 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./css/login.css">
-  <title>Login Sentinela</title>
-</head>
-
-<body>
-
-  <div class="container_section1">
-    <div class="logo big_logo">
-      <img src="./assets/img/Icon Container.svg">
-      <h1>Login</h1>
-    </div>
-    <div class="formulario">
-      <div>
-        <label class="">Email:</label>
-        <div class="nome">
-          <input type="text" class="" id="input_email" placeholder="fulano@sentinela.com">
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Sentinela</title>
+    <link rel="stylesheet" href="./css/cadastro.css" />
+  </head>
+  <body>
+    <div class="container_section1">
+      <div class="logo big_logo">
+        <img src="./assets/img/Icon Container.svg" />
+        <h1>Login</h1>
+      </div>
+      <form class="formulario active">
+        <label>Email:</label>
+        <input
+          type="text"
+          id="input_email"
+          placeholder="fulano@sentinela.com"
+        />
+        <label>Senha:</label>
+        <input
+          type="password"
+          id="input_senha"
+          placeholder="********"
+        />
+        <div class="div_button">
+          <button type="button" onclick="login()">Logar</button>
         </div>
-      </div>
-      <div>
-        <label class="">Senha:</label>
-        <input type="password" class="" id="input_senha" placeholder="********">
+      </form>
+      <div class="div_button">
+        <a href="./cadastro.html" class="troca-tela">Cadastrar-se</a>
+        <a href="./index.html" class="troca-tela">Voltar para tela inicial</a>
       </div>
     </div>
-    <div class="div_button">
-      <button class="btn-login" onclick="login()">Logar</button>
-      <a href="./cadastro.html" class="troca-tela">Cadastrar-se</a>
-      <a href="./index.html" class="troca-tela">Voltar para tela inicial</a>
-    </div>
-  </div>
-</body>
+  </body>
+</html>
 
 </html>
 
