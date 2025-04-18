@@ -42,7 +42,7 @@ function validarCnpj(req, res) {
 function validarEmail(req, res) {
   var email = req.body.emailServer;
 
-  console.log("Validando CNPJ:", email);
+  console.log("Validando Email:", email);
 
   empresaModel
     .validarEmail(email)
