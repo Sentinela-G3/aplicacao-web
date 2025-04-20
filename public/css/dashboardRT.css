@@ -110,7 +110,7 @@ body{
 .box_table {
     height: 25%;
     display: flex;
-    align-items: center;
+
 }
 
 /* GRAFICOS */
@@ -140,4 +140,11 @@ body{
     padding-left: 15px;
     display: flex;
     align-items: center;
+}
+
+.table_body td {
+    text-align: center;
+    padding-top: 12px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid black;
 }

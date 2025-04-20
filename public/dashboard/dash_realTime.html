@@ -85,279 +85,143 @@
                     </select>
                 </div>
             </div>
+        
             <div class="container2">
                 <div class="box_kpi">
                     <div class="kpi_maqRT">
                         <div class="kpi_maqRT2">
-                            <span>
-                                <b>Máquina(s) ativa(s)</b>
-                            </span>
+                            <span><b>Máquina(s) ativa(s)</b></span>
                             <span>2</span>
                         </div>
                     </div>
                     <div class="kpi_maqRT">
                         <div class="kpi_maqRT2">
-                            <span>
-                                <b>Máquina(s) inativa(s)</b>
-                            </span>
+                            <span><b>Máquina(s) inativa(s)</b></span>
                             <span>2</span>
                         </div>
                     </div>
                     <div class="kpi_maqRT">
                         <div class="kpi_maqRT2">
-                            <span>
-                                <b>Total de Alertas</b>
-                            </span>
+                            <span><b>Total de Alertas</b></span>
                             <span>23</span>
                         </div>
                     </div>
                 </div>
+        
                 <div class="box_table">
                     <table class="table">
                         <thead class="table_head">
-                            <td class="table_title" id="table_title1_rt">Máquinas ↓</td>
-                            <td class="table_title" id="table_title_rt">Status</td>
-                            <td class="table_title" id="table_title_rt">Tempo Ativo (horas)</td>
-                            <td class="table_title" id="table_title_rt">Alertas</td>
-                            <td class="table_title" id="table_title_rt">Ultimo alerta</td>
-                            <td class="table_title" id="table_title_rt">Detalhamento</td>
+                            <tr>
+                                <th>Máquina</th>
+                                <th>Status</th>
+                                <th>Tempo Ativo (h)</th>
+                                <th>Alertas</th>
+                                <th>Último Alerta</th>
+                                <th>RAM (%)</th>
+                                <th>CPU (%)</th>
+                                <th>Disco (%)</th>
+                                <th>Detalhamento</th>
+                            </tr>
                         </thead>
                         <tbody class="table_body">
-                            <td class="table_data" id="table_data1_rt">ID 1 (SERIALNUMBER)</td>
-                            <td class="table_data" id="table_data_rt" style="color: green;">Ativo</td>
-                            <td class="table_data" id="table_data_rt">4:37</td>
-                            <td class="table_data" id="table_data_rt">2</td>
-                            <td class="table_data" id="table_data_rt">13:35</td>
-                            <td class="table_data" id="table_data_rt">
-                                <button>Expandir Análise</button>
-                            </td>
+                            <tr>
+                                <td>ID 1 (SERIALNUMBER)</td>
+                                <td style="color: green;">Ativo</td>
+                                <td>4:37</td>
+                                <td>2</td>
+                                <td>13:35</td>
+                                <td>68</td>
+                                <td>45</td>
+                                <td>52</td>
+                                <td><button>Expandir Análise</button></td>
+                            </tr>
+                            <tr>
+                                <td>ID 2 (SERIALNUMBER)</td>
+                                <td style="color: green;">Ativo</td>
+                                <td>7:10</td>
+                                <td>4</td>
+                                <td>10:30</td>
+                                <td>74</td>
+                                <td>60</td>
+                                <td>47</td>
+                                <td><button>Expandir Análise</button></td>
+                            </tr>
+                            <tr>
+                                <td>ID 3 (SERIALNUMBER)</td>
+                                <td style="color: red;">Inativo</td>
+                                <td>2:51</td>
+                                <td>0</td>
+                                <td>11:55</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><button>Expandir Análise</button></td>
+                            </tr>
+                            <tr>
+                                <td>ID 4 (SERIALNUMBER)</td>
+                                <td style="color: green;">Ativo</td>
+                                <td>5:22</td>
+                                <td>1</td>
+                                <td>12:10</td>
+                                <td>55</td>
+                                <td>35</td>
+                                <td>41</td>
+                                <td><button>Expandir Análise</button></td>
+                            </tr>
+                            <tr>
+                                <td>ID 5 (SERIALNUMBER)</td>
+                                <td style="color: green;">Ativo</td>
+                                <td>9:03</td>
+                                <td>6</td>
+                                <td>14:45</td>
+                                <td>82</td>
+                                <td>79</td>
+                                <td>88</td>
+                                <td><button>Expandir Análise</button></td>
+                            </tr>
+                            <tr>
+                                <td>ID 6 (SERIALNUMBER)</td>
+                                <td style="color: red;">Inativo</td>
+                                <td>1:15</td>
+                                <td>0</td>
+                                <td>09:50</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><button>Expandir Análise</button></td>
+                            </tr>
+                            <tr>
+                                <td>ID 7 (SERIALNUMBER)</td>
+                                <td style="color: green;">Ativo</td>
+                                <td>6:48</td>
+                                <td>3</td>
+                                <td>15:05</td>
+                                <td>61</td>
+                                <td>52</td>
+                                <td>70</td>
+                                <td><button>Expandir Análise</button></td>
+                            </tr>
+                            <tr>
+                                <td>ID 8 (SERIALNUMBER)</td>
+                                <td style="color: green;">Ativo</td>
+                                <td>3:29</td>
+                                <td>1</td>
+                                <td>13:05</td>
+                                <td>48</td>
+                                <td>28</td>
+                                <td>37</td>
+                                <td><button>Expandir Análise</button></td>
+                            </tr>
                         </tbody>
-                        <tbody class="table_body">
-                            <td class="table_data" id="table_data1_rt">ID 2 (SERIALNUMBER)</td>
-                            <td class="table_data" id="table_data_rt" style="color: green;">Ativo</td>
-                            <td class="table_data" id="table_data_rt">7:10</td>
-                            <td class="table_data" id="table_data_rt">4</td>
-                            <td class="table_data" id="table_data_rt">10:30</td>
-                            <td class="table_data" id="table_data_rt">
-                                <button>Expandir Análise</button>
-                            </td>
-                        </tbody>
-                        <tbody class="table_body">
-                            <td class="table_data" id="table_data1_rt">ID 3 (SERIALNUMBER)</td>
-                            <td class="table_data" id="table_data_rt" style="color: red;">Inativo</td>
-                            <td class="table_data" id="table_data_rt">2:51</td>
-                            <td class="table_data" id="table_data_rt">0</td>
-                            <td class="table_data" id="table_data_rt">11:55</td>
-                            <td class="table_data" id="table_data_rt">
-                                <button>Expandir Análise</button>
-                            </td>
-                        </tbody>
+                        
                     </table>
-                </div>
-                <div class="box_kpi2">
-                    <div class="container_kpi">
-                        <div class="kpi_maqRT">
-                            <span>
-                                <b>Velocidade de Download</b>
-                            </span>
-                            <span>320 mbps</span>
-                        </div>
-                        <div class="kpi_maqRT">
-                            <span>
-                                <b>Velocidade de Upload</b>
-                            </span>
-                            <span>150 mbps</span>
-                        </div>
-                    </div>
-                    <div class="container_kpi">
-                        <div class="kpi_maqRT">
-                            <span>
-                                <b>Bateria Conectada</b>
-                            </span>
-                            <div class="kpi_text">
-                                <span>Inativo</span>
-                            </div>
-                        </div>
-                        <div class="kpi_maqRT">
-                            <span>
-                                <b>Tempo de bateria restante</b>
-                            </span>
-                            <div class="kpi_text">
-                                <span>Estimados 15 minutos</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container_grafico">
-                    <div class="box_graficoRT">
-                        <div class="titulo_grafico">
-                            <span>
-                                <b>Bateria</b>
-                            </span>
-                        </div>
-                        <div id="chart1" class="chart-js"></div>
-                    </div>
-                    <div class="box_graficoRT">
-                        <div class="titulo_grafico">
-                            <span>
-                                <b>Processador</b>
-                            </span>
-                        </div>
-                        <div id="chart2" class="chart-js"></div>
-                    </div>
-                    <div class="box_graficoRT">
-                        <div class="titulo_grafico">
-                            <span>
-                                <b>Memória (RAM)</b>
-                            </span>
-                        </div>
-                        <div id="chart3" class="chart-js"></div>
-                    </div>
-                    <div class="box_graficoRT">
-                        <div class="titulo_grafico">
-                            <span>
-                                <b>Disco Rígido</b>
-                            </span>
-                        </div>
-                        <div id="chart4" class="chart-js"></div>
-                    </div>
                 </div>
             </div>
         </div>
+        
+        
     </body>
 </html>
-<script>
-    // Gráficos
-    // Bateria
-    var options = {
-        series: [70, 30],
-        colors: ['#66ff00', '#b1b1b141'],
-        chart: {
-            type: 'donut',
-        },
-        labels: ['Bateria restante', 'Total'],
-        legend: {
-            position: 'top',
-            horizontalAlign: 'start',
-            fontSize: '14px',
-            markers: {
-                width: 12,
-                height: 12
-            }
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 200
-                },
-                legend: {
-                    position: 'top'
-                }
-            }
-        }]
-    };
-
-    var chart = new ApexCharts(document.querySelector("#chart1"), options);
-    chart.render();
-
-    // Processador
-    var options = {
-        series: [55, 45],
-        colors: ['#ffe100', '#b1b1b141'],
-        chart: {
-            type: 'donut',
-        },
-        labels: ['Uso do processador', 'Total'],
-        legend: {
-            position: 'top',
-            horizontalAlign: 'start',
-            fontSize: '14px',
-            markers: {
-                width: 12,
-                height: 12
-            }
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 200
-                },
-                legend: {
-                    position: 'top'
-                }
-            }
-        }]
-    };
-
-    var chart = new ApexCharts(document.querySelector("#chart2"), options);
-    chart.render();
-
-
-    // Memoria RAM
-    var options = {
-        series: [23, 77],
-        colors: ['#ffe100', '#b1b1b141'],
-        chart: {
-            type: 'donut',
-        },
-        labels: ['Uso de RAM', 'Total'],
-        legend: {
-            position: 'top',
-            horizontalAlign: 'start',
-            fontSize: '14px',
-            markers: {
-                width: 12,
-                height: 12
-            }
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 200
-                },
-                legend: {
-                    position: 'top'
-                }
-            }
-        }]
-    };
-
-    var chart = new ApexCharts(document.querySelector("#chart3"), options);
-    chart.render();
-
-    // Disco Rígido
-    var options = {
-        series: [68, 32],
-        colors: ['#ffe100', '#b1b1b141'],
-        chart: {
-            type: 'donut',
-        },
-        labels: ['Disco usado', 'Disco livre'],
-        legend: {
-            position: 'top',
-            horizontalAlign: 'start',
-            fontSize: '14px',
-            markers: {
-                width: 12,
-                height: 12
-            }
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 200
-                },
-                legend: {
-                    position: 'top'
-                }
-            }
-        }]
-    };
-
-    var chart = new ApexCharts(document.querySelector("#chart4"), options);
-    chart.render();
+<script src="../scripts/dash_realTime/dash_realTime.js">
+   
 </script>
