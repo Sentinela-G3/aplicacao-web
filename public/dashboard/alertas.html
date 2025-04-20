@@ -80,22 +80,22 @@
             <div class="filtros-grupo">
                 <button class="filtro-btn filtro-ativo">Status</button>
                 <select name="select-status" id="select-status" class="filtro-btn filtro-inativo">
-                    <option value="">Todos</option>
-                    <option value="">Resolvido</option>
-                    <option value="">Em andamento</option>
-                    <option value="">Aberto</option>
+                    <option value="Todos">Todos</option>
+                    <option value="Resolvido">Resolvido</option>
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Aberto">Aberto</option>
                 </select>
             </div>
 
             <div class="filtros-grupo2">
                 <button class="filtro-btn filtro-titulo">Período</button>
                 <button class="filtro-btn filtro-data">de</button>
-                <input type="date" class="filtro-btn filtro-inativo"></input>
+                <input type="date" class="filtro-btn filtro-inativo" id="periodoInicio"></input>
                 <button class="filtro-btn filtro-data">até</button>
-                <input type="date" class="filtro-btn filtro-inativo"></input>
+                <input type="date" class="filtro-btn filtro-inativo" id="periodoFim"></input>
             </div>
 
-            <button class="btn_aplicar"> Aplicar</button>
+            <button class="btn_aplicar" id="btn_aplicar" onclick="filtrarAlertas()"> Aplicar</button>
 
             <div class="busca">
                 <div class="busca-input">
@@ -113,7 +113,7 @@
 
 
         <div class="tabela-container">
-            <table>
+            <table id="lista-alertas">
                 <thead>
                     <tr>
                         <th>Chave</th>

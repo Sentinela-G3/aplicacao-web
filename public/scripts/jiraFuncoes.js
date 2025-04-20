@@ -45,17 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const textHoraAbertura = `${day}/${month}/${year} às ${hours}:${minutes}`
 
         div.innerHTML += `<tr>
-                            <td>${ticket.issueKey}</td>
-                            <td>${ticket.summary}</td>
-                            <td>ROBO 0120</td>
-                            <td> ${textHoraAbertura}</td>
-                            <td><span class="status-badge status-resolvido">${ticket.currentStatus.status}</span></td>
+                            <td class="alerta-chave">${ticket.issueKey}</td>
+                            <td class="alerta-desc">${ticket.summary}</td>
+                            <td class="alerta-dispositivo">ROBO 0120</td>
+                            <td class="alerta-horario"> ${textHoraAbertura}</td>
+                            <td><span class="alerta-status status-resolvido">${ticket.currentStatus.status}</span></td>
                           </tr>`;
-
-       
       });
     }
-  
+
     // Função para criar um novo ticket
     async function createTicket(event) {
         event.preventDefault();
@@ -102,3 +100,43 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchTickets();
   });
   
+
+//Função para filtar alertas de acordo com status e periodo
+function filtrarAlertas() {
+const statusSelecionado = document.getElementById('select-status').value.toLowerCase();
+const dataInicioInput = document.getElementById('periodoInicio').value;
+const dataFimInput = document.getElementById('periodoFim').value;
+
+const dataInicio = dataInicioInput ? new Date(`${dataInicioInput}T00:00:00`) : null;
+const dataFim = dataFimInput ? new Date(`${dataFimInput}T23:59:59`) : null;
+
+const linhas = document.querySelectorAll('#lista-alertas tbody tr');
+
+linhas.forEach(linha => {
+  const status = linha.querySelector('.alerta-status').textContent.toLowerCase();
+  const dataTexto = linha.querySelector('.alerta-horario').textContent; 
+
+  const [dataParte, horaParte] = dataTexto.split(' às ');
+  const [dia, mes, ano] = dataParte.split('/');
+  const [hora, minuto] = horaParte.split(':');
+
+  const dataChamado = new Date(ano, mes - 1, dia, hora, minuto); 
+
+  let exibir = true;
+
+  if (statusSelecionado !== 'todos' && status !== statusSelecionado) {
+    exibir = false;
+  }
+
+  if (dataInicio && dataChamado < dataInicio) {
+    exibir = false;
+  }
+
+  if (dataFim && dataChamado > dataFim) {
+    exibir = false;
+  }
+
+  linha.style.display = exibir ? '' : 'none';
+});
+}
+    

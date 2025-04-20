@@ -186,7 +186,7 @@ td {
     border-bottom: 1px solid #eee;
 }
 
-.status-badge {
+.alerta-status {
     padding: 6px 12px;
     border-radius: 20px;
     display: inline-block;
