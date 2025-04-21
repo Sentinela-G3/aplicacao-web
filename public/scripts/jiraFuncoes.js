@@ -44,14 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const textHoraAbertura = `${day}/${month}/${year} às ${hours}:${minutes}`
 
-        div.innerHTML += `<tr>
-                            <td class="alerta-chave">${ticket.issueKey}</td>
-                            <td class="alerta-desc">${ticket.summary}</td>
-                            <td class="alerta-dispositivo">ROBO 0120</td>
-                            <td class="alerta-horario"> ${textHoraAbertura}</td>
-                            <td><span class="alerta-status status-resolvido">${ticket.currentStatus.status}</span></td>
-                          </tr>`;
+        if( ticket.requestTypeId == "68"){
+          div.innerHTML += `<tr>
+                              <td class="alerta-chave">${ticket.issueKey}</td>
+                              <td class="alerta-desc">${ticket.summary}</td>
+                              <td class="alerta-dispositivo">ROBO 0120</td>
+                              <td class="alerta-horario"> ${textHoraAbertura}</td>
+                              <td><span class="alerta-status status-resolvido">${ticket.currentStatus.status}</span></td>
+                            </tr>`;
+        }
       });
+
     }
 
     // Função para criar um novo ticket
@@ -140,3 +143,18 @@ linhas.forEach(linha => {
 });
 }
     
+function pesquisarChaveOuId() {
+  const termo = document.getElementById('inputBusca').value.toLowerCase();
+  const linhas = document.querySelectorAll('#lista-alertas tbody tr');
+
+  linhas.forEach(linha => {
+    const chave = linha.querySelector('.alerta-chave').textContent.toLowerCase();
+    const idDispositivo = linha.querySelector('.alerta-dispositivo').textContent.toLowerCase();
+
+    if (chave.includes(termo) || idDispositivo.includes(termo)) {
+      linha.style.display = '';
+    } else {
+      linha.style.display = 'none';
+    }
+  });
+}
