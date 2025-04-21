@@ -2,7 +2,7 @@ var database = require("../database/config")
 
 function autenticar(email, senha) {
     var instrucaoSql = `
-         SELECT id_usuario, colaborador.nome as nome, email, tipo, id_empresa, empresa.status FROM colaborador join empresa on id_empresa = fk_colaborador_empresa WHERE email = '${email}' AND senha = SHA2('${senha}', 256);
+         SELECT idUsuario, colaborador.nome as nome, email, tipoUsuario, idEmpresa, empresa.status FROM colaborador join empresa on idEmpresa = colaborador.fkEmpresa WHERE email = '${email}' AND senha = SHA2('${senha}', 256);
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -21,7 +21,7 @@ function cadastrar(nome, email, telefone, senha, fkEmpresa, tipoUsuario) {
 
 function listarPorEmpresa(fkEmpresa) {
     var instrucaoSql = `
-        SELECT id_usuario, nome, tipo, DATE_FORMAT(data_criacao, '%Y-%m-%d') AS dataCriacao
+        SELECT idUsuario, nome, tipo, DATE_FORMAT(data_criacao, '%Y-%m-%d') AS dataCriacao
         FROM usuario
         WHERE fkEmpresa = ${fkEmpresa};
     `;
@@ -34,7 +34,7 @@ function deletar(idFuncionario) {
     var instrucaoSql = `
        DELETE
         FROM usuario
-        WHERE id_usuario = ${idFuncionario};
+        WHERE idUsuario = ${idFuncionario};
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -54,7 +54,7 @@ function atualizar(idFuncionario, nome, email, telefone, tipoUsuario) {
 
 
 function buscarPorId(id) {
-    var instrucaoSql = `SELECT * FROM usuario where id_usuario = ${id}`;
+    var instrucaoSql = `SELECT * FROM usuario where idUsuario = ${id}`;
     return database.executar(instrucaoSql);
 }
 

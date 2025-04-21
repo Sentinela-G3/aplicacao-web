@@ -65,17 +65,20 @@ function obterMaquinas(req, res){
 }
 
 function listarModelosDetalhados(req, res) {
-  var fkEmpresa = req.body.fkEmpresaServer;
+    var fkEmpresa = req.body.fkEmpresaServer;
 
-  maquinaModel.listarModelosDetalhados(fkEmpresa)
-  .then((resultado) => {
-    console.log("Resultado obtido do model:", resultado); 
-  })
-  .catch((erro) => {
-    console.log("Houve um erro ao obter as maquinas! Erro: ", erro.sqlMessage);
-    res.status(500).json(erro.sqlMessage); 
-  });
-}
+    console.log("fkEmpresa recebida:", fkEmpresa);
+  
+    maquinaModel.listarModelosDetalhados(fkEmpresa)
+      .then((resultado) => {
+        console.log("Resultado obtido do model:", resultado); 
+        res.json(resultado);    
+      })
+      .catch((erro) => {
+        console.log("Houve um erro ao obter as maquinas! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage); 
+      });
+  }
 
 function editar(req, res){
     var setor = req.body.setorServer;

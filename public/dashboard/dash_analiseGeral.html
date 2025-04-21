@@ -198,7 +198,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Tempo de Uso</th>
-                    <th>Setor</th>
+                    <th>Modelo</th>
                 </tr>
                 <tr>
                     <td>1</td>
@@ -229,7 +229,8 @@
 </html>
 <script>
 
-    window.onload = listarModelosDetalhados()
+    window.onload = listarModelosDetalhados;
+
 
     function listarModelosDetalhados() {
         console.log("fkEmpresaServer enviado:", { fkEmpresaServer: 1 });
@@ -251,14 +252,14 @@
                 data.forEach(maquina => {
                     const tr = document.createElement("tr");
                 
-                    tr.innerHTML = `
-                        <td>${maquina.modelo}</td>
+                    tr.innerHTML = 
+                        `<td>${maquina.modelo}</td>
                         <td>${maquina.cpu}</td>
                         <td>${maquina.ram_gb}</td>
                         <td>${maquina.disco}</td>
                         <td>${maquina.capacidade_disco_gb}</td>
-                        <td>${maquina.dias_uso}</td>
-                    `;
+                        <td>${maquina.dias_uso}</td>`
+                    ;
 
                     tbody.appendChild(tr); 
                 });
