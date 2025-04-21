@@ -25,6 +25,10 @@ router.post("/excluir", function(req, res){
 
 router.post("/listarModelosDetalhados", function (req, res) {
     maquinaController.listarModelosDetalhados(req, res);
-  });
+});
+
+router.post("/quantidadeUltimaSemana", function (req, res) {
+    maquinaController.contarAlertasUltimaSemana(req, res);
+});
 
 module.exports = router;

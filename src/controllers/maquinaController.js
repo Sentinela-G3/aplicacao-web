@@ -128,5 +128,5 @@ module.exports = {
     obterMaquinas,
     editar,
     excluir,
-    listarModelosDetalhados 
+    listarModelosDetalhados
 }

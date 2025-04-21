@@ -60,9 +60,6 @@ function editar(setor, fkEndereco, idMaquina){
   return database.executar(instrucaoSql);
 }
 
-
-
-
 module.exports = 
 { cadastrar,
   obterFkModelo,
