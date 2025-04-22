@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/alertas.css">
+    <link rel="stylesheet" href="../css/myConta.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,62 +72,20 @@
     <!-- NAV-BAR END -->
     <!-- SEÇÂO START> -->
     <div class="conteudo">
-        <h1>Alertas</h1>
+        <h1>Minha Conta</h1>
 
-        <div class="filtros-label">Filtros</div>
-        <div class="filtros">
-
-            <div class="filtros-grupo">
-                <button class="filtro-btn filtro-ativo">Status</button>
-                <select name="select-status" id="select-status" class="filtro-btn filtro-inativo">
-                    <option value="Todos">Todos</option>
-                    <option value="Resolvido">Resolvido</option>
-                    <option value="Em andamento">Em andamento</option>
-                    <option value="Aberto">Aberto</option>
-                </select>
-            </div>
-
-            <div class="filtros-grupo2">
-                <button class="filtro-btn filtro-titulo">Período</button>
-                <button class="filtro-btn filtro-data">de</button>
-                <input type="date" class="filtro-btn filtro-inativo" id="periodoInicio"></input>
-                <button class="filtro-btn filtro-data">até</button>
-                <input type="date" class="filtro-btn filtro-inativo" id="periodoFim" style="padding: 5px; box-sizing: border-box;" input>
-            </div>
-
-            <button class="btn_aplicar" id="btn_aplicar" onclick="filtrarAlertas()"> Aplicar</button>
-
-            <div class="busca">
-                <div class="busca-input">
-                    <div class="icon_search" onclick="pesquisarChaveOuId()">
-                        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="22" y1="22" x2="17.65" y2="17.65"></line>
-                        </svg>
-                    </div>
-                    <input type="text" id="inputBusca" placeholder="Insira Chave ou ID do Dispositivo">
-                </div>
+        <div class="box_imagem">
+            <div id="imagem-noticia" onclick="document.getElementById('foto').click();">
+                <input type="file" id="foto" accept="image/png, image/jpg" onchange="ImagemNoInserir(event)">
             </div>
         </div>
 
-
-        <div class="tabela-container">
-            <table id="lista-alertas">
-                <thead>
-                    <tr>
-                        <th>Chave</th>
-                        <th>Descrição</th>
-                        <th>ID Dispositivo</th>
-                        <th>Hora de abertura</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="box-linhas">
-                    
-                </tbody>
-            </table>
+        <div class="box_informacoes" id="box_informacoes">
+            
         </div>
+
+
+        
     </div>
     <!-- SEÇÂO END -->
 
@@ -199,7 +157,78 @@
 
     </div>
 
-    <script src="../scripts/jiraFuncoes.js"></script>
 </body>
 
 </html>
+
+<script>
+    function ImagemNoInserir(event) {
+        const foto_noticia = document.getElementById('imagem-noticia');
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            foto_noticia.style.backgroundSize = 'cover';
+            foto_noticia.style.backgroundImage = `url(${e.target.result})`;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
+
+    function buscarInformacoesPorEmail() {
+        var email = sessionStorage.email;
+
+        fetch("/usuarios/buscarInformacoesPorEmail", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            emailServer: email
+        })
+        }).then(function (resposta) {
+
+        if (resposta.ok) {
+            console.log(resposta);
+            resposta.json().then(json => {
+                const dados = json.resultadoAutenticar[0];
+                console.log(dados)
+                const data = new Date(dados.data_criacao);
+
+                const dia = String(data.getDate()).padStart(2, '0');
+                const mes = String(data.getMonth() + 1).padStart(2, '0');
+                const ano = data.getFullYear();
+                const horas = String(data.getHours()).padStart(2, '0');
+                const minutos = String(data.getMinutes()).padStart(2, '0');
+
+                const dataFormatada = `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+                const div = document.getElementById('box_informacoes')
+                div.innerHTML =`<h1>${dados.nome}</h1>
+                                <span class="chave">Email</span>
+                                <span class="valor">${dados.email}</span>
+                                <span class="chave">Telefone</span>
+                                <span class="valor">${dados.telefone}</span>
+                                <span>Criado em ${dataFormatada}</span>`
+
+            });
+        } else if (resposta.status == 403) {
+            alert("Login ou senha inválidos, tente novamente.");
+            resposta.text().then(texto => {
+            console.error(texto);
+            });
+        } else {
+            alert("Erro ao realizar o login.")
+            resposta.text().then(texto => {
+            console.error(texto);
+            });
+        }
+
+        }).catch(function (erro) {
+        console.log(erro);
+        })
+    }
+    buscarInformacoesPorEmail()
+</script>

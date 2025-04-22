@@ -27,6 +27,7 @@ CREATE TABLE colaborador (
     email VARCHAR(250) NOT NULL,
     telefone CHAR(11) NOT NULL,
     senha CHAR(64) NOT NULL,
+    fotoPerfil VARCHAR(256) NOT NULL,
     tipo INT NOT NULL,
     data_criacao DATE,
     fk_colaborador_empresa INT NOT NULL,

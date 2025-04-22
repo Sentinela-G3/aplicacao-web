@@ -58,6 +58,14 @@ function buscarPorId(id) {
     return database.executar(instrucaoSql);
 }
 
+function buscarInformacoesPorEmail(email) {
+    var instrucaoSql = `
+         SELECT colaborador.nome as nome, email, telefone, fotoPerfil, data_criacao FROM colaborador WHERE email = '${email}';
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 
 
 
@@ -68,5 +76,6 @@ module.exports = {
     listarPorEmpresa,
     deletar,
     atualizar,
-    buscarPorId
+    buscarPorId,
+    buscarInformacoesPorEmail
 };

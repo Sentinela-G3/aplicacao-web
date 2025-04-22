@@ -27,4 +27,8 @@ router.put("/:idFuncionario", function (req, res) {
     usuarioController.atualizar(req, res)
 })
 
+router.post("/buscarInformacoesPorEmail", function (req, res) {
+    usuarioController.buscarInformacoesPorEmail(req, res);
+});
+
 module.exports = router;
