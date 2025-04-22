@@ -43,7 +43,7 @@ WHERE m.fkEmpresa = 1 AND m.status = 1;
 }
 
 function obterMaquinas(fkEmpresa){
-  var instrucaoSql = `SELECT maquina.* from maquina join modelo on fkModelo = idModelo join empresa on fkEmpresa = idEmpresa where fkEmpresa = ${fkEmpresa} and maquina.status = 'ativo';`;
+  var instrucaoSql = `SELECT maquina.* from maquina join empresa on fk_maquina_empresa = id_empresa where fk_maquina_empresa = ${fkEmpresa};`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }

@@ -15,6 +15,10 @@ router.post("/obterMaquinas", function (req, res){
     maquinaController.obterMaquinas(req, res)
 })
 
+router.get("/:idEmpresa", (req, res) => {
+    maquinaController.listarMaquinasPorEmpresa(req, res)
+})
+
 router.post("/editar", function(req, res){
     maquinaController.editar(req, res)
 })

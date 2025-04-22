@@ -17,10 +17,10 @@ var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
-var medidasRouter = require("./src/routes/medidas");
 var empresasRouter = require("./src/routes/empresas");
 var modeloRouter = require("./src/routes/modelos");
 var maquinasRouter = require("./src/routes/maquinas")
+var medidasRouter = require("./src/routes/medidas")
 var jiraRouter = require("./src/routes/jira");
 var alertaRouter = require("./src/routes/alertas");
 
@@ -32,9 +32,9 @@ app.use(cors());
 
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
-app.use("/medidas", medidasRouter);
 app.use("/empresas", empresasRouter);
 app.use("/modelos", modeloRouter);
+app.use("/medidas", medidasRouter)
 app.use("/maquinas", maquinasRouter)
 app.use("/jira", jiraRouter);
 app.use("/alertas", alertaRouter);

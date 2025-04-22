@@ -64,6 +64,27 @@ function obterMaquinas(req, res){
     );
 }
 
+function listarMaquinasPorEmpresa(req, res) {
+    var idEmpresa = req.params.idEmpresa;
+
+    maquinaModel.obterMaquinas(idEmpresa)
+    .then(
+        function (resultado) {
+            res.json(resultado);
+        }
+    ).catch(
+        function (erro) {
+            console.log(erro);
+            console.log(
+                "\nHouve um erro ao obter as maquinas! Erro: ",
+                erro.sqlMessage
+            );
+            res.status(500).json(erro.sqlMessage);
+        }
+    );
+
+}
+
 function listarModelosDetalhados(req, res) {
     var fkEmpresa = req.body.fkEmpresaServer;
 
@@ -128,5 +149,6 @@ module.exports = {
     obterMaquinas,
     editar,
     excluir,
-    listarModelosDetalhados
+    listarModelosDetalhados,
+    listarMaquinasPorEmpresa
 }
