@@ -1,30 +1,8 @@
 :root {
   --borda-padrao-box: 0.35vh #dde1e6 solid;
-  --fontsize-tipo1: 3.5vw;
-  --fontsize-tipo2: 3vw;
-  --fontsize-tipo3: 2.25vw;
-  --fontsize-tipo4: 1.5vw;
-  --fontsize-tipo5: 1vw;
-  --fontsize-tipo6: 0.9vw;
   --textcolor-cinza1: #697077;
   --color-amarelo: #fbe969;
   --color-cinza1: #dde1e6;
-}
-
-h1 {
-  font-size: var(--fontsize-tipo1);
-}
-
-h2 {
-  font-size: var(--fontsize-tipo3);
-}
-
-h3 {
-  font-size: var(--fontsize-tipo4);
-}
-
-h4 {
-  font-size: var(--fontsize-tipo5);
 }
 
 * {
@@ -37,14 +15,20 @@ body {
 }
 
 .section1 {
-  border: 1px solid green;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
-  height: max-content;
   width: 100%;
-  align-items: center;
-  justify-content: center;
+  height: 100%;
+  margin-left: 25%;
+
+  h1 {
+    margin-top: 30px;
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
 }
 
 .sub-section1 {
@@ -52,7 +36,6 @@ body {
   flex-direction: column;
   width: 90%;
   height: max-content;
-
   gap: 4vh;
 }
 
@@ -60,16 +43,40 @@ body {
 .sectionEditar {
   display: flex;
   flex-direction: column;
-
   width: 100%;
   padding: 1vh;
+  gap: 2vh;
+}
+
+.sectionAdicionar{
+  h3{
+    margin-bottom: 0.5%;
+  }
+}
+
+.sectionAdicionarModelo,
+.sectionEditarModelo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1vh;
+  gap: 2vh;
+}
+
+.sectionAdicionarModelo{
+  h3{
+    margin-bottom: 0.5%;
+  }
+}
+
+.sectionEditarModelo{
+  margin-bottom: 2%;
   gap: 2vh;
 }
 
 .box-input {
   display: flex;
   flex-direction: row;
-
   gap: 2vh;
 }
 
@@ -83,8 +90,16 @@ body {
 .edicaoDispositivo {
   display: flex;
   flex-direction: row;
-
   gap: 2vh;
+  margin-top: 1%;
+}
+
+.edicaoModelo {
+  display: flex;
+  flex-direction: row;
+  gap: 2vh;
+  margin-top: 2%;
+
 }
 
 .adicionarComponente {
@@ -92,6 +107,7 @@ body {
   flex-direction: column;
   width: 25%;
   gap: 2vh;
+  margin-top: 2rem;
 }
 
 .addComponente {
@@ -101,14 +117,17 @@ body {
   width: fit-content;
   align-items: center;
   justify-content: center;
-
   padding: 2vh;
   border: var(--borda-padrao-box);
 }
 
 .editarComponente {
   width: 75%;
-  
+  margin-top: 2rem;
+
+  h3 {
+    margin-bottom: 0.5%;
+  }
 }
 
 .editComponente {
@@ -117,10 +136,8 @@ body {
   grid-template-columns: calc(50% - 2vh - 2.5%) calc(50% - 2vh - 2.5%) ;
   grid-template-rows: min-content;
   grid-gap: 2.5vh 2.5vw;
-
   width: 75%;
   height: 45vh;
-
   padding: 2vh;
 }
 
@@ -130,7 +147,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
   border: var(--borda-padrao-box);
   padding: 2vh;
   gap: 1vh;
@@ -147,7 +163,6 @@ body {
   grid-template-columns: 15% 15% 15% 15% 15%;
   gap: 2%;
   margin-bottom: calc(2%);
-  /* grid-gap: 2%; */
 }
 
 .select_main {
@@ -173,7 +188,6 @@ body {
 
 .title_select {
   width: 100%;
-
   font-size: var(--fontsize-tipo6);
 }
 
@@ -181,7 +195,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  cursor: pointer;
   font-size: var(--fontsize-tipo6);
   font-weight: bold;
   border-radius: 1vh;
@@ -190,9 +204,3 @@ body {
   width: 10vw;
   height: 6.5vh;
 }
-
-/* .kpi_maqAtiva,
-.kpi_maqInativa,
-.qtd_alertas{
-    margin-top: 10px;
-} */

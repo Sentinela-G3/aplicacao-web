@@ -14,13 +14,12 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
 
-    <title>Dashboard | Análise Geral</title>
+    <title>Dashboard | Gerenciamento Dispositivos</title>
 </head>
 
 
 <body id="dash_RT">
-    <div class="container_navDashRT">
-        <nav>
+        <div class="container_navDashRT">
             <div class="perfil">
                 <div class="logo">
                     <img src="../assets/img/svgLogo.svg">
@@ -30,25 +29,45 @@
                     <img src="../assets/img/img_perfil_nav.jpg">
                 </div>
                 <div class="texto_perfil">
-                    <span>Olá, Boas-vindas!</span>
+                    <span>
+                        Olá,
+                        <b>Vinicius!</b>
+                    </span>
                 </div>
             </div>
             <div class="btn_nav">
                 <div class="btn_dash">
-                    <li><button onclick="btn_rt()">Análise em tempo real</button></li>
-                    <li><button onclick="btn_hist()">Análise histórica</button></li>
-                    <li><button onclick="btn_geral()">Ańálise geral</button></li>
-                    <li><button onclick="btn_func()">Gerenciamento de funcionário</button></li>
-                    <li><button onclick="btn_disp()">Gerenciamento de Dispositivo</button></li>
-                    <li><button onclick="btn_alerta()">Alertas</button></li>
-                    <li><button onclick="btn_endereco()">Gerenciamento de Endereços</button></li>
+                    <li>
+                        <button onclick="btn_rt()">Análise em tempo real</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_hist()">
+                            <b>Análise histórica</b>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="btn_geral()">Análise geral</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_func()">Gerenciamento de Funcionário</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_maquina()" class="agora">Gerenciamento de Dispositivos</button>
+                    </li>
+                    <li>
+                        <button onclick="btn_alerta()">Alertas</button>
+                    </li>
                 </div>
                 <div class="btn_sair">
-                    <button>Sair</button>
+                    <button onclick="sair()">Sair
+                        <img src="../assets/img/sair.png" alt="Sair">
+                    </button>
                 </div>
             </div>
-        </nav>
-    </div>
+        </div>
 
     <div class="section1">
         <div class="sub-section1">
@@ -68,6 +87,7 @@
             </div>
 
             <h2>Endereço X</h2>
+
 
             <div class="sectionAdicionar">
                 <h2>Adicionar Dispositivo</h2>
@@ -311,6 +331,73 @@
                     </div>
                 </div>
             </div>
+
+            <h1>Gerenciamento de Modelos</h1>
+
+            <div class="sectionAdicionarModelo">
+                <h2>Adicionar Modelo</h2>
+                <div class="box-input">
+                    <div class="container-input">
+                        <h4>Setor</h4>
+                        <div class="select_main">
+                            <select name="" id="">
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="">Setor 1</option>
+                                <option value="">Setor 2</option>
+                                <option value="">Setor 3</option>
+                                <option value="">Setor 4</option>
+                                <option value="">Setor 5</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="container-input">
+                        <h4>Nome</h4>
+                        <div class="select_main">
+                            <input type="text" placeholder="Nome do Modelo">
+                        </div>
+                    </div>
+                </div>
+                <div id="confirm_button"><span>CONFIRMAR</span></div>
+            </div>
+
+            <div class="sectionEditarModelo">
+                <h2>Editar Modelo</h2>
+                <div class="box-input">
+                    <div class="container-input">
+                        <h4>Nome</h4>
+                        <div class="select_main">
+                            <input type="text" placeholder="Nome do Modelo">
+                        </div>
+                    </div>
+                </div>
+                <div id="confirm_button"><span>PESQUISAR</span></div>
+
+                <div class="edicaoModelo">
+                    <div class="container-input">
+                        <h4>Setor</h4>
+                        <div class="select_main">
+                            <select name="" id="">
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="">Setor 1</option>
+                                <option value="">Setor 2</option>
+                                <option value="">Setor 3</option>
+                                <option value="">Setor 4</option>
+                                <option value="">Setor 5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="container-input">
+                        <h4>Nome</h4>
+                        <div class="select_main">
+                            <input type="text" placeholder="Novo nome do Modelo">
+                        </div>
+                    </div>
+                </div>
+                <div class="list">
+                    <div id="confirm_button"><span>CONFIRMAR</span></div>
+                    <div style="background-color: red; color: white;" id="confirm_button"><span>EXCLUIR</span></div>
+                </div>
 </body>
 
 </html>
