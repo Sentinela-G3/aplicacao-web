@@ -38,4 +38,5 @@ function btn_alerta(){
 
 function sair(){
     window.location = '../index.html';
+    sessionStorage.clear();
 }

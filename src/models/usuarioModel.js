@@ -22,8 +22,8 @@ function cadastrar(nome, email, telefone, senha, fkEmpresa, tipoUsuario) {
 function listarPorEmpresa(fkEmpresa) {
     var instrucaoSql = `
          SELECT id_usuario, nome, tipo, DATE_FORMAT(data_criacao, '%Y-%m-%d') AS dataCriacao
-        FROM usuario
-        WHERE fkEmpresa = ${fkEmpresa};
+        FROM colaborador
+        WHERE fk_colaborador_empresa = ${fkEmpresa};
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -33,7 +33,7 @@ function listarPorEmpresa(fkEmpresa) {
 function deletar(idFuncionario) {
     var instrucaoSql = `
        DELETE
-        FROM usuario
+        FROM colaborador
         WHERE id_usuario = ${idFuncionario};
     `;
 
@@ -43,7 +43,7 @@ function deletar(idFuncionario) {
 
 function atualizar(idFuncionario, nome, email, telefone, tipoUsuario) {
     var instrucaoSql = `
-        UPDATE usuario 
+        UPDATE colaborador 
         SET nome = '${nome}', email = '${email}', telefone = '${telefone}', tipo = ${tipoUsuario} 
         WHERE id_usuario = ${idFuncionario};
     `;
@@ -54,7 +54,7 @@ function atualizar(idFuncionario, nome, email, telefone, tipoUsuario) {
 
 
 function buscarPorId(id) {
-    var instrucaoSql = `SELECT * FROM usuario where id_usuario = ${id}`;
+    var instrucaoSql = `SELECT * FROM colaborador where id_usuario = ${id}`;
     return database.executar(instrucaoSql);
 }
 

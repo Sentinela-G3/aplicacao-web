@@ -12,13 +12,13 @@ function carregarFuncionarios() {
                 card.classList.add("card");
                 card.innerHTML = `
                     <h2>${funcionario.nome}</h2>
-                    <p><strong>Tipo de Usuário:</strong> ${funcionario.tipoUsuario}</p>
+                    <p><strong>Tipo de Usuário:</strong> ${funcionario.tipo}</p>
                     <p><strong>Criado em:</strong> ${funcionario.dataCriacao}</p>
                     <div class="buttons">
-                        <button class="edit" onclick="abrirModalEdicao(${funcionario.idUsuario})">
+                        <button class="edit" onclick="abrirModalEdicao(${funcionario.id_usuario})">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="delete" onclick="excluirFuncionario(${funcionario.idUsuario})">
+                        <button class="delete" onclick="excluirFuncionario(${funcionario.id_usuario})">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -192,3 +192,21 @@ function fecharModalEdicao() {
 
 
 carregarFuncionarios();
+
+ // Verificando sessão do usuário
+ if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.email || !sessionStorage.tipoUsuario || !sessionStorage.nomeUsuario) {
+    alert("Sua sessão expirou! Logue-se novamente.");
+    window.location.href = "../login.html";
+}
+
+const usuario = {
+    idEmpresa: sessionStorage.idEmpresa,
+    idUsuario: sessionStorage.idUsuario,
+    email: sessionStorage.email,
+    tipoUsuario: sessionStorage.tipoUsuario,
+    nomeUsuario: sessionStorage.nomeUsuario
+};
+
+// Plotando nome no menu lateral
+const b_nome_usuario = document.getElementById("nome_usuario");
+b_nome_usuario.innerHTML = usuario.nomeUsuario;
