@@ -64,6 +64,43 @@ function obterMaquinas(req, res){
     );
 }
 
+function listarMaquinasPorEmpresa(req, res) {
+    var idEmpresa = req.params.idEmpresa;
+
+    maquinaModel.obterMaquinas(idEmpresa)
+    .then(
+        function (resultado) {
+            res.json(resultado);
+        }
+    ).catch(
+        function (erro) {
+            console.log(erro);
+            console.log(
+                "\nHouve um erro ao obter as maquinas! Erro: ",
+                erro.sqlMessage
+            );
+            res.status(500).json(erro.sqlMessage);
+        }
+    );
+
+}
+
+function listarModelosDetalhados(req, res) {
+    var fkEmpresa = req.body.fkEmpresaServer;
+
+    console.log("fkEmpresa recebida:", fkEmpresa);
+  
+    maquinaModel.listarModelosDetalhados(fkEmpresa)
+      .then((resultado) => {
+        console.log("Resultado obtido do model:", resultado); 
+        res.json(resultado);    
+      })
+      .catch((erro) => {
+        console.log("Houve um erro ao obter as maquinas! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage); 
+      });
+  }
+
 function editar(req, res){
     var setor = req.body.setorServer;
     var fkEndereco = req.body.enderecoServer;
@@ -111,5 +148,7 @@ module.exports = {
     obterFkModelo,
     obterMaquinas,
     editar,
-    excluir
+    excluir,
+    listarModelosDetalhados,
+    listarMaquinasPorEmpresa
 }

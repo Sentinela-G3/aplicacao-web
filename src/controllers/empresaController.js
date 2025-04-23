@@ -27,12 +27,14 @@ function cadastrar(req, res) {
 
 function cadastrarEndereco(req, res){
     var logradouro = req.body.logradouroServer;
+    var numero = req.body.numeroServer;
     var cep = req.body.cepServer;
     var estado = req.body.estadoServer;
+    var cidade = req.body.cidadeServer;
     var complemento = req.body.complementoServer;
     var fkEmpresa = req.body.fkEmpresaServer;
 
-    empresaModel.cadastrarEndereco(logradouro, cep, estado, complemento, fkEmpresa)
+    empresaModel.cadastrarEndereco(logradouro, numero, cep, estado, cidade, complemento, fkEmpresa)
     .then(
         function (resultado) {
             res.json(resultado);

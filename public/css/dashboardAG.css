@@ -32,12 +32,10 @@ body {
     align-items: end;
   }
   #list-table {
-    flex-direction: column;
-    min-width: 50%;
-    width: 60%;
-    gap: 5vh;
+    flex-direction: row;
+    width: 80%;
     margin-bottom: 50px;
-
+    align-items: center;
   }
   #list-cards {
     display: grid;
@@ -135,10 +133,8 @@ body {
   flex-direction: column;
   align-items: center;
   border: var(--borda-padrao-box);
-  width: calc(100% - 4vh);
-  height: calc(100% - 4vh);
+  width: 67vw;
   gap: 2.5vh;
-  padding: 2vh;
 
   .component-name {
     width: 100%;
@@ -193,4 +189,77 @@ body {
     color: var(--textcolor-cinza1);
     font-size: var(--fontsize-tipo5);
   }
+}
+
+#modelos-id{
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 95%;
+}
+
+#modelos-id td, #modelos-id th{
+  padding: 15px;
+}
+
+#modelos-id tr:hover {background-color: #ededed;}
+
+table th{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #c9c9c9;
+  color: black;
+}
+
+table{
+  border: 1px solid #c9c9c9;
+  border-collapse: collapse;
+}
+
+.tabela-maquinas th{
+  background-color: #FBE969;
+}
+
+.tabela-maquinas td{
+  border: 1.5px solid #C2C2C2;
+}
+
+.containerBaixo{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: start;
+}
+
+.alertas-container{
+  display: flex;
+}
+
+.alertas-box{
+  height: 150px;
+  width: 150px;
+  border: solid #C2C2C2;
+  margin: 5px;
+  align-items: center;
+}
+
+.alertas-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  font-size: 15px;
+}
+
+.grafico-box{
+  height: 308px;
+  width: 300px;
+  border: solid #C2C2C2;
+  align-items: center;
+}
+
+#list-table{
+  gap: 10px;
 }

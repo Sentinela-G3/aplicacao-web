@@ -1,0 +1,115 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.conteudo{
+    margin-left: 20%;
+    width: 80%;
+    height: 100vh;
+    padding: 0 2% ;
+    box-sizing: border-box;
+}
+
+
+.box_imagem {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 30%;
+}
+
+.span_imagem{    
+    font-family: "Roboto";
+    margin-top: 10px;
+    font-size: 22px;
+    color: black;
+    font-weight: 600;
+    margin-bottom: 10rem;
+    width: 100%;
+    text-align: center;
+}
+
+.icone-editar {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.icone-editar img {
+    width: 18px;
+    height: 18px;
+}
+
+#imagem-noticia {
+    position: relative;
+}
+
+#imagem-noticia {
+    width: 250px;
+    height: 250px;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 15px;
+    background-color: #fff5a7;
+    background-size: 200px 200px;
+    background-position: center;
+    cursor: pointer;
+}
+
+#imagem-noticia input {
+    display: none;
+}
+
+.box_informacoes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    width: 100%;
+    margin-top: 2%;
+}
+
+h1{
+    font-size: 34px;
+    margin-bottom: 20px;
+
+}
+.chave{
+    font-weight: 600;
+    font-size: 28px;
+}
+
+.valor{
+    font-size: 22px;
+    margin-bottom: 2%;
+}
+
+#btn-alterar {
+    margin-top: 20px;
+    padding: 10px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #fae969;
+    color: black;
+    font-weight: bold;
+    cursor: not-allowed;
+    opacity: 0.5;
+    transition: 0.3s ease;
+}
+
+#btn-alterar.enabled {
+    cursor: pointer;
+    opacity: 1;
+}

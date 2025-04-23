@@ -26,3 +26,36 @@ button {
     border: 1px;
     border-radius: 4px;
 }
+
+/* Transições suaves */
+.table_body {
+    transition: opacity 0.3s ease;
+}
+
+.table_body.tabela-carregando {
+    opacity: 0.7;
+    background-color: #f9f9f9;
+}
+
+/* Estilo para links de alerta */
+.link-alerta {
+    color: #dc3545;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.link-alerta:hover {
+    color: #a71d2a;
+    text-decoration: underline;
+}
+
+/* Efeito de carregamento suave */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.table_body > div {
+    animation: fadeIn 0.3s ease-out;
+}

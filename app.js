@@ -10,17 +10,19 @@ require("dotenv").config({ path: caminho_env });
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
-var PORTA_APP = '3000';
-var HOST_APP = '127.0.0.1';
+var PORTA_APP = process.env.APP_PORT;
+var HOST_APP = process.env.APP_HOST;
 
 var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
-var medidasRouter = require("./src/routes/medidas");
 var empresasRouter = require("./src/routes/empresas");
 var modeloRouter = require("./src/routes/modelos");
 var maquinasRouter = require("./src/routes/maquinas")
+var medidasRouter = require("./src/routes/medidas")
+var jiraRouter = require("./src/routes/jira");
+var alertaRouter = require("./src/routes/alertas");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,10 +32,12 @@ app.use(cors());
 
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
-app.use("/medidas", medidasRouter);
 app.use("/empresas", empresasRouter);
 app.use("/modelos", modeloRouter);
+app.use("/medidas", medidasRouter)
 app.use("/maquinas", maquinasRouter)
+app.use("/jira", jiraRouter);
+app.use("/alertas", alertaRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
