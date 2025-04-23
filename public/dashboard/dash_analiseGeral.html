@@ -111,7 +111,8 @@
                 <th>RAM (GB)</th>
                 <th>Disco</th>
                 <th>Capacidade do Disco (GB)</th>
-                <th>Tempo de Atividade (dias)</th>
+                <th>Sistema Operacional</th>
+                <th>Numero de Serie</th>
             </tr>
             <tbody id="corpo-tabela-modelos">
                 <!-- As linhas da tabela serão preenchidas aqui -->
@@ -184,10 +185,8 @@
             <div id="select_modelo" class="select_main">
                 <select name="" id="">
                     <option selected disabled value="">Selecione o Modelo</option>
-                    <option value="">Modelo 1</option>
-                    <option value="">Modelo 2</option>
-                    <option value="">Modelo 3</option>
-                    <option value="">Modelo 4</option>
+                    <option value="">KMP 1500</option>
+                    <option value="">KMP 600-S diffDrive</option>      
                 </select>
             </div>
         </div>
@@ -216,9 +215,6 @@
                         <h5>Alertas em Aberto</h5>
                         <h2>X</h2>
                     </div>
-                </div>
-                <div class="grafico-box">
-                    seila grafico
                 </div>
             </div>
         </div>
@@ -259,7 +255,9 @@
                         <td>${maquina.ram_gb}</td>
                         <td>${maquina.disco}</td>
                         <td>${maquina.capacidade_disco_gb}</td>
-                        <td>${maquina.dias_uso}</td>`
+                        <td>${maquina.sistema_operacional}</td>
+                        <td>${maquina.serial_number}</td>
+                        `
                     ;
 
                     tbody.appendChild(tr); 

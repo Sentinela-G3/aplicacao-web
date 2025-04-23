@@ -16,26 +16,35 @@ function listarModelosDetalhados(fkEmpresa) {
   var instrucaoSql = `
 SELECT 
   m.modelo,
+  m.SO AS sistema_operacional,
+  m.serialNumber as serial_number,
   
-  (SELECT modeloComponente FROM componente 
-   WHERE fkMaquina = m.idmaquina AND tipo = 'CPU' LIMIT 1) AS cpu,
-
-  (SELECT valor FROM componente 
-   WHERE fkMaquina = m.idmaquina AND tipo = 'RAM' LIMIT 1) AS ram_gb,
-
-  (SELECT modeloComponente FROM componente 
-   WHERE fkMaquina = m.idmaquina AND tipo = 'DISCO' LIMIT 1) AS disco,
-
-  (SELECT valor FROM componente 
-   WHERE fkMaquina = m.idmaquina AND tipo = 'DISCO' LIMIT 1) AS capacidade_disco_gb,
-
-  (SELECT TIMESTAMPDIFF(DAY, MIN(h.dataCaptura), NOW())
-   FROM componente c
-   JOIN historico h ON h.fkComponente = c.idcomponente
-   WHERE c.fkMaquina = m.idmaquina) AS dias_uso
+  -- CPU
+  (SELECT modeloComponente 
+   FROM componente 
+   WHERE fk_componente_maquina = m.id_maquina AND tipo = 'CPU' 
+   LIMIT 1) AS cpu,
+  
+  -- RAM
+  (SELECT valor 
+   FROM componente 
+   WHERE fk_componente_maquina = m.id_maquina AND tipo = 'RAM' 
+   LIMIT 1) AS ram_gb,
+  
+  -- Disco
+  (SELECT modeloComponente 
+   FROM componente 
+   WHERE fk_componente_maquina = m.id_maquina AND tipo = 'DISCO' 
+   LIMIT 1) AS disco,
+  
+  (SELECT valor 
+   FROM componente 
+   WHERE fk_componente_maquina = m.id_maquina AND tipo = 'DISCO' 
+   LIMIT 1) AS capacidade_disco_gb
 
 FROM maquina m
-WHERE m.fkEmpresa = 1 AND m.status = 1;
+WHERE m.fk_maquina_empresa = 1 AND m.status = 1;
+
   `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
