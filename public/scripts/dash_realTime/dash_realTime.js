@@ -13,138 +13,159 @@ const usuario = {
 };
 
 // Plotando nome no menu lateral
-const b_nome_usuario = document.getElementById("nome_usuario");
-b_nome_usuario.innerHTML = usuario.nomeUsuario;
+document.getElementById("nome_usuario").innerHTML = usuario.nomeUsuario;
 
- // Função para buscar dados da máquina e preencher a tabela
- async function carregarMaquinas() {
+// Formatadores
+const formatTime = (hours) => {
+    if (!hours || hours.value === undefined || hours.value === null) return '-';
+    const h = Math.floor(hours.value);
+    const m = Math.floor((hours.value % 1) * 60);
+    return `${h}:${m.toString().padStart(2, '0')}`;
+};
+
+const formatPercent = (metric) => {
+    if (!metric || metric.value === undefined || metric.value === null) return '-';
+    return `${Math.round(metric.value)}`;
+};
+
+async function carregarMaquinas() {
     try {
-        // 1. Busca todas as máquinas da empresa
-        const response = await fetch(`http://localhost:3333/maquinas/${sessionStorage.getItem('idEmpresa')}`);
-        if (!response.ok) throw new Error('Erro ao buscar máquinas');
-        const machines = await response.json();
+        
+        const [machinesResponse, alertsResponse] = await Promise.all([
+            fetch(`http://localhost:3333/maquinas/${usuario.idEmpresa}`),
+            fetch('http://localhost:3333/jira/tickets')
+        ]);
 
-        // 2. Limpa e prepara a tabela
+        if (!machinesResponse.ok) throw new Error('Erro ao buscar máquinas');
+        if (!alertsResponse.ok) throw new Error('Erro ao buscar alertas');
+
+        const [machines, alertsData] = await Promise.all([
+            machinesResponse.json(),
+            alertsResponse.json()
+        ]);
+
+     
+        const allAlerts = (alertsData.values || []).filter(ticket => 
+            ticket && String(ticket.requestTypeId) === "68"
+        );
+
+        // 3. Inicializa contadores
+        let ativas = 0;
+        let inativas = 0;
+        let totalAlertas = 0;
         const tableBody = document.querySelector('.table_body');
         tableBody.innerHTML = '';
 
-        // 3. Processa cada máquina
+        // 4. Processa cada máquina
         for (const machine of machines) {
-            // Busca as métricas da máquina
             const metricsResponse = await fetch(`http://localhost:3333/medidas/${machine.id_maquina}/componentes`);
-            let metrics = [];
-            if (metricsResponse.ok) {
-                metrics = await metricsResponse.json();
-            }
+            const metrics = metricsResponse.ok ? await metricsResponse.json() : [];
 
-            // 4. Determina o status com base na última captura
             let statusText, statusColor;
-            let ultimaCapturaFormatted = '-';
-            
             if (metrics.length > 0) {
-                // Pega o timestamp da primeira métrica (já ordenada pela API)
                 const ultimaCaptura = new Date(metrics[0].timestamp_captura);
-                const agora = new Date();
-                const diferencaSegundos = (agora - ultimaCaptura) / 1000;
+                const diferencaSegundos = (new Date() - ultimaCaptura) / 1000;
                 const isAtivo = diferencaSegundos <= 10;
-
-                ultimaCapturaFormatted = metrics[0].data_hora_captura;
 
                 if (isAtivo) {
                     statusColor = 'green';
                     statusText = 'Ativo';
+                    ativas++;
                 } else {
                     statusColor = 'red';
-                    statusText = `Inativo (${ultimaCapturaFormatted})`;
+                    statusText = `Inativo (${metrics[0].data_hora_captura})`;
+                    inativas++;
                 }
             } else {
                 statusColor = 'gray';
                 statusText = 'Sem dados';
+                inativas++;
             }
 
-            // 5. Obtém os valores das métricas específicas
+            // Conta alertas específicos desta máquina
+            const serial = machine.serial_number;
+            const alertasDaMaquina = allAlerts.filter(ticket => 
+                ticket.summary?.includes(serial) || ticket.issueKey?.includes(serial)
+            );
+            const qtdAlertas = alertasDaMaquina.length;
+            totalAlertas += qtdAlertas;
+
+            // Obtém métricas
             const getMetricValue = (type) => {
                 const metric = metrics.find(m => m.tipo === type);
                 return metric ? {
                     value: metric.valor,
                     min: metric.minimo,
-                    max: metric.maximo,
-                    data_captura: metric.data_hora_captura
+                    max: metric.maximo
                 } : null;
             };
 
-            const uptime = getMetricValue('uptime_hours');
-            const ram = getMetricValue('ram_percent');
-            const cpu = getMetricValue('cpu_percent');
-            const disk = getMetricValue('disk_percent');
+            // Encontra e formata o último alerta
+            let ultimoAlertaHTML = 'Nenhum';
+            if (alertasDaMaquina.length > 0) {
+                const ultimoAlerta = alertasDaMaquina.reduce((latest, alerta) => {
+                    const alertDate = new Date(alerta.createdDate?.iso8601 || 0);
+                    const latestDate = new Date(latest.createdDate?.iso8601 || 0);
+                    return alertDate > latestDate ? alerta : latest;
+                });
 
-            // 6. Formatadores
-            const formatTime = (hours) => {
-                if (!hours || hours.value === undefined) return '-';
-                const h = Math.floor(hours.value);
-                const m = Math.floor((hours.value % 1) * 60);
-                return `${h}:${m.toString().padStart(2, '0')}`;
-            };
+                const dataFormatada = new Date(ultimoAlerta.createdDate.iso8601).toLocaleString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
 
-            const formatPercent = (metric) => {
-                if (!metric || metric.value === undefined) return '-';
-                return `${metric.value.toFixed(0)}`;
-            };
+                ultimoAlertaHTML = `
+                    <a href="${ultimoAlerta._links.web}" 
+                       target="_blank" 
+                       style="color: #dc3545; text-decoration: none; font-weight: 500;"
+                       title="Abrir chamado no Jira">
+                       ${dataFormatada} (${ultimoAlerta.issueKey})
+                    </a>
+                `;
+            }
 
-            // 7. Cria a linha da tabela
+            // Cria linha da tabela
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>ID ${machine.id_maquina} (${machine.serial_number})</td>
                 <td style="color: ${statusColor}">${statusText}</td>
-                <td>${formatTime(uptime)}</td>
-                <td>0</td>
-                <td>Nenhum</td>
-                <td>${formatPercent(ram)}</td>
-                <td>${formatPercent(cpu)}</td>
-                <td>${formatPercent(disk)}</td>
+                <td>${formatTime(getMetricValue('uptime_hours'))}</td>
+                <td>${qtdAlertas}</td>
+                <td>${ultimoAlertaHTML}</td>
+                <td>${formatPercent(getMetricValue('ram_percent'))}</td>
+                <td>${formatPercent(getMetricValue('cpu_percent'))}</td>
+                <td>${formatPercent(getMetricValue('disk_percent'))}</td>
                 <td><button class="details-btn" data-id="${machine.id_maquina}">Expandir Análise</button></td>
             `;
-
             tableBody.appendChild(row);
         }
+
+        // 5. Atualiza KPIs
+        document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[0].textContent = ativas;
+        document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[1].textContent = inativas;
+        document.getElementById('qtd_alertas').textContent = totalAlertas;
 
     } catch (error) {
         console.error('Erro ao carregar máquinas:', error);
         showErrorNotification('Falha ao carregar dados das máquinas');
-    }
-}
-
-
-async function carregarAlertas() {
-    try {
-        const response = await fetch('http://localhost:3333/jira/tickets');
         
-        if (!response.ok) {
-          throw new Error(`Erro na requisição: ${response.statusText}`);
-        }
-    
-        const data = await response.json();
-    // Verifique o formato dos dados retornados
-    console.log('Resposta da API:', data.values);
-    const qtdAlertas = data.values.length;
-
-    const span_qtd_alertas = document.getElementById('qtd_alertas');
-    span_qtd_alertas.innerHTML = qtdAlertas;
-      
-    // A resposta contém os tickets dentro de data.values
-    if (data.values) {
-      // renderTickets(data.values);  // Agora estamos passando os tickets de dentro de 'values'
-    } else {
-      console.error('A resposta não contém tickets ou não é um array');
+        // Reseta KPIs
+        document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[0].textContent = '0';
+        document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[1].textContent = '0';
+        document.getElementById('qtd_alertas').textContent = '0';
     }
-  } catch (error) {
-    console.error('Erro ao buscar tickets:', error);
-  }
 }
 
-// Chamando a função quando a página carregar
+function showErrorNotification(message) {
+    console.error('Notificação de erro:', message);
+
+}
+
+// Inicializa quando a página carrega
 document.addEventListener('DOMContentLoaded', carregarMaquinas);
-document.addEventListener('DOMContentLoaded', carregarAlertas)
 
+// Atualiza a cada 5 segundos
 setInterval(carregarMaquinas, 5000);
-
