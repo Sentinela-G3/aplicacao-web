@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const upload = require('../config/configUpload'); 
 
 var usuarioController = require("../controllers/usuarioController");
 
@@ -30,5 +31,9 @@ router.put("/:idFuncionario", function (req, res) {
 router.post("/buscarInformacoesPorEmail", function (req, res) {
     usuarioController.buscarInformacoesPorEmail(req, res);
 });
+
+router.post('/alterarImagem', upload.single('foto'), (req, res) => {
+    usuarioController.alterarImagem(req, res);
+  });
 
 module.exports = router;

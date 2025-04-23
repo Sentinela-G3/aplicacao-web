@@ -203,6 +203,21 @@ function buscarInformacoesPorEmail(req, res) {
 }
 
 
+function alterarImagem(req, res) {
+    const imagem = req.file.filename;
+    const id = req.body.id;
+    console.log(id)
+    const usuario = {id ,imagem }
+    
+    usuarioModel.alterarImagem(usuario)
+    .then(resultado => {
+      res.status(201).send("Foto de perfil alterada com sucesso");
+    }).catch(err => {
+      console.error("Erro ao executar a instrução SQL:", err.stack);
+      res.status(500).send(err);
+    });
+  }
+
 
 module.exports = {
     autenticar,
@@ -211,5 +226,6 @@ module.exports = {
     deletar,
     atualizar,
     buscarPorId,
-    buscarInformacoesPorEmail
+    buscarInformacoesPorEmail,
+    alterarImagem
 }

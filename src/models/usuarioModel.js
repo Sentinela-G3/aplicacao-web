@@ -2,7 +2,7 @@ var database = require("../database/config")
 
 function autenticar(email, senha) {
     var instrucaoSql = `
-         SELECT id_usuario, colaborador.nome as nome, email, tipo, id_empresa, empresa.status FROM colaborador join empresa on id_empresa = fk_colaborador_empresa WHERE email = '${email}' AND senha = SHA2('${senha}', 256);
+         SELECT id_usuario, colaborador.nome as nome, email, tipo, fotoPerfil ,  id_empresa, empresa.status FROM colaborador join empresa on id_empresa = fk_colaborador_empresa WHERE email = '${email}' AND senha = SHA2('${senha}', 256);
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -67,6 +67,20 @@ function buscarInformacoesPorEmail(email) {
 }
 
 
+function alterarImagem(usuario) {
+    console.log(usuario)
+  
+    const instrucao = `UPDATE colaborador
+                        SET fotoPerfil = '${usuario.imagem}'
+                        WHERE id_usuario = ${usuario.id};`;
+  
+    console.log(instrucao)
+  
+    console.log('Passei aq no Model!')
+    
+    return database.executar(instrucao);
+  }
+
 
 
 
@@ -77,5 +91,6 @@ module.exports = {
     deletar,
     atualizar,
     buscarPorId,
-    buscarInformacoesPorEmail
+    buscarInformacoesPorEmail,
+    alterarImagem
 };

@@ -44,11 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const textHoraAbertura = `${day}/${month}/${year} às ${hours}:${minutes}`
 
+        const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
+        const maquina = ticket.summary.split(" ");
+        const descricaoSeparada = descricao.split('*');
+
+        const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
+
+
         if( ticket.requestTypeId == "68"){
           div.innerHTML += `<tr>
                               <td class="alerta-chave">${ticket.issueKey}</td>
-                              <td class="alerta-desc">${ticket.summary}</td>
-                              <td class="alerta-dispositivo">ROBO 0120</td>
+                              <td class="alerta-desc">${descricaoTratada}</td>
+                              <td class="alerta-dispositivo">${maquina[1]}</td>
                               <td class="alerta-horario"> ${textHoraAbertura}</td>
                               <td><span class="alerta-status status-resolvido">${ticket.currentStatus.status}</span></td>
                             </tr>`;

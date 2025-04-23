@@ -76,7 +76,10 @@
 
         <div class="box_imagem">
             <div id="imagem-noticia" onclick="document.getElementById('foto').click();">
-                <input type="file" id="foto" accept="image/png, image/jpg" onchange="ImagemNoInserir(event)">
+                <input type="file" id="foto" accept="image/png, image/jpeg" onchange="ImagemNoInserir(event)">
+                <div class="icone-editar">
+                    <img src="../assets/img/icone_lapis.png" alt="Editar" />
+                </div>
             </div>
         </div>
 
@@ -163,13 +166,17 @@
 
 <script>
     function ImagemNoInserir(event) {
-        const foto_noticia = document.getElementById('imagem-noticia');
+        const div_ft = document.getElementById('imagem-noticia');
         const file = event.target.files[0];
         const reader = new FileReader();
 
         reader.onload = function(e) {
-            foto_noticia.style.backgroundSize = 'cover';
-            foto_noticia.style.backgroundImage = `url(${e.target.result})`;
+            div_ft.style.backgroundSize = 'cover';
+            div_ft.style.backgroundImage = `url(${e.target.result})`;
+
+            const btnAlterar = document.getElementById('btn-alterar');
+            btnAlterar.disabled = false;
+            btnAlterar.classList.add('enabled');
         };
 
         if (file) {
@@ -177,9 +184,31 @@
         }
     }
 
+    function enviarImagem(){
+        const formData = new FormData();
+        formData.append('id', sessionStorage.idUsuario)
+        formData.append('foto', foto.files[0])
+
+        fetch("/usuarios/alterarImagem", {
+        method: "POST",
+        body: formData
+        })
+        .then(res => {
+            const btnAlterar = document.getElementById('btn-alterar');
+            btnAlterar.innerHTML ='Alterado';
+            btnAlterar.disabled = true;
+            btnAlterar.classList.remove('enabled');
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
 
     function buscarInformacoesPorEmail() {
         var email = sessionStorage.email;
+        
+
 
         fetch("/usuarios/buscarInformacoesPorEmail", {
         method: "POST",
@@ -198,6 +227,15 @@
                 console.log(dados)
                 const data = new Date(dados.data_criacao);
 
+                const div_ft = document.getElementById('imagem-noticia')
+                if( dados.fotoPerfil){
+                    div_ft.style.backgroundSize = 'cover';
+                    div_ft.style.backgroundImage= `url('../imagens_de_perfil/${dados.fotoPerfil}')`;
+                }else{
+                    div_ft.style.backgroundSize = 'cover';
+                    div_ft.style.backgroundImage= `url('../assets/img/user_icon.png')`;
+                }
+
                 const dia = String(data.getDate()).padStart(2, '0');
                 const mes = String(data.getMonth() + 1).padStart(2, '0');
                 const ano = data.getFullYear();
@@ -211,7 +249,8 @@
                                 <span class="valor">${dados.email}</span>
                                 <span class="chave">Telefone</span>
                                 <span class="valor">${dados.telefone}</span>
-                                <span>Criado em ${dataFormatada}</span>`
+                                <span>Criado em ${dataFormatada}</span>
+                                <button id="btn-alterar" onclick="enviarImagem()" disabled>Alterar</button>`
 
             });
         } else if (resposta.status == 403) {
@@ -231,4 +270,7 @@
         })
     }
     buscarInformacoesPorEmail()
+
+    
+
 </script>
