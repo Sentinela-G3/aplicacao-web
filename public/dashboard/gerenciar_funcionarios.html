@@ -23,13 +23,13 @@
                 <span>Sentinela</span>
             </div>
             <div class="imagem_perfil">
-                <img src="../assets/img/image.png" alt="Mariana">
+                <!-- <img src="../assets/img/image.png" alt="Mariana"> -->
                 <!-- <img src="./assets/img/usuario-icon.png" alt="Usuário"> -->
-                <!-- <img src="./assets/img/img_perfil_nav.jpg"> -->
+                <img src="../assets/img/img_perfil_nav.jpg">
             </div>
             <div class="texto_perfil">
                 <span>Olá,
-                    <b id="nome_usuario">Mariana!</b>
+                    <b id="nome_usuario">Usuário</b><b>!</b>
                 </span>
             </div>
         </div>
@@ -84,12 +84,17 @@
             </div>
         </div>
     </div>
+
     <div class="container">
         <h1>Gerenciamento de Colaboradores</h1>
 
         <div class="search-bar">
-            <input type="text" placeholder="Pesquisar colaborador...">
+            <div class="pesquisa">
+                <input type="text" id="inputPesquisa" placeholder="Pesquisar colaborador...">
+                <button class="pesq-btn">Pesquisar</button>
+            </div>
             <button class="add-btn">+ Criar Novo Colaborador</button>
+            <a href="./alertas.html">Alerta</a>
         </div>
 
         <div class="grid">
@@ -102,7 +107,7 @@
                     <button class="delete"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
-
+<!-- 
             <div class="card">
                 <h2>Maria Oliveira</h2>
                 <p><strong>Tipo de Usuário:</strong> 2</p>
@@ -121,7 +126,7 @@
                     <button class="edit"><i class="fas fa-edit"></i></button>
                     <button class="delete"><i class="fas fa-trash"></i></button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -138,13 +143,14 @@
                 <input type="email" id="email" name="email" required>
     
                 <label for="telefone">Telefone:</label>
-                <input type="tel" id="telefone" name="telefone" required>
+                <input type="tel" id="telefone" maxlength="11" name="telefone" required>
     
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" required>
     
                 <label for="tipoUsuario">Tipo de Usuário:</label>
                 <select id="tipoUsuario" name="tipoUsuario">
+                    <option value="#" selected>Escolha um cargo</option>
                     <option value="1">Administrador</option>
                     <option value="2">Gerente</option>
                     <option value="3">Funcionário</option>
@@ -167,7 +173,7 @@
                 <input type="email" id="edit-email" required>
     
                 <label for="edit-telefone">Telefone:</label>
-                <input type="tel" id="edit-telefone" required>
+                <input type="tel" id="edit-telefone" maxlength="11" required>
     
                 <label for="edit-tipoUsuario">Tipo de Usuário:</label>
                 <select id="edit-tipoUsuario">
@@ -180,14 +186,9 @@
             </form>
         </div>
     </div>
-    
+
 </body>
 
 </html>
-<script src="../scripts/gerenciar_funcionarios/gerenciamento_modal_funcionarios.js"></script>
 <script src="../scripts/gerenciar_funcionarios/carregar_funcionarios.js"></script>
-
-<script>
-   
-
-</script>
+<script src="../scripts/gerenciar_funcionarios/gerenciamento_modal_funcionarios.js"></script>

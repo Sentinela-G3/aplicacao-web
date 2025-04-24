@@ -1,3 +1,7 @@
+CREATE DATABASE sentinela;
+USE sentinela;
+DROP DATABASE sentinela;
+
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY AUTO_INCREMENT,
     razao_social VARCHAR(100) NOT NULL,
@@ -27,7 +31,7 @@ CREATE TABLE colaborador (
     email VARCHAR(250) NOT NULL,
     telefone CHAR(11) NOT NULL,
     senha CHAR(64) NOT NULL,
-    fotoPerfil VARCHAR(256) NOT NULL,
+    fotoPerfil VARCHAR(256) NULL,
     tipo INT NOT NULL,
     data_criacao DATE,
     fk_colaborador_empresa INT NOT NULL,
@@ -82,3 +86,35 @@ CREATE TABLE alerta (
         REFERENCES componente(id_componente) 
         ON DELETE CASCADE -- Exclui alertas quando o componente for excluído
 );
+
+SELECT * FROM empresa;
+SELECT * FROM colaborador;
+SELECT * FROM maquina;
+
+
+INSERT INTO empresa (razao_social, cnpj, categoria, data_inicio, status)
+VALUES ('Tech Solutions LTDA', '12345678000195', 'Tecnologia', '2023-01-15', 1);
+
+INSERT INTO endereco_empresa (cep, numero, logradouro, estado, cidade, complemento, fk_endereco_empresa) 
+VALUES ( '12345-678', 100, 'Rua das Inovações', 'SP', 'São Paulo', 'Próximo ao parque', LAST_INSERT_ID()
+);
+
+-- Inserindo um colaborador vinculado à empresa recém-inserida
+INSERT INTO colaborador ( nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) 
+VALUES (
+    'Ana Souza', 'ana.souza@techsolutions.com', '11999999999', 
+    SHA2('senhaSegura123', 256),
+    'https://exemplo.com/fotos/ana.jpg', 1, CURDATE(), LAST_INSERT_ID()
+    );
+
+-- Desativa o modo seguro
+SET SQL_SAFE_UPDATES = 0;
+
+-- Agora o UPDATE funciona sem WHERE com chave
+UPDATE empresa
+SET status = 2;
+
+-- (Opcional) Reativa o modo seguro
+SET SQL_SAFE_UPDATES = 1;
+
+
