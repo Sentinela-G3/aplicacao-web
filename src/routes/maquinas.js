@@ -35,4 +35,9 @@ router.post("/quantidadeUltimaSemana", function (req, res) {
     maquinaController.contarAlertasUltimaSemana(req, res);
 });
 
+router.post("/listarTempoAtividade", function (req, res) {
+    maquinaController.listarTempoAtividadePorMaquina(req, res);
+});
+
+
 module.exports = router;

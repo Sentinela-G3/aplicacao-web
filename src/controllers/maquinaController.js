@@ -88,18 +88,29 @@ function listarMaquinasPorEmpresa(req, res) {
 function listarModelosDetalhados(req, res) {
     var fkEmpresa = req.body.fkEmpresaServer;
 
-    console.log("fkEmpresa recebida:", fkEmpresa);
+    console.log("fkEmpresa:", fkEmpresa);
   
     maquinaModel.listarModelosDetalhados(fkEmpresa)
       .then((resultado) => {
-        console.log("Resultado obtido do model:", resultado); 
         res.json(resultado);    
       })
       .catch((erro) => {
-        console.log("Houve um erro ao obter as maquinas! Erro: ", erro.sqlMessage);
         res.status(500).json(erro.sqlMessage); 
       });
   }
+
+  function listarTempoAtividadePorMaquina(req, res) {
+    var fkEmpresa = req.body.fkEmpresaServer;
+
+    maquinaModel.listarTempoAtividadePorMaquina(fkEmpresa)
+      .then((resultado) => {
+        res.json(resultado);
+      })
+      .catch((erro) => {
+        res.status(500).json(erro.sqlMessage);
+      });
+}
+  
 
 function editar(req, res){
     var setor = req.body.setorServer;
@@ -150,5 +161,6 @@ module.exports = {
     editar,
     excluir,
     listarModelosDetalhados,
-    listarMaquinasPorEmpresa
+    listarMaquinasPorEmpresa,
+    listarTempoAtividadePorMaquina
 }

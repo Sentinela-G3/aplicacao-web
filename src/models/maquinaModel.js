@@ -14,39 +14,46 @@ function obterFkModelo(fkEmpresa){
 
 function listarModelosDetalhados(fkEmpresa) {
   var instrucaoSql = `
-SELECT 
-  m.modelo,
-  m.SO AS sistema_operacional,
-  m.serialNumber as serial_number,
-  
-  -- CPU
-  (SELECT modeloComponente 
-   FROM componente 
-   WHERE fk_componente_maquina = m.id_maquina AND tipo = 'CPU' 
-   LIMIT 1) AS cpu,
-  
-  -- RAM
-  (SELECT valor 
-   FROM componente 
-   WHERE fk_componente_maquina = m.id_maquina AND tipo = 'RAM' 
-   LIMIT 1) AS ram_gb,
-  
-  -- Disco
-  (SELECT modeloComponente 
-   FROM componente 
-   WHERE fk_componente_maquina = m.id_maquina AND tipo = 'DISCO' 
-   LIMIT 1) AS disco,
-  
-  (SELECT valor 
-   FROM componente 
-   WHERE fk_componente_maquina = m.id_maquina AND tipo = 'DISCO' 
-   LIMIT 1) AS capacidade_disco_gb
-
-FROM maquina m
-WHERE m.fk_maquina_empresa = 1 AND m.status = 1;
-
+SELECT
+    m.modelo as modelo,
+    MAX(CASE WHEN c.tipo = 'CPU' THEN c.modeloComponente END) AS cpu,
+    MAX(CASE WHEN c.tipo = 'RAM' THEN c.modeloComponente END) AS ram_gb,
+    MAX(CASE WHEN c.tipo = 'Disco' THEN c.modeloComponente END) AS disco,
+    MAX(CASE WHEN c.tipo = 'Disco' THEN c.maximo END) AS capacidade_disco_gb,
+    MAX(CASE WHEN c.tipo = 'TDA' THEN c.maximo END) AS capacidade_tda
+FROM
+    maquina m
+JOIN
+    componente c ON m.id_maquina = c.fk_componente_maquina
+GROUP BY
+    m.modelo;
   `;
 
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+
+function listarTempoAtividadePorMaquina(fkEmpresa) {
+  const instrucaoSql = `
+    SELECT 
+        m.serialNumber as serial_number,
+        m.SO as sistema_operacional,
+        m.modelo as modelo,
+        COALESCE(
+            (
+                SELECT h.valor
+                FROM historico h
+                JOIN componente c ON h.fk_historico_maquina = c.id_componente
+                WHERE c.tipo = 'TDA' AND c.fk_componente_maquina = m.id_maquina
+                ORDER BY h.data_captura DESC
+                LIMIT 1
+            ),
+            NULL
+        ) AS tempo_atividade
+    FROM maquina m
+    WHERE m.fk_maquina_empresa = ${fkEmpresa};
+  `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
@@ -75,5 +82,6 @@ module.exports =
   obterMaquinas,
   excluir,
   editar,
-  listarModelosDetalhados
+  listarModelosDetalhados,
+  listarTempoAtividadePorMaquina
 }

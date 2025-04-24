@@ -52,12 +52,13 @@ body {
   .list {
     display: flex;
     flex-direction: row;
-    gap: 2.5% 2.5;
+    gap: 2.5%;
 
     .select_main {
       display: flex;
       flex-direction: column;
-      width: 30%;
+      width: 250px;
+      min-width: 150px;
 
       select,
       input {
@@ -204,8 +205,6 @@ body {
 #modelos-id tr:hover {background-color: #ededed;}
 
 table th{
-  padding-top: 12px;
-  padding-bottom: 12px;
   text-align: left;
   background-color: #c9c9c9;
   color: black;
@@ -232,7 +231,15 @@ table{
   align-items: start;
 }
 
-.alertas-container{
+.container-alerta-select{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5%;
+  margin: 1%;
+}
+
+.container-alerta{
   display: flex;
 }
 
@@ -246,18 +253,10 @@ table{
 
 .alertas-box{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  align-content: center;
   font-size: 15px;
-}
-
-.grafico-box{
-  height: 308px;
-  width: 300px;
-  border: solid #C2C2C2;
-  align-items: center;
 }
 
 #list-table{
