@@ -1,6 +1,11 @@
 function gerarMenuLateral(){
-    const div_lateral = document.getAnimations('body_dashRealTime')
-
+    const div_lateral = document.getElementById('container_navDashRT')
+    
+    if (!div_lateral) {
+        console.warn('Elemento container_navDashRT não encontrado!');
+        return;
+    }
+    console.log("Passei aq")
     div_lateral.innerHTML = `
                     <div class="perfil">
                             <div class="logo">
@@ -8,7 +13,7 @@ function gerarMenuLateral(){
                                 <span>Sentinela</span>
                             </div>
                             <div class="imagem_perfil">
-                                <img id="fotoPerfil_menu">
+                                <img id="fotoPerfil_menu" src="../assets/img/img_perfil_nav.jpg">
                             </div>
                             <div class="texto_perfil">
                                 <span>
@@ -18,31 +23,8 @@ function gerarMenuLateral(){
                             </div>
                         </div>
                         <div class="btn_nav">
-                            <div class="btn_dash">
-                                <li>
-                                    <button onclick="btn_rt()">Análise em tempo real</button>
-                                </li>
-                                <li>
-                                    <button onclick="btn_hist()">Análise histórica</button>
-                                </li>
-                                <li>
-                                    <button onclick="btn_geral()">Análise geral</button>
-                                </li>
-                                <li>
-                                    <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
-                                </li>
-                                <li>
-                                    <button onclick="btn_func()">Gerenciamento de Funcionário</button>
-                                </li>
-                                <li>
-                                    <button onclick="btn_disp()">Gerenciamento de Modelo</button>
-                                </li>
-                                <li>
-                                    <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
-                                </li>
-                                <li>
-                                    <button onclick="btn_alerta()" class="agora">Alertas</button>
-                                </li>
+                            <div class="btn_dash" id="btn_dash">
+                                
                             </div>
                             <div class="btn_sair">
                                 <button onclick="sair()">Sair
@@ -52,52 +34,183 @@ function gerarMenuLateral(){
                         </div>`;
                     
     const foto = document.getElementById('fotoPerfil_menu')
-
+    console.log(sessionStorage.fotoPerfil)
     if(sessionStorage.fotoPerfil){
-        foto.scr = "../assets/img/img_perfil_nav.jpg"
-    }else{
-        foto.scr = `../imagens_de_perfil/${sessionStorage.fotoPerfil}`
+        foto.src = `../imagens_de_perfil/${sessionStorage.fotoPerfil}`
     }
 
-                        
+    const btn_dash = document.getElementById('btn_dash')
+    
+    if(sessionStorage.tipoUsuario == 1 ){
+        btn_dash.innerHTML = `<li>
+                                    <button id="btn_rt" onclick="btn_rt()">Análise em tempo real</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_hist" onclick="btn_hist()">Análise histórica</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_alerta" onclick="btn_alerta()">Alertas</button>
+                                </li>
+
+                                 <li>
+                                    <button id="btn_chamados" onclick="btn_chamados()">Suporte Técnico</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_myConta" onclick="btn_myConta()" >Minha Conta</button>
+                                </li>
+                                `
+
+    }else if( sessionStorage.tipoUsuario == 2){
+        btn_dash.innerHTML = `<li>
+                                    <button id="btn_geral" onclick="btn_geral()">Análise geral</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_func" onclick="btn_func()">Gerenciamento de Funcionário</button>
+                                </li>
+                                
+                                 <li>
+                                    <button id="btn_chamados" onclick="btn_chamados()">Suporte Técnico</button>
+                                </li>
+                                
+                                <li>
+                                    <button id="btn_myConta" onclick="btn_myConta()" >Minha Conta</button>
+                                </li>
+                                `
+    }else if( sessionStorage.tipoUsuario == 3){
+        btn_dash.innerHTML = `<li>
+                                    <button id="btn_hist" onclick="btn_hist()">Análise histórica</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_endereco" onclick="btn_endereco()">Gerenciamento de Endereços</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_disp" onclick="btn_disp()">Gerenciamento de Modelo</button>
+                                </li>
+                                
+                                <li>
+                                    <button id="btn_maquina" onclick="btn_maquina()">Gerenciamento de Maquina</button>
+                                </li>
+                                
+                                <li>
+                                    <button id="btn_alerta" onclick="btn_alerta()">Alertas</button>
+                                </li>
+                                
+                                 <li>
+                                    <button id="btn_chamados" onclick="btn_chamados()">Suporte Técnico</button>
+                                </li>
+                                
+                                <li>
+                                    <button id="btn_myConta" onclick="btn_myConta()" >Minha Conta</button>
+                                </li>
+                                `
+    } else if( sessionStorage.tipoUsuario == 4){
+        btn_dash.innerHTML = `<li>
+                                    <button id="btn_rt" onclick="btn_rt()">Análise em tempo real</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_hist" onclick="btn_hist()">Análise histórica</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_geral" onclick="btn_geral()">Análise geral</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_endereco" onclick="btn_endereco()">Gerenciamento de Endereços</button>
+                                </li>
+
+                                <li>
+                                    <button id="btn_func" onclick="btn_func()">Gerenciamento de Funcionário</button>
+                                </li>
+                                
+                                <li>
+                                    <button id="btn_disp" onclick="btn_disp()">Gerenciamento de Modelo</button>
+                                </li>
+                                
+                                <li>
+                                    <button id="btn_maquina" onclick="btn_maquina()">Gerenciamento de Maquina</button>
+                                </li>
+                                
+                                <li>
+                                    <button id="btn_alerta" onclick="btn_alerta()">Alertas</button>
+                                </li>
+                                
+                                 <li>
+                                    <button id="btn_chamados" onclick="btn_chamados()">Suporte Técnico</button>
+                                </li>
+                                
+                                <li>
+                                    <button id="btn_myConta" onclick="btn_myConta()" >Minha Conta</button>
+                                </li>
+                                `
+    }
+
+    const btnAtivo = sessionStorage.getItem('btnAtivo');
+
+    if (btnAtivo) {
+        const btn = document.getElementById(btnAtivo);
+        if (btn) {
+            btn.classList.add('agora');
+        }
+    }
 }
 
 function btn_rt(){
     window.location = './dash_realTime.html';
+    sessionStorage.setItem('btnAtivo', 'btn_rt');
 }
 
 function btn_hist(){
     window.location = './dash_analiseHistorico.html'
+    sessionStorage.setItem('btnAtivo', 'btn_hist');
 }
 
 function btn_geral(){
     window.location = './dash_analiseGeral.html';
+    sessionStorage.setItem('btnAtivo', 'btn_geral');
 }
 
 function btn_func() {
     window.location = './gerenciar_funcionarios.html';
+    sessionStorage.setItem('btnAtivo', 'btn_endereco');
 }
 
 function btn_disp() {
     window.location = './cadastroModelo.html';
+    sessionStorage.setItem('btnAtivo', 'btn_func');
 }
 
 function btn_maquina() {
     window.location = './cadastroMaquina.html';
+    sessionStorage.setItem('btnAtivo', 'btn_disp');
 }
 
 function btn_endereco(){
     window.location = './cadastroEndereco.html';
+    sessionStorage.setItem('btnAtivo', 'btn_maquina');
 }
 
 function btn_alerta(){
     window.location = './alertas.html';
+    sessionStorage.setItem('btnAtivo', 'btn_alerta');
 
 }
 
-function btn_alerta(){
+function btn_chamados(){
     window.location = './chamados.html';
+    sessionStorage.setItem('btnAtivo', 'btn_chamados');
+}
 
+function btn_myConta(){
+    window.location = './myConta.html';
+    sessionStorage.setItem('btnAtivo', 'btn_myConta');
 }
 
 function sair(){

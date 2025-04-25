@@ -59,8 +59,9 @@ body{
       justify-content: center;
       align-items: center;
 
-      img {
-        height: 70%;
+      #fotoPerfil_menu {
+        height: 100px;
+        width: 100px;
         border-radius: 10px;
         border: 4px solid #fbe969;
 
