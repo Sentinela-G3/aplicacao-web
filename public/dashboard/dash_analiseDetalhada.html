@@ -1,171 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/table.css">
-        <link rel="stylesheet" href="../css/navbar.css">
-        <link rel="stylesheet" href="../css/dashboardAH.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        <title>Dashboard | Análise Geral</title>
-
-        <script src="../scripts/animacaoMenuMobile.js"></script>
-            <!-- SCRIPT QUE GERA O CONTEUDO DOS MENUS -->
-
-
-    </head>
-    <body class="body_dashRealTime" id="dash_RT">
-        <!-- NAV-BAR START-->
-            <!-- MENU LATERAL-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dashboardAH.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/table.css">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Dashboard | Análise Detalhada</title>
+</head>
+<body class="body_dashRealTime" id="dash_RT">
+    <!-- NAV-BAR START -->
     <div class="container_navDashRT" id="container_navDashRT"></div>
-
-
-    <!-- MENU SUPERIOR MOBILE-->
+    <!-- MENU SUPERIOR MOBILE -->
     <div class="navBar-mobile" id="navBar-mobile"></div>
-            <div class="section1">
-                <div class="first-child">
-                    <h1>Análise detalhada em tempo real</h1>
-                    <div id="list-filter" class="list">
-                        <div id="select_modelo" class="select_main">
-                            <input type="text" placeholder="Digite o N° Serial">
-                        </div>
-                        <div id="confirm_button">
-                            <span>PESQUISAR</span>
-                        </div>
-                    </div>
+    
+    <div class="section1">
+        <div class="first-child">
+            <h1>Análise detalhada em tempo real</h1>
+            <div id="list-filter" class="list">
+                <div id="select_modelo" class="select_main">
+                    <label for="serial" class="title_select">Número Serial</label>
+                    <input type="text" id="serial" placeholder="Digite o N° Serial">
                 </div>
-                <div class="container-graphs">
-                    <!-- Processador -->
-                    <div class="containerComponent">
-                        <div class="titulo_grafico">
-                            <h3>Processador</h3>
-                            <div>
-                                <span>Uso do processador em tempo real</span>
-                            </div>
-                        </div>
-                        <div class="graficos_align">
-                            <div class="card-generic">
-                                <div class="list-data">
-                                    <div class="data-box">
-                                        <span class="data-title">Frequência</span>
-                                        <span class="data"></span>
-                                    </div>
-                                    <div class="data-box">
-                                        <span class="data-title">Porcentagem de Uso</span>
-                                        <span class="data"></span>
-                                    </div>
-                                    <div class="data-box">
-                                        <span class="data-title">Tempo de Atividade</span>
-                                        <span class="data"></span>
-                                    </div>
-                                </div>
-                                <div class="chart-box">
-                                    <h4>Uso do processador em tempo real</h4>
-                                    <div id="chart" class="chart-js"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <!-- Memória -->
-                    <div class="containerComponent">
-                        <div class="titulo_grafico">
-                            <h3>Memória</h3>
-                            <div>
-                                <span>Uso da memória em tempo real</span>
-                            </div>
-                        </div>
-                        <div class="graficos_align">
-                            <div class="card-generic">
-                                <div class="list-data">
-                                    <div class="data-box">
-                                        <span class="data-title">Memória Utilizada</span>
-                                        <span class="data"></span>
-                                    </div>
-                                    <div class="data-box">
-                                        <span class="data-title">Porcentagem de Uso</span>
-                                        <span class="data"></span>
-                                    </div>
-                                </div>
-                                <div class="chart-box">
-                                    <h4>Uso de Memória em tempo real</h4>
-                                    <div id="chart2" class="chart-js"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <!-- Rede -->
-                    <div class="containerComponent">
-                        <div class="titulo_grafico">
-                            <h3>Rede</h3>
-                            <div>
-                                <span>Uso da rede em tempo real</span>
-                            </div>
-                        </div>
-                        <div class="graficos_align">
-                            <div class="card-generic">
-                                <div class="list-data">
-                                    <div class="data-box">
-                                        <span class="data-title">Velocidade de Download</span>
-                                        <span class="data"></span>
-                                    </div>
-                                    <div class="data-box">
-                                        <span class="data-title">Velocidade de Upload</span>
-                                        <span class="data"></span>
-                                    </div>
-                                </div>
-                                <div class="chart-box">
-                                    <h4>Taxa de Transferência</h4>
-                                    <div id="chart4" class="chart-js"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <!-- Disco -->
-                    <div class="containerComponent">
-                        <div class="titulo_grafico">
-                            <h3>Disco</h3>
-                            <div>
-                                <span>Uso do Disco em tempo real</span>
-                            </div>
-                        </div>
-                        <div class="graficos_align">
-                            <div class="card-generic">
-                                <div class="list-data">
-                                    <div class="data-box">
-                                        <span class="data-title">Capacidade Livre</span>
-                                        <span class="data">610Gb</span>
-                                    </div>
-                                    <div class="data-box">
-                                        <span class="data-title">Capacidade em Uso</span>
-                                        <span class="data">10Gb</span>
-                                    </div>
-                                    <div class="data-box">
-                                        <span class="data-title">Capacidade Total</span>
-                                        <span class="data">620Gb</span>
-                                    </div>
-                                </div>
-                                <div class="chart-box">
-                                    <h4>Média de uso de Disco</h4>
-                                    <div id="chart6" class="chart-js"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- </div> -->
+                <button id="confirm_button">
+                    <span>PESQUISAR</span>
+                </button>
             </div>
-        <!-- </div> -->
-    </body>
+        </div>
+        
+        <div class="container-graphs">
+            <!-- Processador -->
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Processador</h3>
+                    <span>Uso do processador em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Frequência</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Porcentagem de Uso</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Tempo de Atividade</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Uso do processador em tempo real</h4>
+                            <div id="chart" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Memória -->
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Memória</h3>
+                    <span>Uso da memória em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Memória Utilizada</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Porcentagem de Uso</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Memória Total</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Uso de Memória em tempo real</h4>
+                            <div id="chart2" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Rede -->
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Rede</h3>
+                    <span>Uso da rede em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Velocidade de Download</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Velocidade de Upload</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                       
+                        </div>
+                        <div class="chart-box">
+                            <h4>Taxa de Transferência</h4>
+                            <div id="chart4" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Disco -->
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Disco</h3>
+                    <span>Uso do Disco em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Capacidade Livre</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Capacidade em Uso</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Capacidade Total</span>
+                                <span class="data">Sem dados</span>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Média de uso de Disco</h4>
+                            <div id="chart6" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/animacaoMenuMobile.js"></script>
+    <script src="../scripts/dash_analiseDetalhada/dash_analiseDetalhada.js"></script>
+    <script src="../scripts/redirecionamentoMenu.js" defer></script>
+</body>
 </html>
-<script src="../scripts/dash_analiseDetalhada/dash_analiseDetalhada.js">
-
-</script>
-
-<script src="../scripts/redirecionamentoMenu.js" defer ></script>
