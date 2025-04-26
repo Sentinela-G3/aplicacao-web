@@ -2,6 +2,12 @@
 const urlParams = new URLSearchParams(window.location.search);
 let id = urlParams.get('id');
 
+const BASE_URL = window.location.hostname === "localhost"
+  ? "http://localhost:3333"
+  : "http://ec2-18-208-5-45.compute-1.amazonaws.com:3333";
+
+
+
 // Criar os gráficos já vazios
 let chartCPU, chartMemoria, chartRede, chartDisco;
 let intervaloAtualizacao;
@@ -113,7 +119,7 @@ function atualizarBoxes(dados) {
 // Função para buscar dados da máquina
 async function buscarMetricas(idMaquina) {
     try {
-        const response = await fetch(`http://localhost:3333/medidas/${idMaquina}`);
+        const response = await fetch(`http://${BASE_URL}/medidas/${idMaquina}`);
         const json = await response.json();
         const dados = json.dados;
 
@@ -165,7 +171,7 @@ document.getElementById('confirm_button').addEventListener('click', async () => 
 
     if (serialDigitado) {
         try {
-            const response = await fetch(`http://localhost:3333/maquinas/serial/${serialDigitado}`);
+            const response = await fetch(`http://${BASE_URL}/maquinas/serial/${serialDigitado}`);
             const dadosSerial = await response.json();
             const idMaquina = dadosSerial[0].id_maquina;
 

@@ -3,6 +3,11 @@ if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.em
     window.location.href = "../login.html";
 }
 
+
+const BASE_URL = window.location.hostname === "localhost"
+  ? "http://localhost:3333"
+  : "http://ec2-18-208-5-45.compute-1.amazonaws.com:3333";
+
 const usuario = {
     idEmpresa: sessionStorage.idEmpresa,
     idUsuario: sessionStorage.idUsuario,
@@ -15,8 +20,8 @@ const usuario = {
 async function carregarMaquinas() {
     try {
         const [machinesResponse, alertsResponse] = await Promise.all([
-            fetch(`http://localhost:3333/maquinas/${usuario.idEmpresa}`),
-            fetch('http://localhost:3333/jira/tickets')
+            fetch(`http:///${BASE_URL}/maquinas/${usuario.idEmpresa}`),
+            fetch(`http://${BASE_URL}/jira/tickets`)
         ]);
 
         if (!machinesResponse.ok || !alertsResponse.ok) throw new Error('Erro ao buscar dados');
@@ -36,7 +41,7 @@ async function carregarMaquinas() {
         let ativas = 0, inativas = 0, totalAlertas = 0;
 
         for (const machine of machines) {
-            const metricsResponse = await fetch(`http://localhost:3333/medidas/${machine.id_maquina}`);
+            const metricsResponse = await fetch(`http://${BASE_URL}/medidas/${machine.id_maquina}`);
             const metrics = metricsResponse.ok ? await metricsResponse.json() : {};
 
             // Acessando a chave 'dados' corretamente
