@@ -4,7 +4,7 @@ let id = urlParams.get('id');
 
 const BASE_URL = window.location.hostname === "localhost"
   ? "http://localhost:3333"
-  : "http://ec2-18-208-5-45.compute-1.amazonaws.com:3333";
+  : "http://18.208.5.45:3333";
 
 
 
