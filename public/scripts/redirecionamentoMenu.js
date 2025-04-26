@@ -322,7 +322,7 @@ function btn_rt(){
 }
 
 function btn_hist(){
-    window.location = './dash_analiseHistorico.html'
+    window.location = './dash_analiseDetalhada.html'
     sessionStorage.setItem('btnAtivo', 'btn_hist');
 }
 

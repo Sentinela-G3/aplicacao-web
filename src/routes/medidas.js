@@ -3,8 +3,12 @@ var router = express.Router();
 
 var medidaController = require("../controllers/medidaController");
 
-router.get('/:id/componentes', (req, res) => {
+router.get('/:id_maquina', (req, res) => {
     medidaController.obterDadosRealtime(req, res)
+})
+
+router.post('/:id_maquina', (req, res) => {
+    medidaController.receberDadosDeMonitoramento(req, res)
 })
 
 
