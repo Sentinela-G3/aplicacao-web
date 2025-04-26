@@ -90,10 +90,6 @@ function calcularCapacidadeDisco(gbEmUso, percentualUso) {
 
 // Atualiza os dados dos boxes
 function atualizarBoxes(dados) {
-   // porcentagem em uso
-   console.log(dados.disk_usage.valor)
-   // uso em gb
-   console.log(dados.disk_used_gb)
 
     // CPU
     document.querySelectorAll(".graficos_align")[0].querySelectorAll(".data-box .data")[0].textContent = `${dados.cpu_freq} GHz`;
@@ -121,10 +117,6 @@ async function buscarMetricas(idMaquina) {
         const json = await response.json();
         const dados = json.dados;
 
-        // Atualizar boxes de dados
-        console.log(dados)
-        console.log(dados.disk_usage_gb)
-        console.log(dados.disk_percent)
 
         atualizarBoxes({
             cpu_freq: dados.cpu_freq[dados.cpu_freq.length - 1].valor.toFixed(2),
@@ -169,12 +161,15 @@ if (id) {
 // Botão de pesquisa manual
 document.getElementById('confirm_button').addEventListener('click', async () => {
     const serialDigitado = document.querySelector('#select_modelo input').value;
+    console.log(serialDigitado)
 
     if (serialDigitado) {
         try {
             const response = await fetch(`http://localhost:3333/maquinas/serial/${serialDigitado}`);
             const dadosSerial = await response.json();
-            const idMaquina = dadosSerial.id;
+            const idMaquina = dadosSerial[0].id_maquina;
+
+            console.log(dadosSerial)
 
             // Atualiza o ID e para o intervalo anterior
             clearInterval(intervaloAtualizacao);

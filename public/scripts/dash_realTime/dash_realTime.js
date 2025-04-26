@@ -26,9 +26,6 @@ async function carregarMaquinas() {
             alertsResponse.json()
         ]);
 
-        console.log('Machines:', machines);
-        console.log('AlertsData:', alertsData);
-
         const allAlerts = (alertsData.values || []).filter(ticket => 
             ticket && String(ticket.requestTypeId) === "68"
         );
@@ -120,7 +117,7 @@ async function carregarMaquinas() {
                 <td>${ram !== null ? Math.round(ram) : '-'}</td>
                 <td>${cpu !== null ? Math.round(cpu) : '-'}</td>
                 <td>${disco !== null ? Math.round(disco) : '-'}</td>
-                <td><button class="details-btn" data-id="${machine.id_maquina}">Expandir Análise</button></td>
+                <td><button class="details-btn" onclick=analiseDetalhada(${machine.id_maquina}) data-id="${machine.id_maquina}">Expandir Análise</button></td>
             `;
             
             tableBody.appendChild(row);
@@ -143,6 +140,10 @@ function formatarHoras(valor) {
     const h = Math.floor(valor);
     const m = Math.floor((valor % 1) * 60);
     return `${h}:${m.toString().padStart(2, '0')}`;
+}
+
+function analiseDetalhada(idMaquina) {
+    window.location = `./dash_analiseDetalhada.html?id=${idMaquina}`;
 }
 
 

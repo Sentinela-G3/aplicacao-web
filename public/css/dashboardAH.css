@@ -326,6 +326,10 @@ body {
   width: fit-content;
 }
 
+#confirm_button:hover {
+  cursor: pointer;
+}
+
 
 @media (max-width: 450px) {
   .section1{

@@ -39,5 +39,9 @@ router.post("/listarTempoAtividade", function (req, res) {
     maquinaController.listarTempoAtividadePorMaquina(req, res);
 });
 
+router.get("/serial/:serialNumber", function(req, res) {
+    maquinaController.obterMaquinaPorSerial(req, res);
+})
+
 
 module.exports = router;
