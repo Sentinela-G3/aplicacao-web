@@ -5,8 +5,8 @@ if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.em
 
 
 const BASE_URL = window.location.hostname === "localhost"
-  ? "http://localhost:3333"
-  : "http://18.208.5.45:3333";
+  ? "localhost:3333"
+  : "18.208.5.45:3333";
 
 const usuario = {
     idEmpresa: sessionStorage.idEmpresa,

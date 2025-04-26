@@ -3,8 +3,8 @@ const urlParams = new URLSearchParams(window.location.search);
 let id = urlParams.get('id');
 
 const BASE_URL = window.location.hostname === "localhost"
-  ? "http://localhost:3333"
-  : "http://18.208.5.45:3333";
+  ? "localhost:3333"
+  : "18.208.5.45:3333";
 
 
 
