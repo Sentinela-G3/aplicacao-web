@@ -22,9 +22,9 @@ function listarModelosDetalhados(fkEmpresa) {
   var instrucaoSql = `
 SELECT
     m.modelo as modelo,
-    MAX(CASE WHEN c.tipo = 'CPU' THEN c.modeloComponente END) AS cpu,
-    MAX(CASE WHEN c.tipo = 'RAM' THEN c.modeloComponente END) AS ram_gb,
-    MAX(CASE WHEN c.tipo = 'Disco' THEN c.modeloComponente END) AS disco,
+    MAX(CASE WHEN c.tipo = 'CPU' THEN c.modelo END) AS cpu,
+    MAX(CASE WHEN c.tipo = 'RAM' THEN c.modelo END) AS ram_gb,
+    MAX(CASE WHEN c.tipo = 'Disco' THEN c.modelo END) AS disco,
     MAX(CASE WHEN c.tipo = 'Disco' THEN c.maximo END) AS capacidade_disco_gb,
     MAX(CASE WHEN c.tipo = 'TDA' THEN c.maximo END) AS capacidade_tda
 FROM

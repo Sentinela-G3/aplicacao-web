@@ -70,7 +70,7 @@ async function carregarMaquinas() {
                     const segundos = (agora - captura) / 1000;  
 
                     // Alterando para o critério de 10 segundos para inatividade
-                    if (segundos <= 10) {
+                    if (segundos <= 15) {
                         statusText = 'Ativo';
                         statusColor = 'green';
                         ativas++;

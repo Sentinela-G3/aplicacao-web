@@ -1,3 +1,8 @@
+if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.email || !sessionStorage.tipoUsuario || !sessionStorage.nomeUsuario) {
+    alert("Sua sessão expirou! Logue-se novamente.");
+    window.location.href = "../login.html";
+}
+
 
 window.onload = listarModelosDetalhados;
 window.addEventListener("load", contarAlertasUltimaSemana);
@@ -9,7 +14,7 @@ function listarModelosDetalhados() {
     fetch("/maquinas/listarModelosDetalhados", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkEmpresaServer: 1 })
+        body: JSON.stringify({ fkEmpresaServer: sessionStorage.idEmpresa })
     })
         .then(res => {
             if (!res.ok) {
