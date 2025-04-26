@@ -51,7 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         if( ticket.requestTypeId == "68"){
-          
+          div.innerHTML += `<tr>
+                          <td class="alerta-chave">${ticket.issueKey}</td>
+                          <td>${descricaoTratada}</td>
+                          <td class="alerta-dispositivo">${maquina[1]}</td>
+                          <td class= 'alerta-horario'> ${textHoraAbertura}</td>
+                          <td><span class="status-badge status-resolvido" >${ticket.currentStatus.status}</span></td>
+                      </tr>`;
         }
       });
 
@@ -106,41 +112,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //Função para filtar alertas de acordo com status e periodo
 function filtrarAlertas() {
-const statusSelecionado = document.getElementById('select-status').value.toLowerCase();
-const dataInicioInput = document.getElementById('periodoInicio').value;
-const dataFimInput = document.getElementById('periodoFim').value;
+  const statusSelecionado = document.getElementById('select-status').value.toLowerCase();
+  const dataInicioInput = document.getElementById('periodoInicio').value;
+  const dataFimInput = document.getElementById('periodoFim').value;
 
-const dataInicio = dataInicioInput ? new Date(`${dataInicioInput}T00:00:00`) : null;
-const dataFim = dataFimInput ? new Date(`${dataFimInput}T23:59:59`) : null;
+  const dataInicio = dataInicioInput ? new Date(`${dataInicioInput}T00:00:00`) : null;
+  const dataFim = dataFimInput ? new Date(`${dataFimInput}T23:59:59`) : null;
 
-const linhas = document.querySelectorAll('#lista-alertas tbody tr');
+  const linhas = document.querySelectorAll('#lista-alertas tbody tr');
 
-linhas.forEach(linha => {
-  const status = linha.querySelector('.alerta-status').textContent.toLowerCase();
-  const dataTexto = linha.querySelector('.alerta-horario').textContent; 
+  linhas.forEach(linha => {
+    const status = linha.querySelector('.status-resolvido').textContent.toLowerCase();
+    const dataTexto = linha.querySelector('.alerta-horario').textContent; 
 
-  const [dataParte, horaParte] = dataTexto.split(' às ');
-  const [dia, mes, ano] = dataParte.split('/');
-  const [hora, minuto] = horaParte.split(':');
+    const [dataParte, horaParte] = dataTexto.split(' às ');
+    const [dia, mes, ano] = dataParte.split('/');
+    const [hora, minuto] = horaParte.split(':');
 
-  const dataChamado = new Date(ano, mes - 1, dia, hora, minuto); 
+    const dataChamado = new Date(ano, mes - 1, dia, hora, minuto); 
 
-  let exibir = true;
+    let exibir = true;
 
-  if (statusSelecionado !== 'todos' && status !== statusSelecionado) {
-    exibir = false;
-  }
+    if (statusSelecionado !== 'todos' && status !== statusSelecionado) {
+      exibir = false;
+    }
 
-  if (dataInicio && dataChamado < dataInicio) {
-    exibir = false;
-  }
+    if (dataInicio && dataChamado < dataInicio) {
+      exibir = false;
+    }
 
-  if (dataFim && dataChamado > dataFim) {
-    exibir = false;
-  }
+    if (dataFim && dataChamado > dataFim) {
+      exibir = false;
+    }
 
-  linha.style.display = exibir ? '' : 'none';
-});
+    linha.style.display = exibir ? '' : 'none';
+  });
 }
     
 function pesquisarChaveOuId() {
