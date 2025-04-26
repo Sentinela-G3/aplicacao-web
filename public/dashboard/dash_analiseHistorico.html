@@ -12,64 +12,21 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <title>Dashboard | Análise Geral</title>
-        <script src="../scripts/redirecionamentoMenu.js"></script>
+        <script src="../scripts/animacaoMenuMobile.js"></script>
+
+
 
     </head>
     <body class="body_dashRealTime" id="dash_RT">
-        <!-- NAV-BAR START-->
-        <div class="container_navDashRT">
-            <div class="perfil">
-                <div class="logo">
-                    <img src="../assets/img/svgLogo.svg">
-                    <span>Sentinela</span>
-                </div>
-                <div class="imagem_perfil">
-                    <img src="../assets/img/img_perfil_nav.jpg">
-                </div>
-                <div class="texto_perfil">
-                    <span>
-                        Olá,
-                        <b>Vinicius!</b>
-                    </span>
-                </div>
-            </div>
-            <div class="btn_nav">
-                <div class="btn_dash">
-                    <li>
-                        <button onclick="btn_rt()">Análise em tempo real</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_hist()" class="agora">
-                            <b>Análise histórica</b>
-                        </button>
-                    </li>
-                    <li>
-                        <button onclick="btn_geral()">Análise geral</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_endereco()">Gerenciamento de Endereços</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_func()">Gerenciamento de Funcionário</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_disp()">Gerenciamento de Modelo</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_maquina()">Gerenciamento de Maquina</button>
-                    </li>
-                    <li>
-                        <button onclick="btn_alerta()">Alertas</button>
-                    </li>
-                </div>
-                <div class="btn_sair">
-                    <button onclick="sair()">Sair
-                        <img src="../assets/img/sair.png" alt="Sair">
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- NAV-BAR END -->
+        <!-- MENU LATERAL-->
+    <div class="container_navDashRT" id="container_navDashRT"></div>
+
+    <!-- MENU SUPERIOR MOBILE-->
+    <div class="navBar-mobile" id="navBar-mobile"></div>
+
+    <!-- SCRIPT QUE GERA O CONTEUDO DOS MENUS -->
+    <script src="../scripts/redirecionamentoMenu.js"></script>
+
         <!-- <div class="ordem_graficos"> -->
             <!-- GRAFICO 1 -->
             <div class="section1">

@@ -194,7 +194,7 @@ body{
 
   .navBar-mobile{
     display: flex;
-    position: fixed;
+    position: absolute;
     flex-direction: column;
     width: 100%;
     height: 7vh;

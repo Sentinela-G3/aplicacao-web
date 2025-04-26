@@ -262,3 +262,12 @@ table{
 #list-table{
   gap: 10px;
 }
+
+
+@media (max-width: 450px) {
+  .sub-section1{
+    margin-top: 7vh;
+    margin-left: 0;
+  }
+ 
+}

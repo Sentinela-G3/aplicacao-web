@@ -325,3 +325,11 @@ body {
   display: flex;
   width: fit-content;
 }
+
+
+@media (max-width: 450px) {
+  .section1{
+    margin-top: 7vh;
+    margin-left: 0;
+  }
+}

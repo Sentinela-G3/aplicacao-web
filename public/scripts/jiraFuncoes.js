@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função para renderizar os tickets na lista
     function renderTickets(tickets) {
       const div = document.getElementById("box-linhas")
-      div.innerHTML = '';
       tickets.forEach(ticket => {
         console.log(ticket)
         const date = new Date(ticket.createdDate.jira);
@@ -52,13 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         if( ticket.requestTypeId == "68"){
-          div.innerHTML += `<tr>
-                              <td class="alerta-chave">${ticket.issueKey}</td>
-                              <td class="alerta-desc">${descricaoTratada}</td>
-                              <td class="alerta-dispositivo">${maquina[1]}</td>
-                              <td class="alerta-horario"> ${textHoraAbertura}</td>
-                              <td><span class="alerta-status status-resolvido">${ticket.currentStatus.status}</span></td>
-                            </tr>`;
+          
         }
       });
 
