@@ -3,6 +3,8 @@ const modal = document.getElementById("userModal");
 const openModalBtn = document.querySelector(".add-btn");
 const closeModalBtn = document.querySelector(".close");
 
+
+
 // Abrir o modal ao clicar no botão
 openModalBtn.addEventListener("click", () => {
     modal.style.display = "flex";
