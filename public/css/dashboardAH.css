@@ -56,14 +56,13 @@ h4 {
   font-weight: 500;
 }
 
-/* Main content area */
 .section1 {
   display: flex;
   flex-direction: column;
   width: calc(100% - var(--sidebar-width));
   min-height: 100vh;
   padding: var(--spacing-lg);
-  margin-left: var(--sidebar-width); /* Match sidebar width */
+  margin-left: var(--sidebar-width);
   gap: var(--spacing-lg);
 }
 
@@ -133,7 +132,6 @@ h4 {
   transform: translateY(-1px);
 }
 
-/* Grid layout for charts */
 .container-graphs {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -213,7 +211,6 @@ h4 {
   min-height: 180px;
 }
 
-/* Chart controls */
 .chart-controls {
   display: flex;
   justify-content: flex-end;
@@ -231,7 +228,6 @@ h4 {
   color: var(--textcolor-primary);
 }
 
-/* Responsive design */
 @media (max-width: 1200px) {
   .container-graphs {
     grid-template-columns: 1fr;
@@ -250,12 +246,10 @@ h4 {
     gap: var(--spacing-sm);
   }
   
-  /* For mobile, sidebar will likely be hidden via JavaScript */
   .container_navDashRT {
     display: none;
   }
   
-  /* Show mobile navigation */
   .navBar-mobile {
     display: block;
   }

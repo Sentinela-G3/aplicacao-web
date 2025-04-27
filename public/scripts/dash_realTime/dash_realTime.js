@@ -20,7 +20,7 @@ const usuario = {
 async function carregarMaquinas() {
     try {
         const [machinesResponse, alertsResponse] = await Promise.all([
-            fetch(`http:///${BASE_URL}/maquinas/${usuario.idEmpresa}`),
+            fetch(`http://${BASE_URL}/maquinas/${usuario.idEmpresa}`),
             fetch(`http://${BASE_URL}/jira/tickets`)
         ]);
 
@@ -36,30 +36,40 @@ async function carregarMaquinas() {
         );
 
         const tableBody = document.querySelector('.table_body');
-        tableBody.innerHTML = ''; 
+        
+        // Não limpa mais a tabela completamente
+        // tableBody.innerHTML = '';  <-- Remover esta linha
+        
+        // Mapa para rastrear quais linhas já existem na tabela
+        const existingRows = new Map();
+        document.querySelectorAll(".table_body tr").forEach(row => {
+            const id = row.getAttribute("data-machine-id");
+            if (id) existingRows.set(id, row);
+        });
 
-        let ativas = 0, inativas = 0, totalAlertas = 0;
+        let ativas = 0, inativas = 0, semDados = 0, totalAlertas = 0;
 
         for (const machine of machines) {
             const metricsResponse = await fetch(`http://${BASE_URL}/medidas/${machine.id_maquina}`);
             const metrics = metricsResponse.ok ? await metricsResponse.json() : {};
 
-            // Acessando a chave 'dados' corretamente
-            const dados = metrics.dados || {};
-
+            // Verificar o formato dos dados
+            const temDados = metrics.dados && !Array.isArray(metrics.dados);
+            const semDadosResponse = metrics.mensagem && metrics.mensagem.includes("Sem dados");
+            
             const getValor = (tipo) => {
-                if (!dados[tipo] || dados[tipo].length === 0) return null;
-                const latest = dados[tipo][dados[tipo].length - 1]; 
+                if (!temDados || !metrics.dados[tipo] || metrics.dados[tipo].length === 0) return null;
+                const latest = metrics.dados[tipo][metrics.dados[tipo].length - 1]; 
                 return latest ? latest.valor : null;
             };
 
             let statusText = 'Sem dados', statusColor = 'gray';
 
-            if (Object.keys(dados).length > 0) {
+            if (temDados) {
                 let captureTimestamp = null;
-                for (const tipo in dados) {
-                    if (dados[tipo]?.length > 0) {
-                        captureTimestamp = dados[tipo][dados[tipo].length - 1].timestamp;  
+                for (const tipo in metrics.dados) {
+                    if (metrics.dados[tipo]?.length > 0) {
+                        captureTimestamp = metrics.dados[tipo][metrics.dados[tipo].length - 1].timestamp;  
                         break;
                     }
                 }
@@ -69,7 +79,6 @@ async function carregarMaquinas() {
                     const agora = new Date();
                     const segundos = (agora - captura) / 1000;  
 
-                    // Alterando para o critério de 10 segundos para inatividade
                     if (segundos <= 15) {
                         statusText = 'Ativo';
                         statusColor = 'green';
@@ -79,9 +88,17 @@ async function carregarMaquinas() {
                         statusColor = 'red';
                         inativas++;
                     }
+                } else {
+                    statusText = 'Sem dados';
+                    statusColor = 'gray';
+                    semDados++;
+                    inativas++; 
                 }
             } else {
-                inativas++;
+                statusText = 'Sem dados';
+                statusColor = 'gray';
+                semDados++;
+                inativas++; 
             }
 
             const serial = machine.serial_number;
@@ -112,34 +129,101 @@ async function carregarMaquinas() {
             const cpu = getValor('cpu_percent');
             const disco = getValor('disk_percent');
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>ID ${machine.id_maquina} (${machine.serial_number})</td>
-                <td style="color: ${statusColor}">${statusText}</td>
-                <td>${uptime !== null ? formatarHoras(uptime) : '-'}</td>
-                <td>${alertasMaquina.length}</td>
-                <td>${linkUltimoAlerta}</td>
-                <td>${ram !== null ? Math.round(ram) : '-'}</td>
-                <td>${cpu !== null ? Math.round(cpu) : '-'}</td>
-                <td>${disco !== null ? Math.round(disco) : '-'}</td>
-                <td><button class="details-btn" onclick=analiseDetalhada(${machine.id_maquina}) data-id="${machine.id_maquina}">Expandir Análise</button></td>
-            `;
+            const machineId = `machine-${machine.id_maquina}`;
+            let row = existingRows.get(machineId);
             
-            tableBody.appendChild(row);
+            if (row) {
+                updateTableRow(row, {
+                    status: { text: statusText, color: statusColor },
+                    uptime: uptime !== null ? formatarHoras(uptime) : '-',
+                    alertasCount: alertasMaquina.length,
+                    ultimoAlerta: linkUltimoAlerta,
+                    ram: ram !== null ? Math.round(ram) : '-',
+                    cpu: cpu !== null ? Math.round(cpu) : '-',
+                    disco: disco !== null ? Math.round(disco) : '-'
+                });
+                
+                // Remover do mapa para saber quais linhas permanecem
+                existingRows.delete(machineId);
+            } else {
+                // Criar uma nova linha se não existir
+                row = document.createElement('tr');
+                row.setAttribute("data-machine-id", machineId);
+                row.innerHTML = `
+                    <td>ID ${machine.id_maquina} (${machine.serial_number})</td>
+                    <td class="status" style="color: ${statusColor}">${statusText}</td>
+                    <td class="uptime">${uptime !== null ? formatarHoras(uptime) : '-'}</td>
+                    <td class="alertas-count">${alertasMaquina.length}</td>
+                    <td class="ultimo-alerta">${linkUltimoAlerta}</td>
+                    <td class="ram">${ram !== null ? Math.round(ram) : '-'}</td>
+                    <td class="cpu">${cpu !== null ? Math.round(cpu) : '-'}</td>
+                    <td class="disco">${disco !== null ? Math.round(disco) : '-'}</td>
+                    <td><button class="details-btn" onclick="analiseDetalhada(${machine.id_maquina})" data-id="${machine.id_maquina}">Expandir Análise</button></td>
+                `;
+                
+                tableBody.appendChild(row);
+            }
         }
 
-        document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[0].textContent = ativas;
-        document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[1].textContent = inativas;
-        document.getElementById('qtd_alertas').textContent = totalAlertas;
+        // Remover linhas que não correspondem mais a nenhuma máquina ativa
+        existingRows.forEach((row) => {
+            row.remove();
+        });
+
+        // Atualizar os KPIs
+        const kpiAtivas = document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[0];
+        const kpiInativas = document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[1];
+        
+        if (kpiAtivas) kpiAtivas.textContent = ativas;
+        if (kpiInativas) kpiInativas.textContent = `${inativas} (${semDados} sem dados)`;
+        
+        const qtdAlertas = document.getElementById('qtd_alertas');
+        if (qtdAlertas) qtdAlertas.textContent = totalAlertas;
 
     } catch (error) {
         console.error('Erro ao carregar máquinas:', error);
-        document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[0].textContent = '0';
-        document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)')[1].textContent = '0';
+        const kpiElements = document.querySelectorAll('.kpi_maqRT2 span:nth-child(2)');
+        if (kpiElements.length >= 2) {
+            kpiElements[0].textContent = '0';
+            kpiElements[1].textContent = '0 (0 sem dados)';
+        }
         document.getElementById('qtd_alertas').textContent = '0';
     }
 }
 
+// Função auxiliar para atualizar apenas os valores alterados em uma linha existente
+function updateTableRow(row, data) {
+    // Atualiza o status
+    const statusCell = row.querySelector('.status');
+    if (statusCell) {
+        statusCell.textContent = data.status.text;
+        statusCell.style.color = data.status.color;
+    }
+    
+    // Atualiza uptime
+    const uptimeCell = row.querySelector('.uptime');
+    if (uptimeCell) uptimeCell.textContent = data.uptime;
+    
+    // Atualiza contagem de alertas
+    const alertasCell = row.querySelector('.alertas-count');
+    if (alertasCell) alertasCell.textContent = data.alertasCount;
+    
+    // Atualiza último alerta (pode conter HTML)
+    const ultimoAlertaCell = row.querySelector('.ultimo-alerta');
+    if (ultimoAlertaCell) ultimoAlertaCell.innerHTML = data.ultimoAlerta;
+    
+    // Atualiza RAM
+    const ramCell = row.querySelector('.ram');
+    if (ramCell) ramCell.textContent = data.ram;
+    
+    // Atualiza CPU
+    const cpuCell = row.querySelector('.cpu');
+    if (cpuCell) cpuCell.textContent = data.cpu;
+    
+    // Atualiza Disco
+    const discoCell = row.querySelector('.disco');
+    if (discoCell) discoCell.textContent = data.disco;
+}
 
 function formatarHoras(valor) {
     const h = Math.floor(valor);
@@ -150,7 +234,6 @@ function formatarHoras(valor) {
 function analiseDetalhada(idMaquina) {
     window.location = `./dash_analiseDetalhada.html?id=${idMaquina}`;
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarMaquinas();
