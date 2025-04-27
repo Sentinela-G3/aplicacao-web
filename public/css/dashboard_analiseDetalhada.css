@@ -16,7 +16,7 @@
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
   --spacing-lg: 2rem;
-  --sidebar-width: 20%; 
+  --sidebar-width: 20%;
 }
 
 * {
@@ -26,10 +26,17 @@
   font-family: "Roboto", sans-serif;
 }
 
+html, body {
+  overflow-x: hidden; /* Impede scroll horizontal em toda página */
+  width: 100%;
+  position: relative;
+}
+
 body {
   display: flex;
   background-color: #f8f9fa;
   color: var(--textcolor-primary);
+  min-height: 100vh;
 }
 
 h1 {
@@ -37,10 +44,6 @@ h1 {
   margin-bottom: var(--spacing-md);
   color: var(--textcolor-primary);
   font-weight: 600;
-}
-
-h2 {
-  font-size: var(--fontsize-heading2);
 }
 
 h3 {
@@ -56,6 +59,29 @@ h4 {
   font-weight: 500;
 }
 
+.container_navDashRT {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--color-background);
+  box-shadow: var(--card-shadow);
+  z-index: 100;
+}
+
+.navBar-mobile {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: var(--color-background);
+  box-shadow: var(--card-shadow);
+  z-index: 100;
+}
+
 .section1 {
   display: flex;
   flex-direction: column;
@@ -64,6 +90,8 @@ h4 {
   padding: var(--spacing-lg);
   margin-left: var(--sidebar-width);
   gap: var(--spacing-lg);
+  max-width: 100%;
+  overflow-x: hidden; /* Impede scroll horizontal */
 }
 
 .first-child {
@@ -71,6 +99,7 @@ h4 {
   flex-direction: column;
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-md);
+  width: 100%;
 }
 
 #list-filter {
@@ -137,12 +166,14 @@ h4 {
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-lg);
   width: 100%;
+  max-width: 100%;
 }
 
 .containerComponent {
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 100%;
 }
 
 .titulo_grafico {
@@ -157,6 +188,7 @@ h4 {
 .graficos_align {
   display: flex;
   width: 100%;
+  max-width: 100%;
 }
 
 .card-generic {
@@ -170,6 +202,7 @@ h4 {
   box-shadow: var(--card-shadow);
   gap: var(--spacing-md);
   height: 100%;
+  overflow: hidden; /* Impede elementos filhos de vazarem */
 }
 
 .list-data {
@@ -203,184 +236,114 @@ h4 {
   flex-direction: column;
   flex: 1;
   min-height: 200px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden; /* Impede o gráfico de vazar */
 }
 
 .chart-js {
-  width: 100%;
-  height: 100%;
+  width: 100% !important; /* Força o gráfico a se ajustar ao container */
+  height: 100% !important;
   min-height: 180px;
+  max-width: 100%; /* Impede o gráfico de exceder a largura */
+  overflow: hidden;
 }
 
-.chart-controls {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--spacing-xs);
-}
-
-.chart-controls button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--textcolor-secondary);
-}
-
-.chart-controls button:hover {
-  color: var(--textcolor-primary);
+/* Ajustes para os elementos internos do ApexCharts */
+.chart-js svg,
+.chart-js foreignObject,
+.chart-js g,
+.apexcharts-canvas {
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow: visible !important;
 }
 
 @media (max-width: 1200px) {
   .container-graphs {
-    grid-template-columns: 1fr;
+      grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 992px) {
   .section1 {
-    margin-left: 0;
-    width: 100%;
-    padding: var(--spacing-md);
+      margin-left: 0;
+      width: 100%;
+      padding: var(--spacing-md);
   }
   
   .list-data {
-    flex-direction: column;
-    gap: var(--spacing-sm);
+      flex-direction: column;
+      gap: var(--spacing-sm);
   }
   
   .container_navDashRT {
-    display: none;
+      display: none;
   }
   
   .navBar-mobile {
-    display: block;
+      display: block;
+  }
+
+  body {
+      margin-top: 60px; /* Espaço para o menu mobile */
   }
 }
 
 @media (max-width: 768px) {
   .first-child {
-    align-items: stretch;
+      align-items: stretch;
   }
   
   #list-filter {
-    flex-direction: column;
-    width: 100%;
+      flex-direction: column;
+      width: 100%;
   }
   
   .select_main {
-    width: 100%;
+      width: 100%;
   }
   
   #confirm_button {
-    width: 100%;
-    margin-top: var(--spacing-xs);
+      width: 100%;
+      margin-top: var(--spacing-xs);
   }
-}
 
-@media (max-width: 450px) {
-  .section1 {
-    margin-top: 60px;
-    padding: var(--spacing-sm);
-  }
-  
   h1 {
-    font-size: 1.5rem;
-  }
-  
-  .card-generic {
-    padding: var(--spacing-sm);
+      font-size: 1.75rem;
   }
 }
 
 @media (max-width: 480px) {
-  body, .section1 {
-    flex-direction: column;
-    padding: 0 5%;
+  .section1 {
+      padding: var(--spacing-sm);
+      margin-top: 60px;
   }
-
+  
   h1 {
-    text-align: center;
-    margin-bottom: 20px;
+      font-size: 1.5rem;
+      text-align: center;
   }
-
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  #list-filter {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  #select_modelo, #confirm_button {
-    width: 100%;
-  }
-
-  input[type="text"] {
-    width: 100%;
-    font-size: 1rem;
-    padding: 10px;
-  }
-
-  #confirm_button span {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: large;
-  }
-
-  #list-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }	
-
-  .containerComponent {
-    text-align: center;
-  }
-
-  .graficos_align {
-    flex-direction: column;
-    align-items: center;
+  
+  .card-generic {
+      padding: var(--spacing-sm);
   }
 
   .data-box {
-    text-align: center;
+      text-align: center;
+      min-width: 100%;
   }
 
   .chart-box {
-    width: 100%;
-    margin-top: 20px;
+      margin-top: 10px;
   }
 
-  .ultimos_graficos {
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-  }
-
-  .card-chart {
-    width: 100%;
-  }
-
-  .kpi-box {
-    text-align: center;
-    padding: 10px;
-    background-color: #f9f9f9;
-    margin-top: 10px;
-    border-radius: 8px;
+  .list-data {
+      flex-direction: column;
+      gap: 10px;
   }
 
   .chart-js {
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .container_navDashRT, .navBar-mobile {
-    width: 100%;
+      min-height: 150px;
   }
 }
