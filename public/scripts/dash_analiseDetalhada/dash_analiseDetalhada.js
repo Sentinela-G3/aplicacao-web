@@ -107,8 +107,8 @@ function atualizarBoxes(dados) {
     document.querySelectorAll(".graficos_align")[1].querySelectorAll(".data-box .data")[1].textContent = `${dados.ram_percent}%`;
 
     // Rede
-    document.querySelectorAll(".graficos_align")[2].querySelectorAll(".data-box .data")[0].textContent = `${dados.net_download} mbps`;
-    document.querySelectorAll(".graficos_align")[2].querySelectorAll(".data-box .data")[1].textContent = `${dados.net_upload} mbps`;
+    document.querySelectorAll(".graficos_align")[2].querySelectorAll(".data-box .data")[0].textContent = `${dados.net_download.toFixed(6)} mbps`;
+    document.querySelectorAll(".graficos_align")[2].querySelectorAll(".data-box .data")[1].textContent = `${dados.net_upload.toFixed(6)} mbps`;
 
     // Disco
     document.querySelectorAll(".graficos_align")[3].querySelectorAll(".data-box .data")[0].textContent = `${calcularCapacidadeDisco(dados.disk_used_gb.valor, dados.disk_usage.valor).capacidadeLivre} GB`;
