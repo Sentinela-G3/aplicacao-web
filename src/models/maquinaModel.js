@@ -22,16 +22,17 @@ function listarModelosDetalhados(fkEmpresa) {
   var instrucaoSql = `
 SELECT
     m.modelo as modelo,
-    MAX(CASE WHEN c.tipo = 'CPU' THEN c.modelo END) AS cpu,
-    MAX(CASE WHEN c.tipo = 'RAM' THEN c.modelo END) AS ram_gb,
-    MAX(CASE WHEN c.tipo = 'Disco' THEN c.modelo END) AS disco,
-    MAX(CASE WHEN c.tipo = 'Disco' THEN c.maximo END) AS capacidade_disco_gb,
-    MAX(CASE WHEN c.tipo = 'TDA' THEN c.maximo END) AS capacidade_tda
+        MAX(CASE WHEN c.tipo = 'cpu_percent' THEN c.modelo ELSE NULL END) AS cpu,
+    MAX(CASE WHEN c.tipo = 'ram_usage_gb' THEN round(c.maximo) ELSE NULL END) AS ram_gb,
+    MAX(CASE WHEN c.tipo = 'disk_usage_gb' THEN round(c.maximo) ELSE NULL END) AS capacidade_disco_gb,
+    MAX(CASE WHEN c.tipo = 'uptime_hours' THEN round(c.maximo) ELSE NULL END) AS capacidade_tda
 FROM
     maquina m
-JOIN
+LEFT JOIN 
     componente c ON m.id_maquina = c.fk_componente_maquina
 GROUP BY
+    m.modelo
+ORDER BY 
     m.modelo;
   `;
 
@@ -43,14 +44,14 @@ GROUP BY
 function listarTempoAtividadePorMaquina(fkEmpresa) {
   const instrucaoSql = `
     SELECT 
-        m.serialNumber as serial_number,
+        m.serial_number as serial_number,
         m.SO as sistema_operacional,
         m.modelo as modelo,
         COALESCE(
             (
                 SELECT h.valor
                 FROM historico h
-                JOIN componente c ON h.fk_historico_maquina = c.id_componente
+                JOIN componente c ON h.fk_historico_componente = c.id_componente
                 WHERE c.tipo = 'TDA' AND c.fk_componente_maquina = m.id_maquina
                 ORDER BY h.data_captura DESC
                 LIMIT 1

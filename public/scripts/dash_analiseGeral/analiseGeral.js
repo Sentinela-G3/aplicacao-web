@@ -33,7 +33,6 @@ function listarModelosDetalhados() {
                         `<td>${maquina.modelo}</td>
                     <td>${maquina.cpu}</td>
                     <td>${maquina.ram_gb}</td>
-                    <td>${maquina.disco}</td>
                     <td>${maquina.capacidade_disco_gb}</td>
                     <td>${maquina.capacidade_tda}</td>
                     `
@@ -95,25 +94,6 @@ function contarAlertasUltimaSemana() {
         })
         .catch(function (error) {
             console.error("Erro ao obter o qtd de alertas:", error);
-        });
-}
-
-function obterAlertasAberto() {
-    var idUsuario = sessionStorage.idUsuario;
-
-    fetch(`/medidas/personagemFavorito/${idUsuario}`)
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error("Erro ao obter personagem favorito.");
-            }
-            return response.json();
-        })
-        .then(function (data) {
-            console.log("Personagem favorito: ", data.nome);
-            document.getElementById('persoFav').innerText = `${data.nome}`;
-        })
-        .catch(function (error) {
-            console.error("Erro ao obter o personagem favorito:", error);
         });
 }
 
