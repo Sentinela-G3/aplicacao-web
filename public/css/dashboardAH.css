@@ -289,3 +289,98 @@ h4 {
     padding: var(--spacing-sm);
   }
 }
+
+@media (max-width: 480px) {
+  body, .section1 {
+    flex-direction: column;
+    padding: 0 5%;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  #list-filter {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #select_modelo, #confirm_button {
+    width: 100%;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  #confirm_button span {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: large;
+  }
+
+  #list-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }	
+
+  .containerComponent {
+    text-align: center;
+  }
+
+  .graficos_align {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .data-box {
+    text-align: center;
+  }
+
+  .chart-box {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .ultimos_graficos {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .card-chart {
+    width: 100%;
+  }
+
+  .kpi-box {
+    text-align: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-top: 10px;
+    border-radius: 8px;
+  }
+
+  .chart-js {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .container_navDashRT, .navBar-mobile {
+    width: 100%;
+  }
+}
