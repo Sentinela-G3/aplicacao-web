@@ -1,8 +1,7 @@
-
+const form = document.getElementById("userForm");
 const modal = document.getElementById("userModal");
 const openModalBtn = document.querySelector(".add-btn");
 const closeModalBtn = document.querySelector(".close");
-const form = document.getElementById("userForm");
 
 // Abrir o modal ao clicar no botão
 openModalBtn.addEventListener("click", () => {
@@ -31,6 +30,30 @@ form.addEventListener("submit", async (event) => {
     const senha = document.getElementById("senha").value;
     const tipoUsuarioTexto = document.getElementById("tipoUsuario").value;
     const fkEmpresa = sessionStorage.getItem("idEmpresa");
+
+    if (!nome || !email || !telefone || !senha || tipoUsuarioTexto === "#") {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    const emailReg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailReg.test(email)) {
+        alert('Email inválido. Verifique o formato.');
+        return;
+    }
+
+    const telefoneReg = /^\d{11}$/;
+    if (!telefoneReg.test(telefone)) {
+        alert('Telefone inválido. O formato correto é 11999999999.');
+        return;
+    }
+
+    const senhaReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}[\]|\\:;"'<>,.?/~`]).{8,}$/;
+    if (!senhaReg.test(senha)) {
+        alert('A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial.');
+        return;
+    }
+    
 
     let tipoUsuario;
     switch (tipoUsuarioTexto) {
@@ -91,5 +114,22 @@ form.addEventListener("submit", async (event) => {
     } catch (error) {
         console.error("Erro ao cadastrar usuário:", error);
         //alert("Erro ao conectar com o servidor.");
+    }
+});
+
+document.querySelector(".pesq-btn").addEventListener("click", () => {
+    const termo = document.getElementById("inputPesquisa").value.toLowerCase();
+    const cards = document.querySelectorAll(".grid .card");
+
+    cards.forEach(card => {
+        const nome = card.querySelector("h2").textContent.toLowerCase();
+        const corresponde = nome.includes(termo);
+        card.style.display = corresponde ? "block" : "none";
+    });
+});
+
+document.getElementById("inputPesquisa").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        document.querySelector(".pesq-btn").click();
     }
 });

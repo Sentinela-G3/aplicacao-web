@@ -88,7 +88,11 @@
         <h1>Gerenciamento de Colaboradores</h1>
 
         <div class="search-bar">
-            <input type="text" placeholder="Pesquisar colaborador...">
+            <div class="pesquisa">
+                <input type="text" id="inputPesquisa" placeholder="Pesquisar colaborador...">
+                <button class="pesq-btn">Pesquisar</button>
+            </div>
+            
             <button class="add-btn">+ Criar Novo Colaborador</button>
         </div>
 
@@ -138,16 +142,16 @@
                 <input type="email" id="email" name="email" required>
     
                 <label for="telefone">Telefone:</label>
-                <input type="tel" id="telefone" name="telefone" required>
+                <input type="tel" id="telefone" maxlength="11" name="telefone" required>
     
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" required>
     
                 <label for="tipoUsuario">Tipo de Usuário:</label>
                 <select id="tipoUsuario" name="tipoUsuario">
-                    <option value="1">Administrador</option>
+                    <option value="3">Administrador</option>
                     <option value="2">Gerente</option>
-                    <option value="3">Funcionário</option>
+                    <option value="1">Funcionário</option>
                 </select>
     
                 <button type="submit" class="save-btn">Cadastrar</button>
