@@ -117,14 +117,19 @@ function inicializarGraficos() {
             return val.toFixed(0) + '%'; // Mostra sem casas decimais
           }
         },
+        colors: ['#fa9cd5', '#f4fd80', '#c0dd69', '#8765e4', '#a85d56', '#be9468'],
         legend: {
           position: 'right',
           verticalAlign: 'middle',
           fontSize: '16px',
           labels: {
-               colors: ['#000'] // Fonte preta (opcional)
-            },
-            offsetY:40
+            colors: ['#000'], // Cor do texto da legenda
+            useSeriesColors: false // Se quiser cores personalizadas ao invés das cores da série
+          },
+          offsetY:40,
+          markers: {
+            fillColors: ['#fa9cd5', '#f4fd80', '#c0dd69', '#8765e4', '#a85d56', '#be9468']
+        }
 
         }
       };
