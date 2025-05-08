@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/dashboardHenrique.css">
     <script src="../scripts/redirecionamentoMenu.js"></script>
     <script src="../scripts/animacaoMenuMobile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <link rel="icon" href="../assets/img/logoSentinela.ico" type="image/x-icon">
 
     
@@ -29,19 +30,19 @@
        <h1>Dashboard</h1>
         <div class="div-superior">
             <div class="box-kpi">
-                <span class="span-titulo">Titulo</span>
+                <span class="span-titulo">Tempo médio de resolução</span>
                 <span class="span-dado">Dado</span>
                 <span class="span-obs">Observação</span>
             </div>
 
             <div class="box-kpi">
-                <span class="span-titulo">Titulo</span>
+                <span class="span-titulo">Eficiência Média dos Robôs</span>
                 <span class="span-dado">Dado</span>
                 <span class="span-obs">Observação</span>
             </div>
 
             <div class="box-kpi">
-                <span class="span-titulo">Titulo</span>
+                <span class="span-titulo">Alertas Abertos</span>
                 <span class="span-dado">Dado</span>
                 <span class="span-obs">Observação</span>
             </div>
@@ -56,25 +57,19 @@
         </div>
 
         <div class="div-central">
-            <div class="box-grafico"></div>
-            <div class="box-pizza"></div>
+            <div class="box-grafico">
+                <span class="titulo-grafico">Eficiência Média dos Robôs (últimos 7 dias)</span>
+                <div id="chart-efetividade-robos" class="chart-js"></div>
+            </div>
+            <div class="box-pizza">
+                <span class="titulo-grafico">Principais Causas de Geração de Alertas</span>
+            </div>
         </div>
 
         <div class="div-inferior insight"></div>
     </div>
+    <script src="../scripts/dash_Henrique/dashboardHenrique.js" style="padding: 0;"></script>
+
 </body>
 
 </html>
-
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const fileName = document.getElementById('fileName');
-
-    fileInput.addEventListener('change', function() {
-      if (fileInput.files.length > 0) {
-        fileName.textContent = fileInput.files[0].name;
-      } else {
-        fileName.textContent = "Nenhum arquivo selecionado";
-      }
-    });
-  </script>
