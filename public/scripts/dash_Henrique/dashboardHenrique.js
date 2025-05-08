@@ -96,6 +96,41 @@ function inicializarGraficos() {
     });
 
     graficoDeEfetividadeRobos.render();
+
+    const options = {
+        chart: {
+          type: 'pie',
+          height: "85%"
+        },
+        labels: ['CPU', 'Memória', 'Disco', 'Tempo de Uso', 'Rede', 'Báteria'],
+        series: [25,5, 15, 10, 15,30],
+        dataLabels: {
+          enabled: true,
+          style: {
+            fontSize: '18px',
+            colors: ['#000'],
+          },
+          dropShadow: {
+            enabled: false
+          },
+          formatter: function (val) {
+            return val.toFixed(0) + '%'; // Mostra sem casas decimais
+          }
+        },
+        legend: {
+          position: 'right',
+          verticalAlign: 'middle',
+          fontSize: '16px',
+          labels: {
+               colors: ['#000'] // Fonte preta (opcional)
+            },
+            offsetY:40
+
+        }
+      };
+  
+      const chart = new ApexCharts(document.querySelector("#chart-pizza"), options);
+      chart.render();
 }
 
 
