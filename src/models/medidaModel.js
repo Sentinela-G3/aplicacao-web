@@ -1,13 +1,24 @@
 var database = require("../database/config");
 
+function obterThreshold(idMaquina) {
+     var instrucaoSQL = `
+SELECT 
+    c.maximo,
+    c.minimo,
+    c.tipo
+FROM componente c
+WHERE c.fk_componente_maquina = ${idMaquina}`;
+    return database.executar(instrucaoSQL);
+}
+
 function obterDadosRealtime(idMaquina) {
     var instrucaoSQL = `
 SELECT 
+    c.maximo,
+    c.minimo,
     c.tipo, 
     h.valor,
-    -- Retorna a data/hora completa formatada
     DATE_FORMAT(h.data_captura, '%d/%m/%Y - %H:%i:%s') as data_hora_captura,
-    -- Retorna também o timestamp puro para cálculos
     h.data_captura as timestamp_captura
 FROM componente c
 JOIN historico h ON h.id_historico = (
@@ -21,5 +32,6 @@ WHERE c.fk_componente_maquina = ${idMaquina}`;
     return database.executar(instrucaoSQL);
 }
 module.exports = {
-    obterDadosRealtime
+    obterDadosRealtime,
+    obterThreshold
 }

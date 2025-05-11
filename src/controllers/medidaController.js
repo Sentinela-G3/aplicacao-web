@@ -62,7 +62,7 @@ function receberDadosDeMonitoramento(req, res) {
         return res.status(400).json({ erro: 'Faltam dados obrigatórios no payload.' });
     }
 
-    console.log("Dados recebidos: ", payload);
+   // console.log("Dados recebidos: ", payload);
 
     if (!dadosMonitoramento[idMaquina]) {
         dadosMonitoramento[idMaquina] = [];
@@ -82,7 +82,7 @@ function receberDadosDeMonitoramento(req, res) {
 function obterInfosCPU(req,res){
     var idUsuario = req.params.idUsuario;
 
-    console.log("Pegando dado da CPU")
+   // console.log("Pegando dado da CPU")
 
     medidaModel.buscarInfoCpu(idUsuario).then(function (resultado){
         if (resultado.length > 0) {
@@ -97,8 +97,27 @@ function obterInfosCPU(req,res){
     })
 }
 
+function obterThreshold(req, res) {
+    let idMaquina = req.params.id_maquina;
+
+     if (!idMaquina) {
+        return res.status(400).json({ erro: 'ID da máquina é obrigatório.' });
+    }
+
+    medidaModel.obterThreshold(idMaquina)
+    .then((resultado) => {
+        res.json(resultado);    
+      })
+    .catch((erro) => {
+        res.status(500).json(erro.sqlMessage); 
+      });
+
+
+}
+
 module.exports = {
     obterInfosCPU,
     obterDadosRealtime,
-    receberDadosDeMonitoramento
+    receberDadosDeMonitoramento,
+    obterThreshold
 }

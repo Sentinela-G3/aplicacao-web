@@ -11,5 +11,9 @@ router.post('/:id_maquina', (req, res) => {
     medidaController.receberDadosDeMonitoramento(req, res)
 })
 
+router.get('/thresholds/:id_maquina', (req, res) => {
+    medidaController.obterThreshold(req, res)
+})
+
 
 module.exports = router;

@@ -1,4 +1,3 @@
-// Função para pegar o ID da URL
 const urlParams = new URLSearchParams(window.location.search);
 let id = urlParams.get('id');
 
@@ -6,68 +5,11 @@ const BASE_URL = window.location.hostname === "localhost"
   ? "localhost:3333"
   : "18.208.5.45:3333";
 
-
-
-// Criar os gráficos já vazios
-let chartCPU, chartMemoria, chartRede, chartDisco;
+let chartCPU, chartMemoria, chartRede, chartDisco, chartDownload, chartUpload;
 let intervaloAtualizacao;
+let thresholdData = [];
 
-function inicializarGraficos() {
-    chartCPU = new ApexCharts(document.querySelector("#chart"), {
-        series: [{ name: "CPU %", data: [] }],
-        chart: { type: 'line', height: 350 },
-        xaxis: { categories: [] }
-    });
-    chartCPU.render();
-
-    chartMemoria = new ApexCharts(document.querySelector("#chart2"), {
-        series: [{ name: "Memória %", data: [] }],
-        chart: { type: 'line', height: 350 },
-        xaxis: { categories: [] }
-    });
-    chartMemoria.render();
-
-    chartRede = new ApexCharts(document.querySelector("#chart4"), {
-        series: [{ name: "Rede (Upload MB)", data: [] }],
-        chart: { type: 'line', height: 350 },
-        xaxis: { categories: [] }
-    });
-    chartRede.render();
-
-    chartDisco = new ApexCharts(document.querySelector("#chart6"), {
-        series: [{ name: "Disco %", data: [] }],
-        chart: { type: 'line', height: 350 },
-        xaxis: { categories: [] }
-    });
-    chartDisco.render();
-}
-
-// Atualiza apenas os gráficos
-function atualizarGraficos(dados) {
-    chartCPU.updateOptions({
-        xaxis: { categories: dados.timestamps }
-    });
-    chartCPU.updateSeries([{ name: "CPU %", data: dados.cpu }]);
-    chartCPU.update();
-
-    chartMemoria.updateOptions({
-        xaxis: { categories: dados.timestamps }
-    });
-    chartMemoria.updateSeries([{ name: "Memória %", data: dados.memoria }]);
-    chartMemoria.update();
-
-    chartRede.updateOptions({
-        xaxis: { categories: dados.timestamps }
-    });
-    chartRede.updateSeries([{ name: "Upload MB", data: dados.rede }]);
-    chartRede.update();
-
-    chartDisco.updateOptions({
-        xaxis: { categories: dados.timestamps }
-    });
-    chartDisco.updateSeries([{ name: "Disco %", data: dados.disco }]);
-    chartDisco.update();
-}
+// Funções auxiliares para cálculos e conversões
 
 function converterHorasParaTexto(horasFloat) {
     const horas = Math.floor(horasFloat);
@@ -94,35 +36,255 @@ function calcularCapacidadeDisco(gbEmUso, percentualUso) {
     };
 }
 
-// Atualiza os dados dos boxes
-function atualizarBoxes(dados) {
-
-    // CPU
-    document.querySelectorAll(".graficos_align")[0].querySelectorAll(".data-box .data")[0].textContent = `${dados.cpu_freq} GHz`;
-    document.querySelectorAll(".graficos_align")[0].querySelectorAll(".data-box .data")[1].textContent = `${dados.cpu_percent}%`;
-    document.querySelectorAll(".graficos_align")[0].querySelectorAll(".data-box .data")[2].textContent = `${converterHorasParaTexto(dados.uptime.valor)}`;
-
-    // Memória
-    document.querySelectorAll(".graficos_align")[1].querySelectorAll(".data-box .data")[0].textContent = `${(dados.ram_used[dados.ram_used.length - 1].valor).toFixed(2)} GB de ${calcularTotalRAM(dados.ram_used[0].valor, dados.ram_percent)} GB`;
-    document.querySelectorAll(".graficos_align")[1].querySelectorAll(".data-box .data")[1].textContent = `${dados.ram_percent}%`;
-
-    // Rede
-    document.querySelectorAll(".graficos_align")[2].querySelectorAll(".data-box .data")[0].textContent = `${dados.net_download.toFixed(6)} mbps`;
-    document.querySelectorAll(".graficos_align")[2].querySelectorAll(".data-box .data")[1].textContent = `${dados.net_upload.toFixed(6)} mbps`;
-
-    // Disco
-    document.querySelectorAll(".graficos_align")[3].querySelectorAll(".data-box .data")[0].textContent = `${calcularCapacidadeDisco(dados.disk_used_gb.valor, dados.disk_usage.valor).capacidadeLivre} GB`;
-    document.querySelectorAll(".graficos_align")[3].querySelectorAll(".data-box .data")[1].textContent = `${dados.disk_used_gb.valor.toFixed(2)} GB`;
-    document.querySelectorAll(".graficos_align")[3].querySelectorAll(".data-box .data")[2].textContent = `${calcularCapacidadeDisco(dados.disk_used_gb.valor, dados.disk_usage.valor).capacidadeTotal} GB`;
+async function buscarThreshold(idMaquina) {
+    try {
+        const response = await fetch(`http://${BASE_URL}/medidas/thresholds/${idMaquina}`);
+        const json = await response.json();
+        thresholdData = json;
+        console.log("Thresholds carregados:", thresholdData);
+        
+        atualizarGraficosComThreshold();
+    } catch (error) {
+        console.error('Erro ao buscar threshold:', error);
+    }
 }
 
-// Função para buscar dados da máquina
+function atualizarGraficosComThreshold() {
+    chartCPU.updateOptions({
+        annotations: {
+            yaxis: [
+                {
+                    y: getThreshold('cpu_percent').max,
+                    borderColor: '#E02519',
+                    label: {
+                       text: `Threshold (${getThreshold('cpu_percent').max}%)`,
+                        style: {
+                            color: '#E02519',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            ]
+        }
+    });
+
+    chartMemoria.updateOptions({
+        annotations: {
+            yaxis: [
+                {
+                    y: getThreshold('ram_percent').max,
+                    borderColor: '#E02519',
+                    label: {
+                        text: `Threshold (${getThreshold('ram_percent').max}%)`,
+                        style: {
+                            color: '#E02519',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            ]
+        }
+    });
+
+    chartDownload.updateOptions({
+        annotations: {
+            yaxis: [
+                {
+                    y: getThreshold('net_download').max,
+                    borderColor: '#E02519',
+                    label: {
+                        text: `Threshold (${getThreshold('net_download').max}%)`,
+                        style: {
+                            color: '#E02519',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            ]
+        }
+    });
+
+    chartUpload.updateOptions({
+        annotations: {
+            yaxis: [
+                {
+                    y: getThreshold('net_upload').max,
+                    borderColor: '#E02519',
+                    label: {
+                        text: `Threshold (${getThreshold('net_upload').max}%)`,
+                        style: {
+                            color: '#E02519',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            ]
+        }
+    });
+
+    chartDisco.updateOptions({
+        annotations: {
+            yaxis: [
+                {
+                    y: getThreshold('disk_percent').max,
+                    borderColor: '#E02519',
+                    label: {
+                        text: `Threshold (${getThreshold('disk_percent').max}%)`,
+                        style: {
+                            color: '#E02519',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            ]
+        }
+    });
+}
+
+const getThreshold = (tipo) => {
+    const threshold = thresholdData.find(item => item.tipo === tipo);
+    if (threshold) {
+        return { max: threshold.maximo };
+    } else {
+        console.error(`Threshold não encontrado para o tipo: ${tipo}`);
+        return {max: 100 };  
+    }
+}
+
+function inicializarGraficos() {
+    chartCPU = new ApexCharts(document.querySelector("#chart"), {
+        series: [{ name: "CPU %", data: [] }],
+        chart: { 
+            type: 'line', 
+            height: 350
+        },
+        annotations: {
+            yaxis: [
+                {
+                    y: 100,
+                    borderColor: '#E02519',
+                    label: {
+                        text: 'Valor máximo',
+                        style: {
+                            color: '#E02519',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            ]
+        },
+        xaxis: { categories: [] },
+        yaxis: { 
+            title: { text: 'Porcentagem (%)' },
+            max: 100
+        }
+    });
+    chartCPU.render();
+
+    chartMemoria = new ApexCharts(document.querySelector("#chart2"), {
+        series: [{ name: "Memória %", data: [] }],
+        chart: { 
+            type: 'line', 
+            height: 350
+        },
+        annotations: {
+            yaxis: [
+                {
+                    y: 100,
+                    borderColor: '#E02519',
+                    label: {
+                        text: 'Valor máximo',
+                        style: {
+                            color: '#E02519',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            ]
+        },
+        xaxis: { categories: [] },
+        yaxis: { 
+            title: { text: 'Porcentagem (%)' },
+            max: 100
+        }
+    });
+    chartMemoria.render();
+
+      chartDownload = new ApexCharts(document.querySelector("#chartDownload"), {
+        series: [{ name: "Download (Mbps)", data: [] }],
+        chart: {
+            type: 'line',
+            height: 350
+        },
+        xaxis: {
+            categories: []
+        },
+        yaxis: {
+            title: { text: 'Velocidade (Mbps)' }
+        }
+    });
+    chartDownload.render();
+
+    chartUpload = new ApexCharts(document.querySelector("#chartUpload"), {
+        series: [{ name: "Upload (Mbps)", data: [] }],
+        chart: {
+            type: 'line',
+            height: 350
+        },
+        xaxis: {
+            categories: []
+        },
+        yaxis: {
+            title: { text: 'Velocidade (Mbps)' }
+        }
+    });
+    chartUpload.render();
+
+    chartDisco = new ApexCharts(document.querySelector("#chart6"), {
+        series: [{ name: "Disco %", data: [] }],
+        chart: { 
+            type: 'line', 
+            height: 350
+        },
+        annotations: {
+            yaxis: [
+                {
+                    y: 100,
+                    borderColor: '#E02519',
+                    label: {
+                        text: 'Valor máximo',
+                        style: {
+                            color: '#E02519',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            ]
+        },
+        xaxis: { categories: [] },
+        yaxis: { 
+            title: { text: 'Porcentagem (%)' },
+            max: 100,
+        }
+    });
+    chartDisco.render();
+}
+
 async function buscarMetricas(idMaquina) {
     try {
         const response = await fetch(`http://${BASE_URL}/medidas/${idMaquina}`);
         const json = await response.json();
         const dados = json.dados;
 
+        console.log(dados)
 
         atualizarBoxes({
             cpu_freq: dados.cpu_freq[dados.cpu_freq.length - 1].valor.toFixed(2),
@@ -138,29 +300,101 @@ async function buscarMetricas(idMaquina) {
             uptime: dados.uptime_hours[dados.uptime_hours.length - 1]
         });
 
-        // Transformar os dados para atualizar os gráficos
         const timestamps = dados.cpu_percent.map(item => new Date(item.timestamp).toLocaleTimeString('pt-BR', { hour12: false }));
-
         const cpu = dados.cpu_percent.map(item => item.valor);
         const memoria = dados.ram_percent.map(item => item.valor);
-        const rede = dados.net_upload.map(item => (item.valor * 1024).toFixed(2));
+        const download = dados.net_download.map(item => (item.valor * 1024).toFixed(2));
+        const upload = dados.net_upload.map(item => (item.valor * 1024).toFixed(2));
         const disco = dados.disk_percent.map(item => item.valor);
 
-        atualizarGraficos({ cpu, memoria, rede, disco, timestamps });
+        atualizarGraficos({ cpu, memoria, download, upload, disco, timestamps });
 
     } catch (error) {
         console.error('Erro ao buscar métricas:', error);
     }
 }
 
-// Inicialização
+function atualizarGraficos(dados) {
+    console.log(dados)
+    // Atualiza os gráficos com os dados
+    chartCPU.updateOptions({
+        xaxis: { categories: dados.timestamps }
+    });
+    chartCPU.updateSeries([{ name: "CPU %", data: dados.cpu }]);
+    chartCPU.update();
+
+    chartMemoria.updateOptions({
+        xaxis: { categories: dados.timestamps }
+    });
+    chartMemoria.updateSeries([{ name: "Memória %", data: dados.memoria }]);
+    chartMemoria.update();
+
+    
+    chartDownload.updateOptions({
+        xaxis: { categories: dados.timestamps }
+    });
+    chartDownload.updateSeries([{ name: "Download (Mbps)", data: dados.download }]);
+    chartDownload.update();
+
+    chartUpload.updateOptions({
+        xaxis: { categories: dados.timestamps }
+    });
+    chartUpload.updateSeries([{ name: "Upload (Mbps)", data: dados.upload }]);
+    chartUpload.update();
+
+    chartDisco.updateOptions({
+        xaxis: { categories: dados.timestamps }
+    });
+    chartDisco.updateSeries([{ name: "Disco %", data: dados.disco }]);
+    chartDisco.update();
+}
+
+function atualizarBoxes(dados) {
+    function validarDado(dado, valorPadrao = "Sem dados", casasDecimais = 2) {
+        if (dado === null || dado === undefined || isNaN(dado)) {
+            return valorPadrao;
+        }
+        return parseFloat(dado).toFixed(casasDecimais);
+    }
+
+    document.getElementById("cpuFreqKPI").textContent = validarDado(dados.cpu_freq, "Sem dados", 2) + " GHz";
+    document.getElementById("cpuPercentKPI").textContent = validarDado(dados.cpu_percent, "Sem dados") + "%";
+    document.getElementById("cpuUptimeKPI").textContent = validarDado(dados.uptime.valor, "Sem dados");
+
+    document.getElementById("ramUsedKPI").textContent = validarDado(dados.ram_used[dados.ram_used.length - 1].valor, "Sem dados", 2) + " GB de " +
+        validarDado(calcularTotalRAM(dados.ram_used[0].valor, dados.ram_percent), "Sem dados", 2) + " GB";
+    document.getElementById("ramPercentKPI").textContent = validarDado(dados.ram_percent, "Sem dados") + "%";
+
+    document.getElementById("downloadKPI").textContent = validarDado(dados.net_download, "Sem dados", 6) + " mbps";
+
+    document.getElementById("uploadKPI").textContent = validarDado(dados.net_upload, "Sem dados", 6) + " mbps";
+
+    document.getElementById("diskFreeKPI").textContent = validarDado(calcularCapacidadeDisco(dados.disk_used_gb.valor, dados.disk_usage.valor).capacidadeLivre, "Sem dados", 2) + " GB";
+    document.getElementById("diskUsedKPI").textContent = validarDado(dados.disk_used_gb.valor, "Sem dados", 2) + " GB";
+    document.getElementById("diskTotalKPI").textContent = validarDado(calcularCapacidadeDisco(dados.disk_used_gb.valor, dados.disk_usage.valor).capacidadeTotal, "Sem dados", 2) + " GB";
+}
+
+async function buscarProcessos(idMaquina) {
+    try {
+        const response = await fetch(`http://${BASE_URL}/processos/${idMaquina}`);
+        const json = await response.json();
+        
+        console.log("Processos adquiridos:", json);
+    } catch (error) {
+        console.error('Erro ao buscar processos:', error);
+    }
+}
+
 inicializarGraficos();
 
-// Atualizar a cada 5 segundos
 if (id) {
     buscarMetricas(id);
+    buscarThreshold(id);
+    buscarProcessos(id);
     intervaloAtualizacao = setInterval(() => {
         buscarMetricas(id);
+        buscarThreshold(id); 
+        buscarProcessos(id);
     }, 5000);
 }
 
@@ -175,17 +409,16 @@ document.getElementById('confirm_button').addEventListener('click', async () => 
             const dadosSerial = await response.json();
             const idMaquina = dadosSerial[0].id_maquina;
 
-            console.log(dadosSerial)
+           // console.log(dadosSerial)
 
-            // Atualiza o ID e para o intervalo anterior
             clearInterval(intervaloAtualizacao);
 
             id = idMaquina;
             buscarMetricas(id);
 
-            // Atualizar a cada 5 segundos para o novo ID
             intervaloAtualizacao = setInterval(() => {
                 buscarMetricas(id);
+                buscarThreshold(id);
             }, 5000);
 
         } catch (error) {
