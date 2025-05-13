@@ -128,6 +128,18 @@ body {
   display: flex;
 }
 
+.container-kpi2{
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 12px;
+  width: 50%;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+
+
 .container-kpi{
   border: 1px solid #ccc;
   padding: 20px;
@@ -138,7 +150,7 @@ body {
   flex-direction: column;
 }
 
-.container-kpi div{
+.container-kpi div, .container-kpi2 div{
   padding: 10px;
 }
 

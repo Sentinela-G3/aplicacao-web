@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard | Tempo Real</title>
         <script src="../scripts/animacaoMenuMobile.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 
 </head>
@@ -40,11 +42,11 @@
                 <div class="container-kpi">
                     <div>
                         <h2>Máquinas ativas</h2>
-                        <span>00</span>
+                        <h1>00</h1>
                     </div>
                     <div>
                         <h2>Máquinas com alertas</h2>
-                        <span>00</span>
+                        <h1>00</h1>
                     </div>
                     <div>
                         <span><i>Pesquisar máquina por número de serial:</i></span> <br><br>
@@ -52,18 +54,23 @@
                     </div>
                 </div>
     
-                <div class="container-kpi">
+                <div class="container-kpi2">
                     <div>
-wdwefd
+                        <h2>Máquinas em urgencia atualmente</h2>
+                        <div>
+                        </div>
                     </div>
                     <div>
-wfef
+                        <h2>Componentes com mais conflitos</h2>
+                        <div>
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="container-table">
-                <h3>Lista de máquinas com necessidade de manutenção</h3>
+                <h3>Lista de máquinas com necessidade de manutenção</h3> <br>
                 <span><i>*Da maior prioridade até a menor</i></span>
                 <table class="table">
                     <thead class="table_head">
@@ -148,3 +155,65 @@ wfef
         
     </body>
 </html>
+
+<script>
+    const ctx = document.getElementById('myChart');
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['CPU', 'RAM', 'Disco', 'Rede', 'TDA'],
+        datasets: [{
+          label: 'Qtd média de alertas por máquina',
+          data: [12, 19, 3, 5, 2],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+const config = {
+  type: 'bar',
+  data: data,
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Bar Chart'
+      }
+    }
+  },
+};
+
+const DATA_COUNT = 7;
+const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+
+const labels = Utils.months({count: 7});
+const data = {
+  labels: labels,
+  datasets: [
+    {
+      label: 'Dataset 1',
+      data: Utils.numbers(NUMBER_CFG),
+      borderColor: Utils.CHART_COLORS.red,
+      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+    },
+    {
+      label: 'Dataset 2',
+      data: Utils.numbers(NUMBER_CFG),
+      borderColor: Utils.CHART_COLORS.blue,
+      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
+    }
+  ]
+};
+  </script>
