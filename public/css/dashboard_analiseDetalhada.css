@@ -249,6 +249,25 @@ h4 {
   overflow: hidden;
 }
 
+.hero-actions {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+.action-card {
+    flex: 1;
+    min-width: 250px;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.critical { background-color: #f8d7da; color: #721c24; }
+.warning { background-color: #fff3cd; color: #856404; }
+.success { background-color: #d4edda; color: #155724; }
+
+
+
 /* Ajustes para os elementos internos do ApexCharts */
 .chart-js svg,
 .chart-js foreignObject,
@@ -258,6 +277,72 @@ h4 {
   width: 100% !important;
   overflow: visible !important;
 }
+
+.table-processos {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-processos table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Roboto', sans-serif;
+}
+
+.table-processos th,
+.table-processos td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-processos th {
+    background-color: #f2f2f2;
+    font-weight: 500;
+}
+
+.table-chamados {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.table-chamados table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+.table-chamados th,
+.table-chamados td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-chamados th {
+    background-color: #f4f4f4;
+    font-weight: 500;
+}
+
+.table-chamados tr:hover {
+    background-color: #f9f9f9;
+}
+
+.table-chamados td:last-child {
+    font-weight: bold;
+}
+
+.table-chamados td.status-aberto {
+    color: #d9534f; /* vermelho */
+}
+
+.table-chamados td.status-fechado {
+    color: #5cb85c; /* verde */
+}
+
+
 
 @media (max-width: 1200px) {
   .container-graphs {

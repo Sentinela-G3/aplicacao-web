@@ -34,132 +34,200 @@
             </div>
         </div>
 
+        <div class="hero-actions">
+            <div class="action-card critical">
+                <h3>⚠️ Chamados Abertos</h3>
+                <p>3 chamados não resolvidos</p>
+                <button onclick="abrirChamados()">Ver detalhes</button>
+            </div>
+            <div class="action-card warning">
+                <h3>🔥 Alto consumo de CPU</h3>
+                <p>Processo: chrome.exe (91%)</p>
+                <button onclick="encerrarProcesso('chrome.exe')">Encerrar</button>
+            </div>
+        </div>
+
+
+
         <div class="container-graphs">
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Processador</h3>
+                    <span>Uso do processador em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Frequência</span>
+                                <span id="cpuFreqKPI" class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Porcentagem de Uso</span>
+                                <span id="cpuPercentKPI" class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Tempo de Atividade</span>
+                                <span id="cpuUptimeKPI" class="data">Sem dados</span>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Uso do processador em tempo real</h4>
+                            <div id="chart" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Memória</h3>
+                    <span>Uso da memória em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Memória Utilizada</span>
+                                <span id="ramUsedKPI" class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Porcentagem de Uso</span>
+                                <span id="ramPercentKPI" class="data">Sem dados</span>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Uso de Memória em tempo real</h4>
+                            <div id="chart2" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Velocidade de Download</h3>
+                    <span>Uso da rede em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Velocidade de Download</span>
+                                <span id="downloadKPI" class="data">Sem dados</span>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Velocidade de Download</h4>
+                            <div id="chartDownload" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Velocidade de Upload</h3>
+                    <span>Uso da rede em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Velocidade de Upload</span>
+                                <span id="uploadKPI" class="data">Sem dados</span>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Velocidade de Upload</h4>
+                            <div id="chartUpload" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disco -->
+            <div class="containerComponent">
+                <div class="titulo_grafico">
+                    <h3>Disco</h3>
+                    <span>Uso do Disco em tempo real</span>
+                </div>
+                <div class="graficos_align">
+                    <div class="card-generic">
+                        <div class="list-data">
+                            <div class="data-box">
+                                <span class="data-title">Capacidade Livre</span>
+                                <span id="diskFreeKPI" class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Capacidade em Uso</span>
+                                <span id="diskUsedKPI" class="data">Sem dados</span>
+                            </div>
+                            <div class="data-box">
+                                <span class="data-title">Capacidade Total</span>
+                                <span id="diskTotalKPI" class="data">Sem dados</span>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Média de uso de Disco</h4>
+                            <div id="chart6" class="chart-js"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="containerComponent">
             <div class="titulo_grafico">
-                <h3>Processador</h3>
-                <span>Uso do processador em tempo real</span>
+                <h3>Processos em Execução</h3>
+                <span>Lista em tempo real</span>
             </div>
             <div class="graficos_align">
                 <div class="card-generic">
-                    <div class="list-data">
-                        <div class="data-box">
-                            <span class="data-title">Frequência</span>
-                            <span id="cpuFreqKPI" class="data">Sem dados</span> 
-                        </div>
-                        <div class="data-box">
-                            <span class="data-title">Porcentagem de Uso</span>
-                            <span id="cpuPercentKPI" class="data">Sem dados</span> 
-                        </div>
-                        <div class="data-box">
-                            <span class="data-title">Tempo de Atividade</span>
-                            <span id="cpuUptimeKPI" class="data">Sem dados</span> 
-                        </div>
+                    <div class="table-processos">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>PID</th>
+                                    <th>Nome</th>
+                                    <th>CPU (%)</th>
+                                    <th>RAM (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-processos-body">
+
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="chart-box">
-                        <h4>Uso do processador em tempo real</h4>
-                        <div id="chart" class="chart-js"></div>
+                </div>
+            </div>
+        </div>
+        <div class="containerComponent">
+            <div class="titulo_grafico">
+                <h3>Chamados Abertos</h3>
+                <span>Listagem de chamados por dispositivo</span>
+            </div>
+            <div class="graficos_align">
+                <div class="card-generic">
+                    <div class="table-chamados">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Chave</th>
+                                    <th>Descrição</th>
+                                    <th>ID Dispositivo</th>
+                                    <th>Hora de Abertura</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-chamados-body">
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="containerComponent">
-            <div class="titulo_grafico">
-                <h3>Memória</h3>
-                <span>Uso da memória em tempo real</span>
-            </div>
-            <div class="graficos_align">
-                <div class="card-generic">
-                    <div class="list-data">
-                        <div class="data-box">
-                            <span class="data-title">Memória Utilizada</span>
-                            <span id="ramUsedKPI" class="data">Sem dados</span>
-                        </div>
-                        <div class="data-box">
-                            <span class="data-title">Porcentagem de Uso</span>
-                            <span id="ramPercentKPI" class="data">Sem dados</span>
-                        </div>
-                    </div>
-                    <div class="chart-box">
-                        <h4>Uso de Memória em tempo real</h4>
-                        <div id="chart2" class="chart-js"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="containerComponent">
-            <div class="titulo_grafico">
-                <h3>Velocidade de Download</h3>
-                <span>Uso da rede em tempo real</span>
-            </div>
-            <div class="graficos_align">
-                <div class="card-generic">
-                    <div class="list-data">
-                        <div class="data-box">
-                            <span class="data-title">Velocidade de Download</span>
-                            <span id="downloadKPI" class="data">Sem dados</span>
-                        </div>
-                    </div>
-                    <div class="chart-box">
-                        <h4>Velocidade de Download</h4>
-                        <div id="chartDownload" class="chart-js"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="containerComponent">
-            <div class="titulo_grafico">
-                <h3>Velocidade de Upload</h3>
-                <span>Uso da rede em tempo real</span>
-            </div>
-            <div class="graficos_align">
-                <div class="card-generic">
-                    <div class="list-data">
-                        <div class="data-box">
-                            <span class="data-title">Velocidade de Upload</span>
-                            <span id="uploadKPI" class="data">Sem dados</span> 
-                        </div>
-                    </div>
-                    <div class="chart-box">
-                        <h4>Velocidade de Upload</h4>
-                        <div id="chartUpload" class="chart-js"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Disco -->
-        <div class="containerComponent">
-            <div class="titulo_grafico">
-                <h3>Disco</h3>
-                <span>Uso do Disco em tempo real</span>
-            </div>
-            <div class="graficos_align">
-                <div class="card-generic">
-                    <div class="list-data">
-                        <div class="data-box">
-                            <span class="data-title">Capacidade Livre</span>
-                            <span id="diskFreeKPI" class="data">Sem dados</span> 
-                        </div>
-                        <div class="data-box">
-                            <span class="data-title">Capacidade em Uso</span>
-                            <span id="diskUsedKPI" class="data">Sem dados</span>
-                        </div>
-                        <div class="data-box">
-                            <span class="data-title">Capacidade Total</span>
-                            <span id="diskTotalKPI" class="data">Sem dados</span> 
-                        </div>
-                    </div>
-                    <div class="chart-box">
-                        <h4>Média de uso de Disco</h4>
-                        <div id="chart6" class="chart-js"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="../scripts/animacaoMenuMobile.js"></script>

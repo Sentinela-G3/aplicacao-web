@@ -94,6 +94,8 @@ function obterProcessos(req, res) {
         });
     });
 
+   
+
     res.json({
         mensagem: `Dados de processos da máquina de ID ${idMaquina}`,
         dados: agrupado
