@@ -1,3 +1,6 @@
+CREATE DATABASE Sentinela;
+USE Sentinela;
+
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY AUTO_INCREMENT,
     razao_social VARCHAR(100) NOT NULL,

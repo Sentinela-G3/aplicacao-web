@@ -135,7 +135,7 @@ body {
   width: 50%;
   margin: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 
@@ -148,6 +148,11 @@ body {
   margin: 10px;
   display: flex;
   flex-direction: column;
+}
+
+.container-kpi-box{
+  display: flex;
+  text-align: center;
 }
 
 .container-kpi div, .container-kpi2 div{
@@ -384,3 +389,119 @@ button:hover {
       font-size: 12px;
   }
 }
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-family: "Arial", sans-serif;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent #333 transparent;
+}
+
+.tooltip .icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: solid;
+  border-width: 1px;
+  border-color: #000;
+  color: #000;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+}
+
+/* From Uiverse.io by johnliter */ 
+/* Style for the tooltip container */
+.tooltip-container {
+  --background-light: rgba(255, 255, 255, 0.5); /* Red */
+  --background-dark: #646464; /* Black */
+  --text-color-light: #ffffff;
+  --text-color-dark: #ffffff;
+  --bubble-size: 12px;
+  --glow-color: rgba(255, 255, 255, 0.5); /* Brighter glow color */
+
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0.7em 1.8em;
+  color:black;
+  border-radius: 8px; /* Rounded edges */
+}
+
+/* Style for the bubble tooltip */
+.tooltip2 {
+  position: absolute;
+  top: -50%; /* Initially hidden above the container */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.6em 1em;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s;
+  border-radius: var(--bubble-size);
+  background: var(--background-light);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #646464;
+  width: 400px;
+}
+
+/* Triangle arrow for the bubble tooltip */
+.tooltip2::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%);
+  border-style: solid;
+  border-width: 8px 8px 0;
+  border-color: var(--background-light) transparent transparent;
+}
+
+/* Tooltip appearance on hover */
+.tooltip-container:hover {
+  /* background: var(--background-dark);
+  color: var(--text-color-dark); */
+  box-shadow: 0 0 20px var(--glow-color); /* Brighter glow effect */
+}
+
+.tooltip-container:hover .tooltip2 {
+  top: -120%; /* Adjusted position for the bubble tooltip */
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+

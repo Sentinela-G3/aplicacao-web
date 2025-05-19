@@ -1,112 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/navbar.css">
-        <link rel="stylesheet" href="../css/dashboard_manutencao.css">
-        <link rel="icon" href="../assets/img/logoSentinela.ico" type="image/x-icon">
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard | Tempo Real</title>
-        <script src="../scripts/animacaoMenuMobile.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/dashboard_manutencao.css">
+  <link rel="icon" href="../assets/img/logoSentinela.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Tempo Real</title>
+  <script src="../scripts/animacaoMenuMobile.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
 </head>
+
 <body class="body_dashRealTime" id="dash_RT">
-    <!-- MENU LATERAL-->
-    <div class="container_navDashRT" id="container_navDashRT"></div>
+  <!-- MENU LATERAL-->
+  <div class="container_navDashRT" id="container_navDashRT"></div>
 
-    <!-- MENU SUPERIOR MOBILE-->
-    <div class="navBar-mobile" id="navBar-mobile"></div>
+  <!-- MENU SUPERIOR MOBILE-->
+  <div class="navBar-mobile" id="navBar-mobile"></div>
 
-    <!-- SCRIPT QUE GERA O CONTEUDO DOS MENUS -->
-    <script src="../scripts/redirecionamentoMenu.js"></script>
+  <!-- SCRIPT QUE GERA O CONTEUDO DOS MENUS -->
+  <script src="../scripts/redirecionamentoMenu.js"></script>
 
-        <div class="dashboard">
-            <div class="container">
-                <div class="titulo_dashRT">
-                    <span>
-                        <b>Manutenção de Robôs</b>
-                    </span>
-                </div>
-                <div class="subtitulo_dashRT">
-                    <span>
-                        <i>*Lista de máquinas com necessidade de manutenção</i>
-                    </span>
-                </div>
-            </div>
+  <div class="dashboard">
+    <div class="container">
+      <div class="titulo_dashRT">
+        <span>
+          <b>Manutenção de Robôs</b>
+        </span>
+      </div>
+      <div class="subtitulo_dashRT">
+        <span>
+          <i>*Lista de máquinas com necessidade de manutenção</i>
+        </span>
+      </div>
+    </div>
 
-            <div class="container-kpis">
-                <div class="container-kpi">
-                    <div>
-                        <h2>Máquinas ativas</h2>
-                        <h1>00</h1>
-                    </div>
-                    <div>
-                        <h2>Máquinas com alertas</h2>
-                        <h1>00</h1>
-                    </div>
-                    <div>
-                        <span><i>Pesquisar máquina por número de serial:</i></span> <br><br>
-                        <input type="text" id="serialNumberRobo">
-                    </div>
-                </div>
-    
-                <div class="container-kpi2">
-                    <div>
-                        <h2>Máquinas em urgencia atualmente</h2>
-                        <div>
-                        </div>
-                    </div>
-                    <div>
-                        <h2>Componentes com mais conflitos</h2>
-                        <div>
-                            <canvas id="myChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="container-kpis">
+      <div class="container-kpi">
+        <div class="tooltip-container">
+          <i><span class="tooltip2">% de máquinas que estão com conflitos no momento</span></i>
+          <h2>
+            Status <span class="text">atual</span> das máquinas ⓘ
+        </div>
+        </h2>
+        <div class="container-kpi-box">
+          <div>
+            <h3 style="color: gray;"><i>Máquinas críticas</i></h3>
+            <h2 style="color: red;"><span></span> 12 máquinas (<span>10%</span>)</h2>
+          </div>
 
-            <div class="container-table">
-                <h3>Lista de máquinas com necessidade de manutenção</h3> <br>
-                <span><i>*Da maior prioridade até a menor</i></span>
-                <table class="table">
-                    <thead class="table_head">
-                      <tr>
-                        <th rowspan="1">Prioridade</th>
-                        <th colspan="5">Qtd de alertas atual</th>
-                        <th colspan="2">Alertas mais recentes/antigos</th>
-                      </tr>
-                      <tr>
-                        <th>Número de Serial</th>
-                        <th>CPU</th>
-                        <th>RAM</th>
-                        <th>Disco</th>
-                        <th>Rede</th>
-                        <th>TDA</th>
-                        <th>Primeiro alerta</th>
-                        <th>Último alerta</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>ABC123</td>
-                        <td>Alta</td>
-                        <td>5</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>2025-05-01</td>
-                      </tr>
-                    </tbody>
-                  </table>
-            </div>
-            
-        
-            <!-- <div class="container2">
+          <div>
+            <canvas id="myChart2" style="height: 100px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-kpi2">
+        <div class="tooltip-container">
+          <i><span class="tooltip2">Quantidade de alertas não resolvido por componente</span></i>
+          <h2>
+            Componentes com mais <span class="text">conflitos</span> na última semana ⓘ
+        </div>
+        </h2>
+
+        <div>
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: end;">
+      <div style="display: flex; flex-direction: column; padding: 10px;">
+        <b>Pesquisar máquina por número de série:</b>
+        <input type="text" style="width: 400px;" placeholder="ex:.ABC123">
+      </div>
+      <button style="width: 100px; margin: 10px; height: 35px;">Pesquisar</button>
+    </div>
+
+    <div class="container-table">
+      <h3>Lista de máquinas com necessidade de manutenção atualmente</h3> <br>
+      <span><i>*Da maior prioridade até a menor</i></span>
+      <table class="table">
+        <thead class="table_head">
+          <tr>
+            <th rowspan="1">Prioridade
+              <div class="tooltip">
+                <div class="icon">i</div>
+                <div class="tooltiptext">Quantidade de alertas que passaram do tempo de resolução por máquina</div>
+              </div>
+            </th>
+            <th colspan="5">Qtd de alertas atual</th>
+            <th colspan="2">Alertas mais recentes/antigos
+              <div class="tooltip">
+                <div class="icon">i</div>
+                <div class="tooltiptext">Indicará se o alerta está dentro do tempo de resolução</div>
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <th>Número de Serial</th>
+            <th>CPU</th>
+            <th>RAM</th>
+            <th>Disco</th>
+            <th>Rede</th>
+            <th>Uptime
+              <div class="tooltip">
+                <div class="icon">i</div>
+                <div class="tooltiptext">Tempo de atividade da máquina</div>
+              </div>
+            </th>
+            <th>Primeiro alerta</th>
+            <th>Último alerta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ABC123</td>
+            <td>Alta</td>
+            <td>5</td>
+            <td>3</td>
+            <td>4</td>
+            <td>2</td>
+            <td>3</td>
+            <td>2025-05-01</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- <div class="container2">
                 <div class="box_kpi">
                     <div class="kpi_maqRT">
                         <div class="kpi_maqRT2">
@@ -150,70 +178,65 @@
                     </table>
                 </div>
             </div> -->
-        </div>
-        
-        
-    </body>
+  </div>
+
+
+</body>
+
 </html>
 
 <script>
-    const ctx = document.getElementById('myChart');
-  
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['CPU', 'RAM', 'Disco', 'Rede', 'TDA'],
-        datasets: [{
-          label: 'Qtd média de alertas por máquina',
-          data: [12, 19, 3, 5, 2],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+  const ctx = document.getElementById('myChart');
+
+  const dataValues = [12, 19, 3, 5, 2];
+
+  const maxValue = Math.max(...dataValues);
+
+  const backgroundColor = dataValues.map(value => {
+    let alpha = value / maxValue;
+
+    alpha = Math.max(alpha, 0.1);
+
+    return `rgba(254, 73, 78, ${alpha})`;
+  });
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['CPU', 'RAM', 'Disco', 'Rede', 'Uptime'],
+      datasets: [{
+        label: 'Quantidade de conflitos',
+        data: dataValues,
+        backgroundColor: backgroundColor,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
         }
       }
-    });
-
-const config = {
-  type: 'bar',
-  data: data,
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Bar Chart'
-      }
     }
-  },
-};
+  });
 
-const DATA_COUNT = 7;
-const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
 
-const labels = Utils.months({count: 7});
-const data = {
-  labels: labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: Utils.numbers(NUMBER_CFG),
-      borderColor: Utils.CHART_COLORS.red,
-      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-    },
-    {
-      label: 'Dataset 2',
-      data: Utils.numbers(NUMBER_CFG),
-      borderColor: Utils.CHART_COLORS.blue,
-      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
+  const ctx2 = document.getElementById('myChart2');
+
+  new Chart(ctx2, {
+    type: 'pie',
+    data: {
+      labels: ['Crítico', 'Em Atenção', 'Estáveis'],
+      datasets: [{
+        label: 'qtd de máquinas',
+        data: [12, 20, 98],
+        backgroundColor: [
+          'rgb(254, 73, 78)',
+          'rgb(255, 211, 100)',
+          'rgb(130, 226, 84)'
+        ],
+        borderWidth: 1
+      }]
     }
-  ]
-};
-  </script>
+  });
+</script>

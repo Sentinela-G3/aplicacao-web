@@ -1,0 +1,27 @@
+# Ignorar dependências já instaladas
+node_modules
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos temporários e de teste
+*.tmp
+*.swp
+*.swo
+teste.txt
+
+# Ignorar arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos de controle de versão
+.git
+.gitignore
+
+# Ignorar arquivos de documentação (opcional)
+README.md
+LICENSE
+
+# Ignorar configs do Docker que não precisam ir pra imagem da aplicação
+docker-compose.yml
+docker/
