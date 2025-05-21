@@ -1,0 +1,27 @@
+services:
+  site:
+    image: gabilodi/atividade-so:node-app
+    ports:
+      - "3333:3333"
+    networks:
+      - rede-compose
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DP_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: urubu100
+      DB_DATABASE: Sentinela
+    
+  db:
+    image: gabilodi/atividade-so:mysql-app
+    ports:
+      - "3307:3306"
+    networks:
+      - rede-compose
+    
+networks:
+  rede-compose:
+    driver: bridge
+
