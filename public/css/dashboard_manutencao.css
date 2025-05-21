@@ -126,6 +126,7 @@ body {
 
 .container-kpis{
   display: flex;
+  height: 38vh;
 }
 
 .container-kpi2{
@@ -199,9 +200,6 @@ table tr:last-child td:first-child {
 table tr:last-child td:last-child {
   border-bottom-right-radius: 12px;
 }
-
-
-
 
 .table_head {
   background-color: var(--bg-light);
@@ -505,3 +503,38 @@ button:hover {
   pointer-events: auto;
 }
 
+.grafico{
+  height: 25vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.serial-highlight-red {
+  border: 1px solid #ff6a6a;
+  background: linear-gradient(90deg,rgba(255, 106, 106, 1) 15%, rgba(255, 255, 255, 1) 15%);
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #333;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.serial-highlight-yellow {
+  border: 1px solid #ff6a6a;
+  background: linear-gradient(90deg,rgba(251, 188, 4, 1) 15%, rgba(255, 255, 255, 1) 15%);
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #333;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.serial-highlight-green {
+  border: 1px solid #ff6a6a;
+  background: linear-gradient(90deg,rgba(118, 198, 126, 1) 15%, rgba(255, 255, 255, 1) 15%);
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #333;
+  font-weight: 500;
+  display: inline-block;
+}
