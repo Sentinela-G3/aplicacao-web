@@ -133,10 +133,10 @@
       </div>
     </div>
 
-    <!-- Gráficos -->
+    <!-- Métricas de desempenho dos componentes e gráficos -->
     <div class="container">
+      <h3 id="comp_CPU">CPU</h3>
       <div class="desempenhoComponente">
-        <h3 id="comp_CPU">CPU</h3>
         <div class="kpisComponente">
           <div class="kpiBox">
             <div class="titulo">
@@ -170,13 +170,14 @@
             </div>
           </div>
         </div>
+      <div class="grafDesempenho" id="graf_CPU">
+        <canvas id="myChart"></canvas>
       </div>
-      <div class="grafDesempenho" id="graf_CPU"></div>
     </div>
 
     <div class="container">
+      <h3 id="comp_RAM">RAM</h3>
       <div class="desempenhoComponente">
-        <h3 id="comp_RAM">RAM</h3>
         <div class="kpisComponente">
           <div class="kpiBox">
             <div class="titulo">
@@ -210,13 +211,15 @@
             </div>
           </div>
         </div>
-        <div class="grafDesempenho" id="graf_RAM"></div>
+        <div class="grafDesempenho" id="graf_Ram">
+          <canvas id="l"></canvas>
+        </div>
       </div>
     </div>
 
     <div class="container">
+      <h3 id="comp_Rede">Rede</h3>
       <div class="desempenhoComponente">
-        <h3 id="comp_Rede">Rede</h3>
         <div class="kpisComponente">
           <div class="kpiBox">
             <div class="titulo">
@@ -250,90 +253,129 @@
             </div>
           </div>
         </div>
-        <div class="grafDesempenho" id="graf_Rede"></div>
+        <div class="grafDesempenho" id="graf_Rede">
+          <canvas id="l"></canvas>
+        </div>
       </div>
-    </div>
 
-    <div class="container">
-      <div class="desempenhoComponente">
+      <div class="container">
         <h3 id="comp_Bateria">Bateria</h3>
-        <div class="kpisComponente">
-          <div class="kpiBox">
-            <div class="titulo">
-              <span>Média de Consumo(%)</span>
-            </div>
-            <div class="kpiContent">
-              <div class="conjunto">
-                <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Bateria">0</div>
+        <div class="desempenhoComponente">
+          <div class="kpisComponente">
+            <div class="kpiBox">
+              <div class="titulo">
+                <span>Média de Consumo(%)</span>
               </div>
-              <div class="conjunto">
-                <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Bateria">0</div>
+              <div class="kpiContent">
+                <div class="conjunto">
+                  <div class="tipometrica"><span>Esperado</span></div>
+                  <div class="metrica" id="met-esp_Bateria">0</div>
+                </div>
+                <div class="conjunto">
+                  <div class="tipometrica"><span>Atingido</span></div>
+                  <div class="metrica" id="met-ati_Bateria">0</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpiBox">
+              <div class="titulo">
+                <span>Média de Consumo Máximo(%)</span>
+              </div>
+              <div class="kpiContent">
+                <div class="conjunto">
+                  <div class="tipometrica"><span>Esperado</span></div>
+                  <div class="metrica" id="met-esp_Bateria">0</div>
+                </div>
+                <div class="conjunto">
+                  <div class="tipometrica"><span>Atingido</span></div>
+                  <div class="metrica" id="met-ati_Bateria">0</div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="grafDesempenho" id="graf_Bateria">
+            <canvas id="l"></canvas>
+          </div>
+        </div>
 
-          <div class="kpiBox">
-            <div class="titulo">
-              <span>Média de Consumo Máximo(%)</span>
+        <div class="container">
+          <h3 id="comp_Disco">Disco</h3>
+          <div class="desempenhoComponente">
+            <div class="kpisComponente">
+              <div class="kpiBox">
+                <div class="titulo">
+                  <span>Média de Consumo(%)</span>
+                </div>
+                <div class="kpiContent">
+                  <div class="conjunto">
+                    <div class="tipometrica"><span>Esperado</span></div>
+                    <div class="metrica" id="met-esp_Disco">0</div>
+                  </div>
+                  <div class="conjunto">
+                    <div class="tipometrica"><span>Atingido</span></div>
+                    <div class="metrica" id="met-ati_Disco">0</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="kpiBox">
+                <div class="titulo">
+                  <span>Média de Consumo Máximo(%)</span>
+                </div>
+                <div class="kpiContent">
+                  <div class="conjunto">
+                    <div class="tipometrica"><span>Esperado</span></div>
+                    <div class="metrica" id="met-esp_Disco">0</div>
+                  </div>
+                  <div class="conjunto">
+                    <div class="tipometrica"><span>Atingido</span></div>
+                    <div class="metrica" id="met-ati_Disco">0</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="kpiContent">
-              <div class="conjunto">
-                <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Bateria">0</div>
-              </div>
-              <div class="conjunto">
-                <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Bateria">0</div>
-              </div>
+            <div class="grafDesempenho" id="graf_Disco">
+              <canvas id="l"></canvas>
             </div>
           </div>
         </div>
-        <div class="grafDesempenho" id="grafDesempenho"></div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="desempenhoComponente">
-        <h3 id="comp_Disco">Disco</h3>
-        <div class="kpisComponente">
-          <div class="kpiBox">
-            <div class="titulo">
-              <span>Média de Consumo(%)</span>
-            </div>
-            <div class="kpiContent">
-              <div class="conjunto">
-                <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Disco">0</div>
-              </div>
-              <div class="conjunto">
-                <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Disco">0</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="kpiBox">
-            <div class="titulo">
-              <span>Média de Consumo Máximo(%)</span>
-            </div>
-            <div class="kpiContent">
-              <div class="conjunto">
-                <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Disco">0</div>
-              </div>
-              <div class="conjunto">
-                <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Disco">0</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="grafDesempenho"></div>
-      </div>
-    </div>
-  </div>
 </body>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('myChart');
+
+  const dataValues = [12, 19, 3, 5, 2];
+
+  const maxValue = Math.max(...dataValues);
+
+  const backgroundColor = dataValues.map(value => {
+    let alpha = value / maxValue;
+
+    alpha = Math.max(alpha, 0.1);
+
+    return `rgba(254, 73, 78, ${alpha})`;
+  });
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Maio'],
+      datasets: [{
+        label: 'Quantidade de conflitos',
+        data: dataValues,
+        backgroundColor: backgroundColor,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 </html>
