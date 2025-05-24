@@ -8,6 +8,31 @@ const BASE_URL = window.location.hostname === "localhost"
 let chartCPU, chartMemoria, chartRede, chartDisco, chartDownload, chartUpload;
 let intervaloAtualizacao;
 let thresholdData = [];
+let estadoOrdenacao = {
+    campo: null,
+    crescente: true
+};
+
+// Adicionando evento de click nos headers da tabela
+document.getElementById('th-pid').addEventListener('click', () => ordenarPor('pid'));
+document.getElementById('th-nome').addEventListener('click', () => ordenarPor('nome'));
+document.getElementById('th-cpu').addEventListener('click', () => ordenarPor('cpu_percent'));
+document.getElementById('th-ram').addEventListener('click', () => ordenarPor('memory_percent'));
+
+document.getElementById("th-chave").addEventListener("click", () => ordenarTabelaAlertasPor("issueKey"));
+document.getElementById("th-desc").addEventListener("click", () => ordenarTabelaAlertasPor("descricaoTratada"));
+document.getElementById("th-disp").addEventListener("click", () => ordenarTabelaAlertasPor("idDispositivo"));
+document.getElementById("th-data").addEventListener("click", () => ordenarTabelaAlertasPor("textHoraAbertura"));
+
+
+// Ordenação de alertas
+let alertasAtuais = [];
+let estadoOrdenacaoAlertas = {
+    campo: null,
+    crescente: true
+};
+
+
 
 // Funções auxiliares para cálculos e conversões
 
@@ -424,10 +449,10 @@ function atualizarBoxes(dados) {
 
     document.getElementById("cpuFreqKPI").textContent = validarDado(dados.cpu_freq, "Sem dados", 2) + " GHz";
     document.getElementById("cpuPercentKPI").textContent = validarDado(dados.cpu_percent, "Sem dados") + "%";
-    document.getElementById("cpuUptimeKPI").textContent = 
-    dados.uptime && !isNaN(dados.uptime.valor)
-        ? converterHorasParaTexto(dados.uptime.valor)
-        : "Sem dados";
+    document.getElementById("cpuUptimeKPI").textContent =
+        dados.uptime && !isNaN(dados.uptime.valor)
+            ? converterHorasParaTexto(dados.uptime.valor)
+            : "Sem dados";
 
 
     document.getElementById("ramUsedKPI").textContent = validarDado(dados.ram_used[dados.ram_used.length - 1].valor, "Sem dados", 2) + " GB de " +
@@ -464,10 +489,15 @@ async function buscarProcessos(idMaquina) {
         const processos_vetor = json.dados[chaveProcessos];
 
         if (Array.isArray(processos_vetor) && processos_vetor.length > 0) {
-            atualizarTabelaProcessos(processos_vetor);
+            processosAtuais = processos_vetor;
+            gerarCardsAcoes();
+            const processosOrdenados = ordenarProcessos(processosAtuais, estadoOrdenacao.campo || 'cpu_percent', estadoOrdenacao.crescente);
+            atualizarTabelaProcessos(processosOrdenados);
         } else {
             console.warn('Nenhum processo válido recebido.');
         }
+
+
 
     } catch (error) {
         console.error('Erro ao buscar processos:', error);
@@ -483,65 +513,250 @@ async function buscarAlertas(serialNumber) {
         }
 
         const data = await response.json();
-        console.log("Resposta da API:", data);
 
         if (!Array.isArray(data.values)) {
             console.error("A resposta não contém um array de tickets.");
             return;
         }
 
-        const tabelaBody = document.getElementById("tabela-chamados-body");
-        tabelaBody.innerHTML = ""; // Limpa a tabela
+        // Filtra os tickets com o serial e tipo correto
+        const ticketsFiltrados = data.values
+            .filter(ticket =>
+                ticket.summary.includes(serialNumber) &&
+                ticket.requestTypeId === "68"
+            )
+            .map(ticket => {
+                const date = new Date(ticket.createdDate.jira);
+                const dia = String(date.getDate()).padStart(2, '0');
+                const mes = String(date.getMonth() + 1).padStart(2, '0');
+                const ano = date.getFullYear();
+                const hora = String(date.getHours()).padStart(2, '0');
+                const minuto = String(date.getMinutes()).padStart(2, '0');
+                const textHoraAbertura = `${dia}/${mes}/${ano} às ${hora}:${minuto}`;
 
-        // Filtra os tickets que têm o serial no summary e tipo correto
-        const ticketsFiltrados = data.values.filter(ticket =>
-            ticket.summary.includes(serialNumber) && ticket.requestTypeId === "68"
+                const descricaoRaw = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value || "";
+                const descricaoSeparada = descricaoRaw.split('*');
+                const descricaoTratada = descricaoSeparada[3]
+                    ? descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1)
+                    : "Sem descrição";
+
+                const idDispositivo = ticket.summary.split(" ")[1] || "N/A";
+                const status = ticket.currentStatus?.status || "Desconhecido";
+
+                return {
+                    issueKey: ticket.issueKey,
+                    descricaoTratada,
+                    idDispositivo,
+                    textHoraAbertura,
+                    currentStatus: { status }
+                };
+            });
+
+        alertasAtuais = ticketsFiltrados;
+
+        const ordenados = ordenarAlertas(
+            alertasAtuais,
+            estadoOrdenacaoAlertas.campo || 'textHoraAbertura',
+            estadoOrdenacaoAlertas.crescente
         );
 
-        if (ticketsFiltrados.length === 0) {
-            tabelaBody.innerHTML = `
-                <tr>
-                    <td colspan="5">Nenhum chamado encontrado para o serial informado.</td>
-                </tr>
-            `;
-            return;
-        }
-
-        ticketsFiltrados.forEach(ticket => {
-            const date = new Date(ticket.createdDate.jira);
-            const dia = String(date.getDate()).padStart(2, '0');
-            const mes = String(date.getMonth() + 1).padStart(2, '0');
-            const ano = date.getFullYear();
-            const hora = String(date.getHours()).padStart(2, '0');
-            const minuto = String(date.getMinutes()).padStart(2, '0');
-            const textHoraAbertura = `${dia}/${mes}/${ano} às ${hora}:${minuto}`;
-
-            const descricaoRaw = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value || "";
-            const descricaoSeparada = descricaoRaw.split('*');
-            const descricaoTratada = descricaoSeparada[3]
-                ? descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1)
-                : "Sem descrição";
-
-            const idDispositivo = ticket.summary.split(" ")[1] || "N/A";
-            const status = ticket.currentStatus?.status || "Desconhecido";
-
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td class="alerta-chave">${ticket.issueKey}</td>
-                <td>${descricaoTratada}</td>
-                <td class="alerta-dispositivo">${idDispositivo}</td>
-                <td class="alerta-horario">${textHoraAbertura}</td>
-                <td><span class="status-badge status-resolvido">${status}</span></td>
-            `;
-            tabelaBody.appendChild(row);
-        });
+        atualizarTabelaAlertas(ordenados);
 
     } catch (error) {
         console.error("Erro ao buscar tickets:", error);
     }
 }
 
+function gerarCardsAcoes() {
+    const container = document.getElementById("hero-actions");
+    container.innerHTML = ''; 
+    let algumAlertaGerado = false;
 
+    //Card de Chamados Abertos
+    const chamadosAbertos = alertasAtuais.filter(alerta => alerta.currentStatus.status !== "Resolvido");
+    if (chamadosAbertos.length > 0) {
+        const cardChamados = document.createElement("div");
+        cardChamados.className = "action-card critical";
+        const primeiroChamado = chamadosAbertos[0];
+        const dataAbertura = primeiroChamado ? primeiroChamado.textHoraAbertura : 'Data desconhecida';
+
+        cardChamados.innerHTML = `
+            <h3>⚠️ Chamados Abertos</h3>
+            <p>${chamadosAbertos.length} chamado(s) não resolvido(s) desde ${dataAbertura}</p>
+            <button onclick="abrirChamadoJira('${primeiroChamado.issueKey}')">Abrir no Jira</button>
+        `;
+        container.appendChild(cardChamados);
+        algumAlertaGerado = true;
+    } else {
+        const cardSemChamados = document.createElement("div");
+        cardSemChamados.className = "action-card success";
+        cardSemChamados.innerHTML = `
+            <h3>✅ Sem Chamados Abertos</h3>
+            <p>Não há chamados pendentes no momento.</p>
+        `;
+        container.appendChild(cardSemChamados);
+    }
+
+    // Cards para Processos com Alto Consumo
+    if (processosAtuais.length > 0) {
+        const processosComUso = processosAtuais.filter(proc => proc.cpu_percent > 0 || proc.memory_percent > 0);
+
+        if (processosComUso.length > 0) {
+            const somaConsumo = processosComUso.reduce((total, proc) => total + proc.cpu_percent + proc.memory_percent, 0);
+            const mediaConsumo = somaConsumo / processosComUso.length;
+            const limiteAltoConsumo = mediaConsumo * 1.90;
+
+            let processosAltoConsumo = processosAtuais.filter(proc => (proc.cpu_percent + proc.memory_percent) > limiteAltoConsumo);
+
+            if (processosAltoConsumo.length > 0) {
+                processosAltoConsumo.sort((a, b) => (b.cpu_percent + b.memory_percent) - (a.cpu_percent + b.memory_percent));
+                const top3ProcessosAltoConsumo = processosAltoConsumo.slice(0, 3);
+
+                top3ProcessosAltoConsumo.forEach(processo => {
+                    const consumoTotal = (processo.cpu_percent + processo.memory_percent).toFixed(1);
+                    const cardProcessoAltoConsumo = document.createElement("div");
+                    cardProcessoAltoConsumo.className = "action-card warning";
+                    cardProcessoAltoConsumo.innerHTML = `
+                        <h3>🔥 Alto Consumo: ${processo.nome}</h3>
+                        <p>Consumindo aproximadamente <strong>${consumoTotal}%</strong> (CPU + RAM), mais de 90% acima da média dos processos ativos (${mediaConsumo.toFixed(1)}%).</p>
+                        <button onclick="confirmarEncerrarProcesso('${processo.nome}')">Encerrar Processo</button>
+                    `;
+                    container.appendChild(cardProcessoAltoConsumo);
+                    algumAlertaGerado = true;
+                });
+            } else {
+                const cardSemAltoConsumo = document.createElement("div");
+                cardSemAltoConsumo.className = "action-card success";
+                cardSemAltoConsumo.innerHTML = `
+                    <h3>✅ Sem Alto Consumo de Processos</h3>
+                    <p>Nenhum processo com consumo significativamente acima da média.</p>
+                `;
+                container.appendChild(cardSemAltoConsumo);
+                if (chamadosAbertos.length === 0) algumAlertaGerado = true;
+            }
+        } else {
+            const cardSemProcessosAtivos = document.createElement("div");
+            cardSemProcessosAtivos.className = "action-card info";
+            cardSemProcessosAtivos.innerHTML = `
+                <h3>ℹ️ Sem Processos Ativos</h3>
+                <p>Não há processos ativos para verificar o consumo.</p>
+            `;
+            container.appendChild(cardSemProcessosAtivos);
+            if (chamadosAbertos.length === 0) algumAlertaGerado = true;
+        }
+    } else {
+        const cardSemProcessos = document.createElement("div");
+        cardSemProcessos.className = "action-card info";
+        cardSemProcessos.innerHTML = `
+            <h3>ℹ️ Sem Dados de Processos</h3>
+            <p>Não há dados de processos disponíveis para análise.</p>
+        `;
+        container.appendChild(cardSemProcessos);
+        if (chamadosAbertos.length === 0) algumAlertaGerado = true;
+    }
+
+
+}
+
+function abrirChamadoJira(issueKey) {
+    const jiraUrlBase = "https://sentinelacomvoce.atlassian.net/browse/";
+    window.open(jiraUrlBase + issueKey, '_blank');
+}
+
+
+
+function atualizarTabelaAlertas(alertas) {
+    const tabelaBody = document.getElementById("tabela-chamados-body");
+    tabelaBody.innerHTML = "";
+
+
+    if (!alertas || alertas.length === 0) {
+        tabelaBody.innerHTML = `<tr><td colspan="5">Nenhum chamado encontrado.</td></tr>`;
+        return;
+    }
+
+    alertas.forEach(alerta => {
+        const row = tabelaBody.insertRow();
+
+        let cellChave = row.insertCell();
+        cellChave.textContent = alerta.issueKey;
+
+        let cellDescricao = row.insertCell();
+        cellDescricao.textContent = alerta.descricaoTratada;
+
+        let cellDispositivo = row.insertCell();
+        cellDispositivo.textContent = alerta.idDispositivo;
+
+        let cellData = row.insertCell();
+        cellData.textContent = alerta.textHoraAbertura;
+
+        let cellStatus = row.insertCell();
+        cellStatus.textContent = alerta.currentStatus.status;
+
+        // Nova célula para o botão do Jira
+        let cellAcao = row.insertCell();
+        const botaoJira = document.createElement('button');
+        botaoJira.textContent = 'Abrir no Jira';
+        botaoJira.onclick = function() {
+            abrirChamadoJira(alerta.issueKey);
+        };
+        cellAcao.appendChild(botaoJira);
+    });
+}
+
+
+function ordenarAlertas(array, campo, crescente = true) {
+    return [...array].sort((a, b) => {
+        let valA = a[campo];
+        let valB = b[campo];
+
+        if (campo === 'textHoraAbertura') {
+            valA = new Date(valA);
+            valB = new Date(valB);
+        }
+
+        if (typeof valA === 'string') {
+            return crescente ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+
+        return crescente ? valA - valB : valB - valA;
+    });
+}
+
+
+function ordenarPor(campo) {
+    if (estadoOrdenacao.campo === campo) {
+        estadoOrdenacao.crescente = !estadoOrdenacao.crescente;
+    } else {
+        estadoOrdenacao.campo = campo;
+        estadoOrdenacao.crescente = true;
+    }
+
+    const processosOrdenados = ordenarProcessos(processosAtuais, campo, estadoOrdenacao.crescente);
+    atualizarTabelaProcessos(processosOrdenados);
+    atualizarSetasOrdenacao();
+}
+
+function atualizarSetasOrdenacao() {
+    const campos = ['pid', 'nome', 'cpu_percent', 'memory_percent'];
+
+    campos.forEach(campo => {
+        const mapaIds = {
+            pid: 'seta-pid',
+            nome: 'seta-nome',
+            cpu_percent: 'seta-cpu',
+            memory_percent: 'seta-ram'
+        };
+        const setaEl = document.getElementById(mapaIds[campo]);
+        if (!setaEl) return;
+
+        if (estadoOrdenacao.campo === campo) {
+            setaEl.textContent = estadoOrdenacao.crescente ? '🔼' : '🔽';
+        } else {
+            setaEl.textContent = '';
+        }
+    });
+}
 
 
 
@@ -563,8 +778,9 @@ function ordenarProcessos(array, campo, crescente = true) {
 
 function atualizarTabelaProcessos(processos) {
     const tbody = document.getElementById('tabela-processos-body');
-    tbody.innerHTML = ''; 
-    processos.forEach(proc => {
+    tbody.innerHTML = '';
+    for (let i = 0; i < 10; i++) {
+        let proc = processos[i];
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${proc.pid}</td>
@@ -573,8 +789,23 @@ function atualizarTabelaProcessos(processos) {
             <td>${proc.memory_percent.toFixed(1)}%</td>
         `;
         tbody.appendChild(row);
-    });
+
+    }
+  
 }
+
+function ordenarTabelaAlertasPor(campo) {
+    if (estadoOrdenacaoAlertas.campo === campo) {
+        estadoOrdenacaoAlertas.crescente = !estadoOrdenacaoAlertas.crescente;
+    } else {
+        estadoOrdenacaoAlertas.campo = campo;
+        estadoOrdenacaoAlertas.crescente = true;
+    }
+
+    const ordenados = ordenarAlertas(alertasAtuais, campo, estadoOrdenacaoAlertas.crescente);
+    atualizarTabelaAlertas(ordenados);
+}
+
 
 
 
@@ -592,46 +823,33 @@ if (id) {
             console.warn("Serial não encontrado. Não será possível buscar alertas.");
         }
     });
-    
+
     intervaloAtualizacao = setInterval(() => {
         buscarMetricas(id);
         buscarThreshold(id);
         buscarProcessos(id);
         obterSerialPorId(id).then(serial => {
-         if (serial) {
-            buscarAlertas(serial);
-        } else {
-            console.warn("Serial não encontrado. Não será possível buscar alertas.");
-        }
-    });
+            if (serial) {
+                buscarAlertas(serial);
+            } else {
+                console.warn("Serial não encontrado. Não será possível buscar alertas.");
+            }
+        });
     }, 5000);
+
+
+
+
+
+    intervaloProcessosAlertas = setInterval(() => {
+        obterSerialPorId(id).then(serial => {
+            if (serial) {
+                buscarAlertas(serial);
+            } else {
+                console.warn("Serial não encontrado. Não será possível buscar alertas.");
+            }
+        });
+    }, 10000)
 }
 
-// Botão de pesquisa manual
-document.getElementById('confirm_button').addEventListener('click', async () => {
-    const serialDigitado = document.querySelector('#select_modelo input').value;
-
-    if (serialDigitado) {
-        try {
-            const response = await fetch(`http://${BASE_URL}/maquinas/serial/${serialDigitado}`);
-            const dadosSerial = await response.json();
-            const idMaquina = dadosSerial[0].id_maquina;
-
-            // console.log(dadosSerial)
-
-            clearInterval(intervaloAtualizacao);
-
-            id = idMaquina;
-            buscarMetricas(id);
-
-            intervaloAtualizacao = setInterval(() => {
-                buscarMetricas(id);
-                buscarThreshold(id);
-            }, 5000);
-
-        } catch (error) {
-            console.error('Erro ao buscar ID pelo serial:', error);
-        }
-    }
-});
 

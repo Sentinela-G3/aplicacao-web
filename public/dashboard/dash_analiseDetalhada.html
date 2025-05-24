@@ -23,28 +23,9 @@
     <div class="section1">
         <div class="first-child">
             <h1>Análise detalhada em tempo real</h1>
-            <div id="list-filter" class="list">
-                <div id="select_modelo" class="select_main">
-                    <label for="serial" class="title_select">Número Serial</label>
-                    <input type="text" id="serial" placeholder="Digite o N° Serial">
-                </div>
-                <button id="confirm_button">
-                    <span>PESQUISAR</span>
-                </button>
-            </div>
         </div>
 
-        <div class="hero-actions">
-            <div class="action-card critical">
-                <h3>⚠️ Chamados Abertos</h3>
-                <p>3 chamados não resolvidos</p>
-                <button onclick="abrirChamados()">Ver detalhes</button>
-            </div>
-            <div class="action-card warning">
-                <h3>🔥 Alto consumo de CPU</h3>
-                <p>Processo: chrome.exe (91%)</p>
-                <button onclick="encerrarProcesso('chrome.exe')">Encerrar</button>
-            </div>
+        <div class="hero-actions" id="hero-actions">
         </div>
 
 
@@ -187,10 +168,11 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>PID</th>
-                                    <th>Nome</th>
-                                    <th>CPU (%)</th>
-                                    <th>RAM (%)</th>
+                                    <th id="th-pid">PID <span class="seta" id="seta-pid"></span></th>
+                                    <th id="th-nome">Nome <span class="seta" id="seta-nome"></span></th>
+                                    <th id="th-cpu">CPU (%) <span class="seta" id="seta-cpu"></span></th>
+                                    <th id="th-ram">RAM (%) <span class="seta" id="seta-ram"></span></th>
+
                                 </tr>
                             </thead>
                             <tbody id="tabela-processos-body">
@@ -212,11 +194,12 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Chave</th>
-                                    <th>Descrição</th>
-                                    <th>ID Dispositivo</th>
-                                    <th>Hora de Abertura</th>
+                                    <th id="th-chave">Chamado</th>
+                                    <th id="th-desc">Descrição</th>
+                                    <th id="th-disp">Dispositivo</th>
+                                    <th id="th-data">Abertura</th>
                                     <th>Status</th>
+                                    <th>Ação</th>
                                 </tr>
                             </thead>
                             <tbody id="tabela-chamados-body">

@@ -266,6 +266,12 @@ h4 {
 .warning { background-color: #fff3cd; color: #856404; }
 .success { background-color: #d4edda; color: #155724; }
 
+.seta {
+    font-size: 0.8em;
+    margin-left: 4px;
+}
+
+
 
 
 /* Ajustes para os elementos internos do ApexCharts */
