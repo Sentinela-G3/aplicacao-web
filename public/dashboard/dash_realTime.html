@@ -9,19 +9,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard | Tempo Real</title>
         <script src="../scripts/animacaoMenuMobile.js"></script>
-
-
-</head>
-<body class="body_dashRealTime" id="dash_RT">
-    <!-- MENU LATERAL-->
-    <div class="container_navDashRT" id="container_navDashRT"></div>
-
-    <!-- MENU SUPERIOR MOBILE-->
-    <div class="navBar-mobile" id="navBar-mobile"></div>
-
-    <!-- SCRIPT QUE GERA O CONTEUDO DOS MENUS -->
-    <script src="../scripts/redirecionamentoMenu.js"></script>
-
+    </head>
+    <body class="body_dashRealTime" id="dash_RT">
+        <!-- MENU LATERAL-->
+        <div class="container_navDashRT" id="container_navDashRT"></div>
+        <!-- MENU SUPERIOR MOBILE-->
+        <div class="navBar-mobile" id="navBar-mobile"></div>
+        <!-- SCRIPT QUE GERA O CONTEUDO DOS MENUS -->
+        <script src="../scripts/redirecionamentoMenu.js"></script>
         <div class="dashboard">
             <div class="container">
                 <div class="titulo_dashRT">
@@ -35,29 +30,85 @@
                     </span>
                 </div>
             </div>
-        
             <div class="container2">
                 <div class="box_kpi">
-                    <div class="kpi_maqRT">
-                        <div class="kpi_maqRT2">
-                            <span><b>Máquina(s) ativa(s)</b></span>
-                            <span></span>
+                    <div class="kpi-card">
+                        <div class="kpi-color-bar"></div>
+                        <div class="kpi-content">
+                            <div class="kpi-title">Máquina com mais Alertas</div>
+                            <div class="kpi-value">PE037DC0</div>
+                            <div class="kpi-subtitle">7 Alertas</div>
+                        </div>
+                        <div class="kpi-icon">
+                            <!-- <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="ícone"> -->
+                            <span class="emoji">⚠️</span>
                         </div>
                     </div>
-                    <div class="kpi_maqRT">
-                        <div class="kpi_maqRT2">
-                            <span><b>Máquina(s) inativa(s)</b></span>
-                            <span></span>
+                    <div class="kpi-card">
+                        <div class="kpi-color-bar"></div>
+                        <div class="kpi-content">
+                            <div class="kpi-title">Último Alerta</div>
+                            <div class="kpi-value">PE037DC0</div>
+                            <div class="kpi-subtitle">Alerta de CPU</div>
+                        </div>
+                        <div class="kpi-icon">
+                            <!-- <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="ícone"> -->
+                            <span class="emoji">⌛</span>
                         </div>
                     </div>
-                    <div class="kpi_maqRT">
-                        <div class="kpi_maqRT2">
-                            <span><b>Total de Alertas</b></span>
-                            <span id="qtd_alertas"></span>
+                    <div class="kpi-card">
+                        <div class="kpi-color-bar"></div>
+                        <div class="kpi-content">
+                            <div class="kpi-title">Máquina com mais Alertas</div>
+                            <div class="kpi-value">PE037DC0</div>
+                            <div class="kpi-subtitle">7 Alertas</div>
                         </div>
+                        <div class="kpi-icon">
+                            <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="ícone">
+                        </div>
+                    </div>
+                    <!-- kpi nova -->
+                    <div class="kpi-stack">
+                        <div class="kpi-mini">
+                            <span class="label">Máquinas</span>
+                            <span class="value">120</span>
+                        </div>
+                        <div class="kpi-mini active">
+                            <span class="label">Ativas</span>
+                            <span class="value">85</span>
+                        </div>
+                        <div class="kpi-mini inactive">
+                            <span class="label">Inativas</span>
+                            <span class="value">35</span>
+                        </div>
+                    </div>
+                    <!-- fim kpi nova -->
+                </div>
+                <div id="filter" class="filter">
+                    <div id="search" class="search">
+                        <!-- <label for="serial" class="title_select">Número Serial</label> -->
+                        <input type="text" id="serial" placeholder="Digite o N° Serial">
+                        <button id="confirm_button">
+                            <img src="../assets/img/lupa.png" alt="">
+                        </button>
+                    </div>
+                    <div id="setor-select" class="search">
+                        <select id="setor">
+                            <option value="" disabled selected>Selecione o Setor/Área</option>
+                            <option value="setor_1">Setor 1</option>
+                            <option value="setor_2">Setor 2</option>
+                            <option value="setor_3">Setor 3</option>
+                        </select>
+                    </div>
+                    <div id="setor-select" class="search">
+                        <select id="setor">
+                            <option value="" disabled selected>Nível de Alertas</option>
+                            <option value="financeiro">Crítico</option>
+                            <option value="tecnologia">Médio</option>
+                            <option value="recursos-humanos">Baixo</option>
+                        </select>
                     </div>
                 </div>
-        
                 <div class="box_table">
                     <table class="table">
                         <thead class="table_head">
@@ -65,26 +116,37 @@
                                 <th>Máquina</th>
                                 <th>Status</th>
                                 <th>Tempo Ativo (h)</th>
-                                <th>Alertas</th>
-                                <th>Último Alerta</th>
-                                <th>RAM (%)</th>
                                 <th>CPU (%)</th>
+                                <th>RAM (%)</th>
                                 <th>Disco (%)</th>
+                                <th>Último Alerta</th>
+                                <th>Alertas</th>
                                 <th>Detalhamento</th>
                             </tr>
                         </thead>
                         <tbody class="table_body">
-                            
+                            <!--Tuplas-->
+                            <td>
+                                <span style="font-weight: bold;">PE037DC0</span>
+                                <br>
+                                <small>Setor/Área</small>
+                            </td>
+                            <td class="status">Ativo</td>
+                            <td class="uptime">4h35min</td>
+                            <td class="cpu">40</td>
+                            <td class="ram">20</td>
+                            <td class="disco">50</td>
+                            <td class="ultimo-alerta">1h12min</td>
+                            <td class="alertas-count">7</td>
+                            <td>
+                                <button class="details-btn">Expandir Análise</button>
+                            </td>
                         </tbody>
-                        
                     </table>
                 </div>
             </div>
         </div>
-        
-        
     </body>
 </html>
-<script src="../scripts/dash_realTime/dash_realTime.js" defert>
-   
+<!-- <script src="../scripts/dash_realTime/dash_realTime.js" defert>    -->
 </script>
