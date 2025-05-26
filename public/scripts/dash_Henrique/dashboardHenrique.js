@@ -100,14 +100,14 @@ function inicializarGraficos() {
     const options = {
         chart: {
           type: 'pie',
-          height: "85%"
+          height: "80%"
         },
         labels: ['CPU', 'Memória', 'Disco', 'Tempo de Uso', 'Rede', 'Báteria'],
         series: [25,5, 15, 10, 15,30],
         dataLabels: {
           enabled: true,
           style: {
-            fontSize: '18px',
+            fontSize: '14px',
             colors: ['#000'],
           },
           dropShadow: {
@@ -121,12 +121,14 @@ function inicializarGraficos() {
         legend: {
           position: 'right',
           verticalAlign: 'middle',
-          fontSize: '16px',
+          fontSize: '12px',
+          fontWeight: "bold",
+          offsetY: -15, // sobe a legenda
+          offsetX: -0,
           labels: {
             colors: ['#000'], // Cor do texto da legenda
             useSeriesColors: false // Se quiser cores personalizadas ao invés das cores da série
           },
-          offsetY:40,
           markers: {
             fillColors: ['#fa9cd5', '#f4fd80', '#c0dd69', '#8765e4', '#a85d56', '#be9468']
         }
