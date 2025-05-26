@@ -32,7 +32,7 @@ function atualizarGraf() {
     periodoReal = dataValues.length
   }
 
-  let chartType = (periodoReal === 1) ? 'bar' : 'line';
+  let tipoGraf = (periodoReal === 1) ? 'bar' : 'line';
 
   for (let i = 0; i < ctxs.length; i++) {
     let dataValues = [];
@@ -44,7 +44,7 @@ function atualizarGraf() {
     }
 
     let chart = new Chart(ctxs[i], {
-      type: chartType,
+      type: tipoGraf,
       data: {
         labels: labels.slice(0, periodoReal),
         datasets: [

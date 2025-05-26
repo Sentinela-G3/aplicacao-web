@@ -26,21 +26,38 @@
     <div class="cabecalho">
       <div class="container">
         <h1>Desempenho Estatístico</h1>
-        <div class="seletor">
-          <select id="slt_modelo">
-            <option value="#" disabled>Selecione o Modelo</option>
-            <option value="1" selected>Modelo 1</option>
-            <option value="2">Modelo 2</option>
-            <option value="3">Modelo 3</option>
-          </select>
-          <select id="slt_periodo">
-            <option value="#" disabled>Selecione o Periodo</option>
-            <option value="24" selected>2 Anos</option>
-            <option value="12">1 Ano</option>
-            <option value="6">6 Meses</option>
-            <option value="3">3 Meses</option>
-            <option value="1">1 Mês</option>
-          </select>
+        <div class="container">
+          <div class="seletor">
+            <select id="slt_modelo">
+              <option value="#" disabled>Selecione o Modelo</option>
+              <option value="1" selected>Modelo 1</option>
+              <option value="2">Modelo 2</option>
+              <option value="3">Modelo 3</option>
+            </select>
+            <select id="slt_periodo">
+              <option value="#" disabled>Selecione o Periodo</option>
+              <option value="24" selected>2 Anos</option>
+              <option value="12">1 Ano</option>
+              <option value="6">6 Meses</option>
+              <option value="3">3 Meses</option>
+              <option value="1">1 Mês</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="container">
+          <div class="kpicontainer">
+            <div class="kpiBox">
+              <div class="titulo">
+                <span>Eficiência dos robôs (%)</span>
+              </div>
+              <div class="metrica">
+                <div class="valorMet" id="met_efiMod">0</div>
+                <div class="metComparativa" id="ant_efiMod">0</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -56,13 +73,19 @@
                 <div class="titulo">
                   <span>Eficiência (%)</span>
                 </div>
-                <div class="metrica" id="met_efiCPU">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_efiCPU">0</div>
+                  <div class="metComparativa" id="ant_efiCPU">0</div>
+                </div>
               </div>
               <div class="kpiBox">
                 <div class="titulo">
                   <span>Sobrecarga (%)</span>
                 </div>
-                <div class="metrica" id="met_sobreCPU">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_sobreCPU">0</div>
+                  <div class="metComparativa" id="ant_sobreCPU">0</div>
+                </div>
               </div>
             </div>
 
@@ -72,13 +95,19 @@
                 <div class="titulo">
                   <span>Eficiência (%)</span>
                 </div>
-                <div class="metrica" id="met_efiRAM">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_efiRAM">0</div>
+                  <div class="metComparativa" id="ant_efiRAM">0</div>
+                </div>
               </div>
               <div class="kpiBox">
                 <div class="titulo">
                   <span>Sobrecarga (%)</span>
                 </div>
-                <div class="metrica" id="met_sobreRAM">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_sobreRAM">0</div>
+                  <div class="metComparativa" id="ant_sobreRAM">0</div>
+                </div>
               </div>
             </div>
 
@@ -88,13 +117,19 @@
                 <div class="titulo">
                   <span>Eficiência (%)</span>
                 </div>
-                <div class="metrica" id="met_efiBateria">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_efiBateria">0</div>
+                  <div class="metComparativa" id="ant_efiBateria">0</div>
+                </div>
               </div>
               <div class="kpiBox">
                 <div class="titulo">
                   <span>Sobrecarga (%)</span>
                 </div>
-                <div class="metrica" id="met_sobreBateria">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_sobreBateria">0</div>
+                  <div class="metComparativa" id="ant_sobreBateria">0</div>
+                </div>
               </div>
             </div>
 
@@ -104,13 +139,19 @@
                 <div class="titulo">
                   <span>Eficiência (%)</span>
                 </div>
-                <div class="metrica" id="met_efiRede">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_efiRede">0</div>
+                  <div class="metComparativa" id="ant_efiRede">0</div>
+                </div>
               </div>
               <div class="kpiBox">
                 <div class="titulo">
                   <span>Sobrecarga (%)</span>
                 </div>
-                <div class="metrica" id="met_sobreRede">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_sobreRede">0</div>
+                  <div class="metComparativa" id="ant_sobreRede">0</div>
+                </div>
               </div>
             </div>
 
@@ -120,13 +161,19 @@
                 <div class="titulo">
                   <span>Eficiência (%)</span>
                 </div>
-                <div class="metrica" id="met_efiCPU">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_efiDisco">0</div>
+                  <div class="metComparativa" id="ant_efiDisco">0</div>
+                </div>
               </div>
               <div class="kpiBox">
                 <div class="titulo">
                   <span>Sobrecarga (%)</span>
                 </div>
-                <div class="metrica" id="met_sobreCPU">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met_sobreDisco">0</div>
+                  <div class="metComparativa" id="ant_sobreDisco">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -151,11 +198,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_CPU">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp_CPU">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_CPU">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati_CPU">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -167,11 +218,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_CPU">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp-max_CPU">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_CPU">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati-max_CPU">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -193,11 +248,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_RAM">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp_RAM">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_RAM">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati_RAM">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -209,11 +268,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_RAM">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp-max_RAM">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_RAM">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati-max_RAM">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -235,11 +298,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Rede">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp_Rede">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Rede">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati_Rede">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -251,11 +318,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Rede">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp-max_Rede">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Rede">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati-max_Rede">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -277,11 +348,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Bateria">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp_Bateria">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Bateria">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati_Bateria">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -293,11 +368,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Bateria">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp-max_Bateria">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Bateria">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati-max_Bateria">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -319,11 +398,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Disco">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp_Disco">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Disco">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati_Disco">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -335,11 +418,15 @@
             <div class="kpiContent">
               <div class="conjunto">
                 <div class="tipometrica"><span>Esperado</span></div>
-                <div class="metrica" id="met-esp_Disco">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-esp-max_Disco">0</div>
+                </div>
               </div>
               <div class="conjunto">
                 <div class="tipometrica"><span>Atingido</span></div>
-                <div class="metrica" id="met-ati_Disco">0</div>
+                <div class="metrica">
+                  <div class="valorMet" id="met-ati-max_Disco">0</div>
+                </div>
               </div>
             </div>
           </div>

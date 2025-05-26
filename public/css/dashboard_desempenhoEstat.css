@@ -14,7 +14,7 @@
   --text-medium: #697077;
   --text-light: #888;
   --border-color: #dde1e6;
-  --bg-light: #f8f9fa;
+  --bg-light: #F1F1F1;
   --bg-white: #ffffff;
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
@@ -35,14 +35,19 @@ body {
   display: flex;
   flex-direction: column;
   transition: var(--transition);
+  padding-right: 3%;
 }
-  
+
 .container {
   width: 100%;
-  height: 35vh;
+  height: 40vh;
   display: flex;
   flex-direction: column;
   margin-top: 3%;
+  background-color: var(--bg-white);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 1%;
+  border-radius: 20px;
 
   & h1 {
     padding-bottom: 2%;
@@ -54,14 +59,51 @@ body {
 }
 
 .cabecalho {
+  display: flex;
+  justify-content: space-between;
+
   & .container {
     height: 15vh;
+    width: 45%;
+    background-color: none;
+    box-shadow: none;
+    padding: 0%;
+
+    & h1 {
+      margin-left: 3%;
+    }
+
+    & .container {
+      flex-direction: row;
+      height: 100%;
+      width: 100%;
+      justify-content: center;
+      background-color: none;
+      box-shadow: none;
+      margin: 0%;
+      padding: 0%;
+    }
+
+    & .kpicontainer {
+      width: 100%;
+
+      & .kpiBox {
+        width: 100%;
+        & .titulo {
+          height: 40%;
+        }
+
+        & .metrica {
+          font-size: 2.5rem;
+        }
+      }
+    }
   }
 }
 
 .inicio {
   & .container {
-    height: 25vh;
+    height: 37vh;
   }
 }
 
@@ -71,18 +113,25 @@ body {
   height: 100%;
 }
 
+.seletor {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
 select {
   appearance: none;
   outline: none;
   border: none;
   box-shadow: none;
   padding: 0;
-  margin: 0;  
+  margin: 0;
   box-sizing: border-box;
   background-color: var(--bg-light);
   margin-right: 2%;
   border-bottom: 2px solid #C1C7CD;
   height: 6vh;
+  width: 35%;
   background: url(../assets/svg/select\ icon\ Container.svg) no-repeat right;
   padding-right: 4%;
   padding-left: 0.5%;
@@ -91,7 +140,7 @@ select {
 
 .desempenhoGeral {
   display: flex;
-  height: 25vh;
+  height: 100%;
   width: 100%;
   padding-left: 2%;
   padding-right: 2%;
@@ -107,16 +156,19 @@ select {
   display: flex;
   flex-direction: column;
   width: 90%;
-  border: 2px solid #C1C7CD;
+  border: 1px solid #C1C7CD;
+  border-radius: 10px;
   align-items: center;
   padding-bottom: 1%;
   justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .kpiBox {
   display: flex;
   flex-direction: column;
   width: 95%;
+  border-radius: 10px;
   align-items: center;
 }
 
@@ -127,17 +179,31 @@ select {
   height: 100%;
   width: 100%;
   background-color: #FBE969;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .metrica {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   padding: 2%;
   width: 100%;
   height: 100%;
-  border: 2px solid #C1C7CD;
+  border: 1px solid #C1C7CD;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   border-top: none;
-  font-size: 1.5rem;
+}
+
+.valorMet {
+  font-size: 2rem;
+}
+
+.metComparativa {
+  font-size: 1rem;
+  color: limegreen;
 }
 
 .legenda {
@@ -159,7 +225,7 @@ select {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 28%;
+  width: 25%;
 
   & .kpiBox {
     margin-top: 5%;
@@ -173,7 +239,9 @@ select {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border: 2px solid #C1C7CD;
+  border: 1px solid #C1C7CD;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .conjunto {
@@ -190,7 +258,7 @@ select {
 .grafDesempenho {
   max-height: 35vh;
   height: 100%;
-  width: 100%;
+  width: 75%;
   padding-right: 1%;
 }
 
