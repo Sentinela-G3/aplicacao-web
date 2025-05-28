@@ -1,3 +1,6 @@
+CREATE DATABASE sentinela;
+USE sentinela;
+
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY AUTO_INCREMENT,
     razao_social VARCHAR(100) NOT NULL,
@@ -82,3 +85,9 @@ CREATE TABLE alerta (
         REFERENCES componente(id_componente) 
         ON DELETE CASCADE -- Exclui alertas quando o componente for excluído
 );
+insert into colaborador (nome, email, senha, tipo, fk_colaborador_empresa, telefone) values ('Aaron', 'aaron@email.com', sha2('123', 256), 1, 1, 123);
+update empresa set status = 2 where id_empresa > 0;
+select * from empresa;
+
+select * from maquina;
+update maquina set fk_maquina_empresa = 1 where id_maquina > 0;

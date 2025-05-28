@@ -32,7 +32,7 @@ async function carregarMaquinas() {
         ]);
 
         const allAlerts = (alertsData.values || []).filter(ticket => 
-            ticket && String(ticket.requestTypeId) === "68"
+            ticket && String(ticket.requestTypeId) === "5"
         );
 
         const tableBody = document.querySelector('.table_body');
@@ -153,11 +153,11 @@ async function carregarMaquinas() {
                     <td>ID ${machine.id_maquina} (${machine.serial_number})</td>
                     <td class="status" style="color: ${statusColor}">${statusText}</td>
                     <td class="uptime">${uptime !== null ? formatarHoras(uptime) : '-'}</td>
-                    <td class="alertas-count">${alertasMaquina.length}</td>
-                    <td class="ultimo-alerta">${linkUltimoAlerta}</td>
-                    <td class="ram">${ram !== null ? Math.round(ram) : '-'}</td>
                     <td class="cpu">${cpu !== null ? Math.round(cpu) : '-'}</td>
+                    <td class="ram">${ram !== null ? Math.round(ram) : '-'}</td>
                     <td class="disco">${disco !== null ? Math.round(disco) : '-'}</td>
+                    <td class="ultimo-alerta">${linkUltimoAlerta}</td>
+                    <td class="alertas-count">${alertasMaquina.length}</td>
                     <td><button class="details-btn" onclick="analiseDetalhada(${machine.id_maquina})" data-id="${machine.id_maquina}">Expandir Análise</button></td>
                 `;
                 
