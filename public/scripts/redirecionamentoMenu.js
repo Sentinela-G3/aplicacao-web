@@ -81,8 +81,8 @@ function preencherBotoes() {
             { id: 'btn_hist', label: 'Análise detalhada', url: './dash_analiseDetalhada.html' },
             ...botoesPadrao
         ],
-        3: [ // Analista
-            { id: 'btn_geral', label: 'Análise geral', url: './dash_analiseGeral.html' },
+        3: [ // Engenheiro de Produção
+            { id: 'btn_geral', label: 'Desempenho Estatístico', url: './desempenhoEstatistico.html' },
             ...botoesPadrao
         ]
     };
