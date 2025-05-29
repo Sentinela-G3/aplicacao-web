@@ -1,3 +1,13 @@
+if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.email || !sessionStorage.tipoUsuario || !sessionStorage.nomeUsuario) {
+  alert("Sua sessão expirou! Logue-se novamente.");
+  window.location.href = "../login.html";
+}
+
+window.onload = atualizarGraf();
+
+const bucketRoutes = require("/src/routes/bucket");
+app.use("/bucket", bucketRoutes);
+
 const ctx_CPU = document.getElementById('graf_CPU');
 const ctx_RAM = document.getElementById('graf_RAM');
 const ctx_Rede = document.getElementById('graf_Rede');
@@ -8,77 +18,79 @@ let ctxs = [ctx_CPU, ctx_RAM, ctx_Bateria, ctx_Rede, ctx_Disco]
 let ctxsContent = []
 let periodoSlt = document.getElementById("slt_periodo")
 let periodoValue = Number(periodoSlt.value)
-let cLine = null
-
-let dataValues = []
-let dataValues1 = []
-
-let labels = ['Jan 24', 'Fev 24', 'Mar 24', 'Abr 24', 'Mai 24', 'Jun 24', 'Jul 24', 'Ago 24', 'Set 24', 'Out 24', 'Nov 24', 'Dez 24', 'Jan 25', 'Fev 25', 'Mar 25', 'Abr 25', 'Mai 25', 'Jun 25', 'Jul 25', 'Ago 25', 'Set 25', 'Out 25', 'Nov 25', 'Dez 25']
-
-atualizarGraf()
 
 periodoSlt.addEventListener("change", () => {
   periodoValue = Number(slt_periodo.value);
   atualizarGraf()
 });
 
-function atualizarGraf() {
+async function atualizarGraf() {
   ctxsContent.forEach(grafico => grafico.destroy());
   ctxsContent = [];
 
   let periodoReal = periodoValue
 
-  if (periodoValue < dataValues.length) {
-    periodoReal = dataValues.length
+  if (periodoValue < dadosS3.length) {
+    periodoReal = dadosS3.length
   }
 
-  let tipoGraf = (periodoReal === 1) ? 'bar' : 'line';
+  const response = await fetch("/bucket/dados-componente");
+  const dadosS3 = await response.json();
+
+  const modeloSelecionado = "Modelo A";
+  const nomeComponentes = ["CPU", "RAM", "Bateria", "Rede", "Disco"];
 
   for (let i = 0; i < ctxs.length; i++) {
-    let dataValues = [];
-    let dataValues1 = [];
+    const nomeComp = nomeComponentes[i];
 
-    for (let j = 0; j < periodoReal; j++) {
-      dataValues.push(Math.round(Math.random() * 5 + 1));
-      dataValues1.push(Math.round(Math.random() * 5 + 6));
-    }
+    const dadosComp = dadosS3
+      .filter(item => item.modelo === modeloSelecionado && item.componente === nomeComp)
+      .slice(0, periodoReal); // limita ao período desejado
 
-    let chart = new Chart(ctxs[i], {
-      type: tipoGraf,
-      data: {
-        labels: labels.slice(0, periodoReal),
-        datasets: [
-          {
-            label: 'Consumo de Componente(%)',
-            data: dataValues,
-            borderColor: "rgb(74, 45, 245)",
-            backgroundColor: "rgb(74, 45, 245)",
-            borderWidth: 2,
-            tension: 0.05,
-            pointStyle: false
-          },
-          {
-            label: 'Consumo Máximo de Componente(%)',
-            data: dataValues1,
-            borderColor: "rgb(254, 73, 78)",
-            backgroundColor: "rgb(254, 73, 78)",
-            borderWidth: 2,
-            tension: 0.05,
-            pointStyle: false
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true
+    const labels = dadosComp.map(item => `${item.mes} ${item.ano}`);
+    const dataValues = dadosComp.map(item => Number(item.consumo));
+    const dataValues1 = dadosComp.map(item => Number(item.maximo));
+
+    let tipoGraf = (periodoReal === 1) ? 'bar' : 'line';
+
+    for (let i = 0; i < ctxs.length; i++) {
+      let chart = new Chart(ctxs[i], {
+        type: tipoGraf,
+        data: {
+          labels: labels.slice(0, periodoReal),
+          datasets: [
+            {
+              label: 'Consumo de Componente(%)',
+              data: dataValues,
+              borderColor: "rgb(74, 45, 245)",
+              backgroundColor: "rgb(74, 45, 245)",
+              borderWidth: 2,
+              tension: 0.05,
+              pointStyle: false
+            },
+            {
+              label: 'Consumo Máximo de Componente(%)',
+              data: dataValues1,
+              borderColor: "rgb(254, 73, 78)",
+              backgroundColor: "rgb(254, 73, 78)",
+              borderWidth: 2,
+              tension: 0.05,
+              pointStyle: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
           }
         }
-      }
-    });
+      });
 
-    ctxsContent.push(chart);
+      ctxsContent.push(chart);
+    }
   }
 }

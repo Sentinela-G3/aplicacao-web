@@ -3,7 +3,6 @@ if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.em
     window.location.href = "../login.html";
 }
 
-
 window.onload = listarModelosDetalhados;
 window.addEventListener("load", contarAlertasUltimaSemana);
 window.addEventListener("load", listarTempoAtividade);
