@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <link rel="icon" href="../assets/img/logoSentinela.ico" type="image/x-icon">
 
-    
+
 </head>
 
 <body>
@@ -24,26 +24,28 @@
 
     <!-- SCRIPT QUE GERA O CONTEUDO DOS MENUS -->
     <script src="../scripts/redirecionamentoMenu.js"></script>
-    
+
     <div class="content">
-       <h1>Painel de Suporte Operacional</h1>
+        <h1>Painel de Suporte Operacional</h1>
 
-       <div class="div-superior">
+        <div class="div-superior">
             <div class="box-grafico">
-                <span class="titulo-grafico">Alertas em Aberto</span>
-
+                <span class="titulo-grafico">Alertas em Aberto por Hora</span>
+                <div id="timelineAlertas"></div>
             </div>
             <div class="box-pizza"">
-                <span class="titulo-grafico">Alertas em Aberto por Componente</span>
+                <span class=" titulo-grafico">Alertas em Aberto por Componente</span>
                 <span class="subtitulo-grafico">Quantidade: 80</span>
-                <div id="chart-pizza" style="max-width: 100%; margin: auto;"></div>
+                <div id="graficoRosca"></div>
             </div>
-       </div>
-       
+        </div>
+
         <div class="div-central">
             <div class="box-tickets">
                 <div class="alertas-com-filtros">
-                    <span class="titulo-grafico" style="width: 50%; justify-content: left; padding-left: 20px; box-sizing: border-box;">Lista de Alertas</span>
+                    <span class="titulo-grafico"
+                        style="width: 50%; justify-content: left; padding-left: 20px; box-sizing: border-box;">Lista de
+                        Alertas</span>
                     <div>
                         <select name="" id="">
                             <option value="">Todos</option>
@@ -64,12 +66,13 @@
                     </div>
                     <div class="box-esquerda">
                         <span class="text-infos" id="id-dispositivo">ID Dispositivo: FVFZTLKKL40Y</span>
-                        <span class="text-infos" id="recurso" >Recurso: <b>Disco</b></span>
-                        <span class="text-infos" id="descricao" >Robô sem acesso à internet</span>
-                        <span class="text-infos" id="hrDeAbertura" ><i>Aberto em 28/05 às 14:19</i></span>
+                        <span class="text-infos" id="recurso">Recurso: <b>Disco</b></span>
+                        <span class="text-infos" id="descricao">Robô sem acesso à internet</span>
+                        <span class="text-infos" id="hrDeAbertura"><i>Aberto em 28/05 às 14:19</i></span>
                     </div>
                     <div class="box-direita">
-                        <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b style="color: red;">20 min e 30 seg</b> </span>
+                        <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
+                                style="color: red;">20 min e 30 seg</b> </span>
                         <div class="box-buttons">
                             <button class="buttons-tickets" id="button-detalhes">Ver Detalhes</button>
                             <select class="buttons-tickets" name="" id="selection-responsavel">
@@ -79,14 +82,50 @@
                     </div>
                 </div>
             </div>
-             <div class="box-ranking">
+            <div class="box-ranking">
                 <span class="titulo-grafico">Recôrrencia de Alertas</span>
-                
+                <table class="tabela-ranking">
+                    <thead>
+                        <tr>
+                            <th class="text-posicao">Posição</th>
+                            <th class="text-tipo">Tipo</th>
+                            <th class="text-qtd">Qtd</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="tr-posicoes">
+                            <td class="text-posicao">1º</td>
+                            <td class="text-tipo">Alimentos</td>
+                            <td class="text-qtd">60</td>
+                        </tr>
+                        <tr class="tr-posicoes">
+                            <td class="text-posicao">2º</td>
+                            <td class="text-tipo">Limpeza</td>
+                            <td class="text-qtd">50</td>
+                        </tr>
+                        <tr class="tr-posicoes">
+                            <td class="text-posicao">3º</td>
+                            <td class="text-tipo">Higiene</td>
+                            <td class="text-qtd">40</td>
+                        </tr>
+                        <tr class="tr-posicoes">
+                            <td class="text-posicao">4º</td>
+                            <td class="text-tipo">Higiene</td>
+                            <td class="text-qtd">30</td>
+                        </tr>
+                        <tr class="tr-posicoes">
+                            <td class="text-posicao">5º</td>
+                            <td class="text-tipo">Higiene</td>
+                            <td class="text-qtd">20</td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
-            
-         </div>
-    
-    <script src="../scripts/dash_Henrique/dashboardHenrique.js" style="padding: 0;"></script>
+
+        </div>
+
+        <script src="../scripts/dash_Henrique/dashboardHenrique.js" style="padding: 0;"></script>
 
 </body>
 
