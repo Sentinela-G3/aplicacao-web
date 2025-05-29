@@ -402,52 +402,8 @@ button:hover {
     align-items: end;
   }
 
-  table{
-    display: none;
-  }
-
-  .tooltip {
-    display: none;
-  }
-  
-  .tooltip:hover .tooltiptext {
-    display: none;
-  }
-  
-  .tooltiptext {
-    display: none;
-  }
-  
-  .tooltiptext::after {
-    display: none;
-  }
-  
-  .tooltip .icon {
-    display: none;
-  }
-  
-  /* Style for the bubble tooltip */
-  .tooltip2 {
-    display: none;
-  }
-  
-  .tooltip2::before {
-    display: none;
-  }
-  
-  .tooltip-container:hover {
-    display: none;
-    }
-  
-  .tooltip-container:hover .tooltip2 {
-    display: none;
-  }
-  
-  .container-table{
-    display: none;
-  }
-  
 }
+  
 
 .tooltip {
   position: relative;
