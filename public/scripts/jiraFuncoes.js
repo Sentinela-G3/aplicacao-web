@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
 
 
-        if( ticket.requestTypeId == "68"){
+        if( ticket.requestTypeId == "5"){
           div.innerHTML += `<tr>
                           <td class="alerta-chave">${ticket.issueKey}</td>
                           <td>${descricaoTratada}</td>

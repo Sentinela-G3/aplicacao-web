@@ -21,7 +21,7 @@
 body {
   display: flex;
   background-color: var(--bg-light);
-  width: 100%;
+  width: 90%;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -127,6 +127,7 @@ body {
 .container-kpis{
   display: flex;
   height: 38vh;
+  flex-direction: row;
 }
 
 .container-kpi2{
@@ -251,6 +252,11 @@ button:hover {
   transition: var(--transition);
 }
 
+.parteDeCima{
+  display: flex;
+  flex-direction: column;
+}
+
 .link-alerta:hover {
   color: #a71d2a;
   text-decoration: underline;
@@ -303,89 +309,144 @@ button:hover {
   z-index: 200;
 }
 
-/* Responsividade */
-@media (max-width: 1024px) {
-  .dashboard {
-      margin-left: 25%;
-      width: 75%;
-      padding: 1.5rem;
-  }
-  
-  .titulo_dashRT {
-      font-size: 28px;
-  }
-}
-
 @media (max-width: 768px) {
-  .dashboard {
-      margin-left: 0;
-      width: 100%;
-      padding: 1rem;
-      margin-top: 60px; /* Espaço para o menu mobile */
-  }
-  
-  .container_navDashRT {
-      display: none;
-  }
-  
   .navBar-mobile {
       display: block;
       height: 60px;
-  }
-  
-  .box_kpi {
-      flex-direction: column;
-  }
-  
-  .kpi_maqRT {
-      border-right: none;
-      border-bottom: 1px solid var(--border-color);
-      padding: 1rem;
-  }
-  
-  .kpi_maqRT:last-child {
-      border-bottom: none;
+      width: 100%;
   }
 
-  .box_table {
-      overflow-x: auto;
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-light);
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-size: 10px;
   }
-  
-  .titulo_dashRT {
-      font-size: 24px;
-  }
-  
-  .subtitulo_dashRT {
-      font-size: 14px;
-  }
-}
 
-@media (max-width: 480px) {
   .dashboard {
-      padding: 0.75rem;
+    margin-top: 40px;
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+  }
+
+  .parteDeCima{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
   }
   
-  .titulo_dashRT {
-      font-size: 20px;
+  .container-kpis{
+    display: flex;
+    flex-direction: column;
+    width: 50vh;
+    align-items: center;
   }
   
-  .subtitulo_dashRT {
-      font-size: 12px;
+  .container-kpi2{
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
   }
   
-  .kpi_maqRT2 span:first-child {
-      font-size: 14px;
+  .container-kpi{
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .container-kpi{
+    height: 90%;
   }
   
-  .kpi_maqRT2 span:last-child {
-      font-size: 22px;
+  .container-kpi-box{
+    display: flex;
+    text-align: center;
+    height: 100%;
+  }
+
+  .pesquisar-box{
+    align-items: start;
+  }
+
+  .pesquisar-box div button{
+    width: 50px;
+  }
+
+  .input-group{
+    display: flex;
+    height: 43vh;
+    flex-direction: row;
+    align-items: end;
+  }
+
+  .input-group button{
+    display: flex;
+    align-items: end;
+  }
+
+  table{
+    display: none;
+  }
+
+  .tooltip {
+    display: none;
   }
   
-  .table_head th,
-  .table_body td {
-      padding: 10px 8px;
-      font-size: 12px;
+  .tooltip:hover .tooltiptext {
+    display: none;
   }
+  
+  .tooltiptext {
+    display: none;
+  }
+  
+  .tooltiptext::after {
+    display: none;
+  }
+  
+  .tooltip .icon {
+    display: none;
+  }
+  
+  /* Style for the bubble tooltip */
+  .tooltip2 {
+    display: none;
+  }
+  
+  .tooltip2::before {
+    display: none;
+  }
+  
+  .tooltip-container:hover {
+    display: none;
+    }
+  
+  .tooltip-container:hover .tooltip2 {
+    display: none;
+  }
+  
+  .container-table{
+    display: none;
+  }
+  
 }
 
 .tooltip {
@@ -507,6 +568,7 @@ button:hover {
   height: 25vh;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .serial-highlight-red {
@@ -538,3 +600,7 @@ button:hover {
   font-weight: 500;
   display: inline-block;
 }
+
+
+
+
