@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerênciar Modelo</title>
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/gerenciamentoModelo.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div class="novoModelo">
+    <div class="container">
+      <div class="container">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>Modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_nome">
+          </div>
+        </div>
+      </div>
+      <h3>Componentes do modelo</h3>
+
+      <!-- CPU -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>CPU do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_CPU">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Desempenho esperado do componente</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_CPU">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_CPU">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RAM -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>RAM do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_RAM">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Desempenho esperado do componente</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_RAM">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_RAM">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rede -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>Rede do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_Net">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Desempenho esperado do componente</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_Net">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_Net">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bateria -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>Bateria do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_Bat">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Tempo de duração</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (H)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_Bat">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (H)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_Bat">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disco -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>Disco do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_Disk">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Desempenho esperado do componente</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_Disk">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_Disk">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="salvarNovo">
+      <button>Salvar Modelo</button>
+    </div>
+  </div>
+
+  <!-- MENU LATERAL-->
+  <div class="container_navDashRT" id="container_navDashRT"></div>
+
+  <!-- MENU SUPERIOR MOBILE-->
+  <div class="navBar-mobile" id="navBar-mobile"></div>
+
+  <!-- SCRIPT QUE GERA O CONTEUDO DOS MENUS -->
+  <script src="../scripts/redirecionamentoMenu.js"></script>
+
+
+  <div class="dashboard">
+
+    <div class="cabecalho">
+      <div class="container">
+        <h1>Gerência de modelo</h1>
+        <div class="container">
+          <div class="seletor">
+            <select id="slt_modelo">
+              <option value="#" disabled>Selecione o Modelo</option>
+              <option value="1" selected>Modelo 1</option>
+              <option value="2">Modelo 2</option>
+              <option value="3">Modelo 3</option>
+            </select>
+            <button class="adicionarModelo" id="btn_novoModelo">Adicionar Modelo</button>
+          </div>
+        </div>
+      </div>
+      <div class="salvar">
+        <h1>Salvar alterações</h1>
+        <button>salvar</button>
+      </div>
+    </div>
+
+    <!-- Seção de cada componente -->
+    <div class="container">
+      <h3>Componentes do modelo</h3>
+
+      <!-- CPU -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>CPU do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_CPU">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Desempenho esperado do componente</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_CPU">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_CPU">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RAM -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>RAM do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_RAM">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Desempenho esperado do componente</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_RAM">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_RAM">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rede -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>Rede do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_Net">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Desempenho esperado do componente</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_Net">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_Net">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bateria -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>Bateria do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_Bat">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Tempo de Duração</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (H)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_Bat">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (H)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_Bat">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disco -->
+      <div class="desempenhoComponente">
+        <div class="kpiBox">
+          <div class="titulo">
+            <span>Disco do modelo</span>
+          </div>
+          <div class="kpiContent">
+            <input type="text" id="ipt_model_Disk">
+          </div>
+        </div>
+
+        <div class="kpiBox2">
+          <div class="titulo">
+            <span>Desempenho esperado do componente</span>
+          </div>
+          <div class="kpiContent">
+            <div class="conjunto">
+              <div class="tipometrica"><span>Uso Comum (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_C_Disk">
+              </div>
+            </div>
+            <div class="conjunto">
+              <div class="tipometrica"><span>Pico de uso (%)</span></div>
+              <div class="metrica">
+                <input type="text" id="ipt_model_esp_P_Disk">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
+
+<script>
+
+  function cadastrar() {
+    var modelo = input_modelo.value;
+    var idEmpresa = sessionStorage.idEmpresa;
+
+    fetch("/modelos/cadastrar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        modeloServer: modelo,
+        idEmpresaServer: idEmpresa
+      }),
+    })
+      .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+
+          setTimeout(() => {
+            window.location = './edicaoModelo.html';
+          }, "2000");
+        } else {
+          throw "Houve um erro ao tentar realizar o cadastro!";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      });
+  }
+
+</script>

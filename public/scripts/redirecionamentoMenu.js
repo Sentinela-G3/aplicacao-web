@@ -83,6 +83,7 @@ function preencherBotoes() {
         ],
         3: [ // Engenheiro de Produção
             { id: 'btn_geral', label: 'Desempenho Estatístico', url: './desempenhoEstatistico.html' },
+            { id: 'btn_md', label: 'Gerência de Modelo', url: './gerenciarModelo.html' },
             ...botoesPadrao
         ]
     };
