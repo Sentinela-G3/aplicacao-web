@@ -58,6 +58,11 @@ body {
   }
 }
 
+.tipometrica {
+  display: flex;
+  justify-content: center;
+}
+
 .cabecalho {
   display: flex;
   justify-content: space-between;
