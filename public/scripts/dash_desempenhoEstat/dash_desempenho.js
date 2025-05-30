@@ -1,133 +1,39 @@
-if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.email || !sessionStorage.tipoUsuario || !sessionStorage.nomeUsuario) {
-    alert("Sua sessão expirou! Logue-se novamente.");
-    window.location.href = "../login.html";
+function modelosMaquina() {
+  fetch("/maquinas/obterModelosMaquina", {
+    method: 'GET'
+  })
+  .then((res) => res.json())
+  .then((json) => {
+    console.log(json)
+    let modeloMaquina; 
+  })
 }
 
-window.onload = listarModelosDetalhados;
-window.addEventListener("load", contarAlertasUltimaSemana);
-window.addEventListener("load", listarTempoAtividade);
+function dadosModeloComponente(modelo) {
+  fetch(`/maquinas/buscarModeloComponente/${modelo}`, {
+    method: 'GET'
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      console.log(json)
 
-
-function listarModelosDetalhados() {
-    console.log("fkEmpresaServer enviado:", { fkEmpresaServer: 1 });
-    fetch("/maquinas/listarModelosDetalhados", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkEmpresaServer: sessionStorage.idEmpresa })
+      if (resposta.ok) {
+        return resposta.json()
+      } else {
+        throw new Error("Erro na requisição")
+      }
     })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Falha na requisição. Status: " + res.status);
-            }
-            return res.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById("corpo-tabela-modelos");
-            tbody.innerHTML = "";
-            if (Array.isArray(data)) {
-                data.forEach(maquina => {
-                    const tr = document.createElement("tr");
-
-                    tr.innerHTML =
-                        `<td>${maquina.modelo}</td>
-                    <td>${maquina.cpu}</td>
-                    <td>${maquina.ram_gb}</td>
-                    <td>${maquina.capacidade_disco_gb}</td>
-                    <td>${maquina.capacidade_tda}</td>
-                    `
-                        ;
-
-                    tbody.appendChild(tr);
-                });
-            } else {
-                console.error("Dados recebidos não são um array.");
-            }
-        })
-        .catch(err => {
-            console.error("Erro ao buscar modelos detalhados:", err);
-        });
+    .then((json) => {
+      if (json.length > 0) {
+        let dados = json[0]
+        comp_CPU.innerHTML = dados.modelo_cpu
+        comp_RAM.innerHTML = dados.modelo_ram
+        comp_Rede.innerHTML = dados.modelo_placaRede
+        comp_Bateria.innerHTML = dados.modelo_bateria
+        comp_Disco.innerHTML = dados.modelo_disco
+      } else {
+        console.warn("Nenhum dado encontrado para o modelo informado.")
+      }
+    })
+    .catch((erro) => console.error("Erro ao buscar dados do modelo:", erro))
 }
-
-function listarTempoAtividade() {
-    fetch("/maquinas/listarTempoAtividade", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkEmpresaServer: 1 })
-    })
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.getElementById("corpo-tabela-maquinas");
-            tbody.innerHTML = "";
-
-            data.forEach(maquina => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-            <td>${maquina.serial_number}</td>
-            <td>${maquina.tempo_atividade ?? 'Desligada'}</td>
-            <td>${maquina.sistema_operacional}</td>
-            <td>${maquina.modelo}</td>
-        `;
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(err => console.error("Erro ao buscar tempo de atividade:", err));
-}
-
-function contarAlertasUltimaSemana() {
-    console.log("Enviando fkEmpresa para alertas da semana:", { fkEmpresaServer: 1 });
-
-    fetch("/alertas/quantidadeUltimaSemana", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkEmpresaServer: 1 })
-    })
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error("Erro ao obter quantidade de alertas.");
-            }
-            return response.json();
-        })
-        .then(function (data) {
-            console.log("Qtd total de alertas na ultima semana: ", data.totalUltimaSemana);
-            document.getElementById('alertas-box-id').innerText = `Alertas da semana: \n\n ${data.totalUltimaSemana}`;
-        })
-        .catch(function (error) {
-            console.error("Erro ao obter o qtd de alertas:", error);
-        });
-}
-
-fetch("/alertas/quantidadeMaquinas", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ fkEmpresaServer: 1 })
-})
-    .then(res => res.json())
-    .then(data => {
-        const ctx = document.getElementById('myChart');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['ativas', 'com alertas', 'TDA em risco', 'desativas'],
-                datasets: [{
-                    label: 'qtd de maquinas',
-                    data: [
-                        data.maquinas_ligadas,
-                        data.maquinas_com_alertas,
-                        data.maquinas_em_risco,
-                        data.maquinas_desligadas
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    })
-    .catch(err => {
-        console.error("Erro ao carregar o gráfico:", err);
-    });

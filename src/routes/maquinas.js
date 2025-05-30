@@ -43,5 +43,8 @@ router.get("/serial/:serialNumber", function(req, res) {
     maquinaController.obterMaquinaPorSerial(req, res);
 })
 
+router.get(`/buscarModeloComponente/${modelo}`, function(req, res) {
+    maquinaController.buscarModeloComponente(req, res)
+})
 
 module.exports = router;

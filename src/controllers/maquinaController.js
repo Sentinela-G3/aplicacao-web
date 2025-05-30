@@ -174,6 +174,21 @@ function obterMaquinaPorSerial(req, res) {
     );
 }
 
+function buscarModeloComponente(req, res) {
+  let modelo = req.params.modelo;
+
+  maquinaModel.buscarModeloComponente(modelo)
+  .then(
+    (resultado) => {res.status(200).json(resultado)}
+  ).catch(
+    function (erro) {
+      console.log(erro)
+      console.log("\nHouve um erro ao pegar os modelos! Erro: ", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    }
+  )
+}
+
 module.exports = {
     cadastrar,
     obterFkModelo,
@@ -183,5 +198,6 @@ module.exports = {
     listarModelosDetalhados,
     listarMaquinasPorEmpresa,
     listarTempoAtividadePorMaquina,
-    obterMaquinaPorSerial
+    obterMaquinaPorSerial,
+    buscarModeloComponente
 }
