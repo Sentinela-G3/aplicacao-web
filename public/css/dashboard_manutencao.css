@@ -27,7 +27,7 @@ body {
 }
 
 .dashboard {
-  margin-left: 22%;
+  margin-left: 25%;
   width: 78%;
   min-height: 100vh;
   padding: 2rem;
@@ -122,12 +122,16 @@ body {
   padding: 20px;
   border-radius: 12px;
   margin: 10px;
+  overflow: scroll;
+  width: 70vw;
 }
 
 .container-kpis{
   display: flex;
-  height: 38vh;
+  height: 40vh;
+  width: 70vw;
   flex-direction: row;
+  margin-top: 25px;
 }
 
 .container-kpi2{
@@ -139,8 +143,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-
 
 .container-kpi{
   border: 1px solid #ccc;
@@ -252,11 +254,6 @@ button:hover {
   transition: var(--transition);
 }
 
-.parteDeCima{
-  display: flex;
-  flex-direction: column;
-}
-
 .link-alerta:hover {
   color: #a71d2a;
   text-decoration: underline;
@@ -309,6 +306,16 @@ button:hover {
   z-index: 200;
 }
 
+.input-group{
+  display: flex;
+  margin: 30px;
+}
+
+.input-group button{
+  height: 45px;
+  align-self: end;
+}
+
 @media (max-width: 768px) {
   .navBar-mobile {
       display: block;
@@ -329,6 +336,7 @@ button:hover {
 
   .dashboard {
     margin-top: 40px;
+    margin-left: -5%;
     width: 100%;
     min-height: 100vh;
     padding: 2rem;
@@ -337,11 +345,19 @@ button:hover {
     transition: var(--transition);
   }
 
+  .container-table{
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 10px;
+    overflow: scroll;
+    width: 100vw;
+  }
+
   .parteDeCima{
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-
+    min-height: 75vh;
   }
   
   .container-kpis{
@@ -359,6 +375,7 @@ button:hover {
     margin: 10px;
     display: flex;
     flex-direction: column;
+    height: 600px;
   }
   
   .container-kpi{
@@ -388,23 +405,25 @@ button:hover {
 
   .pesquisar-box div button{
     width: 50px;
-  }
+    height: 20px;
+  } 
 
   .input-group{
     display: flex;
-    height: 43vh;
-    flex-direction: row;
-    align-items: end;
+    margin: 10px;
+  }
+
+  .input-group .input input{
+    width: 300px;
   }
 
   .input-group button{
-    display: flex;
-    align-items: end;
+    height: 30px;
+    align-self: center;
+    margin-top: 15px;
   }
 
 }
-  
-
 .tooltip {
   position: relative;
   display: inline-block;
@@ -521,15 +540,21 @@ button:hover {
 }
 
 .grafico{
-  height: 25vh;
+  height:25;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
+.fontAdjust{
+  font-weight: bold;
+  align-items: center;
+  font-size: large;
+}
+
 .serial-highlight-red {
   border: 1px solid #ff6a6a;
-  background: linear-gradient(90deg,rgba(255, 106, 106, 1) 15%, rgba(255, 255, 255, 1) 15%);
+  background: linear-gradient(90deg,rgba(255, 106, 106, 1) 12px, rgba(255, 255, 255, 1) 12px);
   padding: 8px 16px;
   border-radius: 8px;
   color: #333;
@@ -538,8 +563,8 @@ button:hover {
 }
 
 .serial-highlight-yellow {
-  border: 1px solid #ff6a6a;
-  background: linear-gradient(90deg,rgba(251, 188, 4, 1) 15%, rgba(255, 255, 255, 1) 15%);
+  border: 1px solid rgba(251, 188, 4, 1);
+  background: linear-gradient(90deg,rgba(251, 188, 4, 1) 12px, rgba(255, 255, 255, 1) 12px);
   padding: 8px 16px;
   border-radius: 8px;
   color: #333;
@@ -548,8 +573,8 @@ button:hover {
 }
 
 .serial-highlight-green {
-  border: 1px solid #ff6a6a;
-  background: linear-gradient(90deg,rgba(118, 198, 126, 1) 15%, rgba(255, 255, 255, 1) 15%);
+  border: 1px solid rgba(118, 198, 126, 1);
+  background: linear-gradient(90deg,rgba(118, 198, 126, 1) 12px, rgba(255, 255, 255, 1) 12px);
   padding: 8px 16px;
   border-radius: 8px;
   color: #333;
@@ -557,6 +582,7 @@ button:hover {
   display: inline-block;
 }
 
-
-
-
+hr.solid {
+  border: 1px solid #bbb;
+  margin: 10px;
+}
