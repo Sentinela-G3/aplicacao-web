@@ -1,29 +1,45 @@
 function modelosMaquina() {
-  fetch("/maquinas/obterModelosMaquina", {
+  fetch(`/maquinas/obterModelosMaquina/${}`, {
     method: 'GET'
   })
-  .then((res) => res.json())
-  .then((json) => {
-    console.log(json)
-    let modeloMaquina; 
-  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json()
+      } else {
+        throw new Error("Erro na requisição")
+      }
+    })
+    .then((json) => {
+      console.log(json)
+      if (json.length > 0) {        
+        let select = document.getElementById("slt_modelo")
+        
+        json.forEach(item => {
+          let idModeloMaquina = item["id_modelo"];
+          let modeloMaquina = item["nome"];
+          
+          let option = document.createElement("option")
+          option.value = idModeloMaquina
+          option.textContent = modeloMaquina
+          select.appendChild(option)
+        })
+      }
+    })
 }
 
 function dadosModeloComponente(modelo) {
   fetch(`/maquinas/buscarModeloComponente/${modelo}`, {
     method: 'GET'
   })
-    .then((res) => res.json())
-    .then((json) => {
-      console.log(json)
-
-      if (resposta.ok) {
-        return resposta.json()
+    .then((res) => {
+      if (res.ok) {
+        return res.json()
       } else {
         throw new Error("Erro na requisição")
       }
     })
     .then((json) => {
+      console.log(json)
       if (json.length > 0) {
         let dados = json[0]
         comp_CPU.innerHTML = dados.modelo_cpu

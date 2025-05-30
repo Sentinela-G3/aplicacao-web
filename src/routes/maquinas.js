@@ -47,4 +47,8 @@ router.get(`/buscarModeloComponente/${modelo}`, function(req, res) {
     maquinaController.buscarModeloComponente(req, res)
 })
 
+router.get("/obterModelosMaquina", function(req, res) {
+    maquinaController.obterModelosMaquinas(req, res)
+})
+
 module.exports = router;

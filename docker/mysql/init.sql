@@ -47,6 +47,9 @@ CREATE TABLE modelo (
     fk_componente_bateria INT NOT NULL,
     fk_componente_placaRede INT NOT NULL,
     fk_componente_disco INT NOT NULL,
+    fk_empresa_modelo INT NOT NULL,
+    FOREIGN KEY (fk_empresa_modelo) 
+      REFERENCES empresa(id_empresa),
     FOREIGN KEY (fk_componente_cpu) 
       REFERENCES componente(id_componente),
     FOREIGN KEY (fk_componente_ram) 

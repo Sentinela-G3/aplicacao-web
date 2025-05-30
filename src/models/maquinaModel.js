@@ -103,6 +103,10 @@ WHERE m.id_modelo = ${modelo}; `;
   return database.executar(instrucaoSql)
 }
 
+function obterModelosMaquina(modelo) {
+  let instrucaoSql = `SELECT `
+}
+
 module.exports =
 {
   cadastrar,
@@ -113,5 +117,6 @@ module.exports =
   listarModelosDetalhados,
   listarTempoAtividadePorMaquina,
   obterMaquinaPorSerial,
-  buscarModeloComponente
+  buscarModeloComponente,
+  obterModelosMaquina
 }
