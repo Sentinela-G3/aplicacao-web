@@ -37,40 +37,12 @@ async function carregarMaquinas() {
             alertsResponse.json(),
         ]);
 
-        const allAlerts = (alertsData.values || []).filter(
-            (ticket) => ticket && String(ticket.requestTypeId) === "5"
+        const allAlerts = (alertsData.values || []).filter(ticket => 
+            ticket && String(ticket.requestTypeId) === "68"
         );
 
-        const alertasOrdenados = allAlerts.sort((a, b) => b.createdDate.epochMillis - a.createdDate.epochMillis);
-
-        const ultimoAlerta = alertasOrdenados[0];
-
-        const dadosFormatados = allAlerts.map(ticket => {
-            return {
-                id: ticket.issueKey, // ex: "SUPSEN-14"
-                resumo: ticket.summary, // ex: "Máquina PE037DC0"
-                dataCriacao: ticket.createdDate.iso8601, // ex: "2025-05-29T14:51:14-0300"
-                status: ticket.currentStatus.status, // ex: "Em andamento"
-                url: ticket._links.agent, // link direto para o ticket no Jira
-                descricao: ticket.requestFieldValues.find(f => f.fieldId === "description")?.value || "",
-                recurso: ticket.requestFieldValues.find(f => f.fieldId === "customfield_10058")?.value?.value || "",
-                urgencia: ticket.requestFieldValues.find(f => f.fieldId === "customfield_10059")?.value?.value || "",
-            };
-        });
-
-        const descricaoCampo = ultimoAlerta.requestFieldValues.find(f => f.fieldId === "description")?.value || "";
-        const recurso = ultimoAlerta.requestFieldValues.find(f => f.fieldId === "customfield_10058")?.value?.value || "";
-        const maquina = ultimoAlerta.summary?.replace("Máquina ", "") || "";
-        const tempoDecorridoMs = Date.now() - ultimoAlerta.createdDate.epochMillis;
-        const minutos = Math.floor(tempoDecorridoMs / 60000);
-
-        document.getElementById("alerta-recurso").textContent = `Alerta de ${recurso}`;
-        document.getElementById("alerta-detalhes").textContent = `${maquina} • há ${minutos} min`;
-
-
-
-        const tableBody = document.querySelector(".table_body");
-
+        const tableBody = document.querySelector('.table_body');
+        
         // Não limpa mais a tabela completamente
         // tableBody.innerHTML = '';  <-- Remover esta linha
 
@@ -232,12 +204,12 @@ async function carregarMaquinas() {
                         <small style="color: ${statusColor};">Setor/Área</small>
                     </td>
                     <td class="status" style="color: ${statusColor}">${statusText}</td>
-                    <td class="uptime">${uptime !== null ? formatarHoras(uptime) : "-"}</td>
-                    <td class="cpu">${cpu !== null ? Math.round(cpu) : "-"}</td>
-                    <td class="ram">${ram !== null ? Math.round(ram) : "-"}</td>
-                    <td class="disco">${disco !== null ? Math.round(disco) : "-"}</td>
-                    <td class="ultimo-alerta">${linkUltimoAlerta}</td>
+                    <td class="uptime">${uptime !== null ? formatarHoras(uptime) : '-'}</td>
                     <td class="alertas-count">${alertasMaquina.length}</td>
+                    <td class="ultimo-alerta">${linkUltimoAlerta}</td>
+                    <td class="ram">${ram !== null ? Math.round(ram) : '-'}</td>
+                    <td class="cpu">${cpu !== null ? Math.round(cpu) : '-'}</td>
+                    <td class="disco">${disco !== null ? Math.round(disco) : '-'}</td>
                     <td><button class="details-btn" onclick="analiseDetalhada(${machine.id_maquina})" data-id="${machine.id_maquina}">Expandir Análise</button></td>
                 `;
 
