@@ -9,6 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard | Tempo Real</title>
         <script src="../scripts/animacaoMenuMobile.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
     </head>
     <body class="body_dashRealTime" id="dash_RT">
         <!-- MENU LATERAL-->
@@ -21,47 +22,45 @@
             <div class="container">
                 <div class="titulo_dashRT">
                     <span>
-                        <b>Monitoramento em tempo real</b>
+                        <b>Painel de Monitoramento em Tempo Real</b>
                     </span>
                 </div>
                 <div class="subtitulo_dashRT">
                     <span>
-                        <i>*Dados capturados no dia de hoje</i>
+                        <i>Acompanhe os alertas recentes e identifique rapidamente as máquinas com maior número de falhas</i>
                     </span>
                 </div>
             </div>
             <div class="container2">
                 <div class="box_kpi">
-                    <div class="kpi-card">
+                    <div class="kpi-card" id="kpi-mais-alertas">
                         <div class="kpi-color-bar"></div>
                         <div class="kpi-content">
-                            <div class="kpi-title">Máquina com mais Alertas</div>
-                            <div class="kpi-value">PE037DC0</div>
-                            <div class="kpi-subtitle">7 Alertas</div>
+                            <div class="kpi-title">Máquina com Mais Alertas</div>
+                            <div class="kpi-value">...</div>
+                            <div class="kpi-subtitle">...</div>
                         </div>
                         <div class="kpi-icon">
-                            <!-- <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="ícone"> -->
+                            <i class="material-symbols-rounded">warning</i>
+                        </div>
+                    </div>
+                    <div class="kpi-card" id="ultimo-alerta-kpi">
+                        <div class="kpi-color-bar"></div>
+                        <div class="kpi-content">
+                            <div class="kpi-title">Último Alerta Detectado</div>
+                            <div class="kpi-value" id="alerta-recurso">...</div>
+                            <div class="kpi-subtitle" id="alerta-detalhes">...</div>
+                        </div>
+                        <div class="kpi-icon">
                             <span class="emoji">⚠️</span>
                         </div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-color-bar"></div>
                         <div class="kpi-content">
-                            <div class="kpi-title">Último Alerta</div>
-                            <div class="kpi-value">PE037DC0</div>
-                            <div class="kpi-subtitle">Alerta de CPU</div>
-                        </div>
-                        <div class="kpi-icon">
-                            <!-- <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="ícone"> -->
-                            <span class="emoji">⚠️</span>
-                        </div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-color-bar"></div>
-                        <div class="kpi-content">
-                            <div class="kpi-title">Máquina com mais Tempo em Atividade</div>
-                            <div class="kpi-value">74h38min</div>
-                            <div class="kpi-subtitle">SK784V1</div>
+                            <div class="kpi-title">Maior Tempo de Atividade</div>
+                            <div class="kpi-value">74h 38min</div>
+                            <div class="kpi-subtitle">Máquina SK784V1</div>
                         </div>
                         <div class="kpi-icon">
                             <span class="emoji">⌛</span>
@@ -112,154 +111,28 @@
                 <div class="box_table">
                     <table class="table">
                         <thead class="table_head">
+                            <!-- <h6>Máquinas Monitoradas</h6>
+                                <p>Informações atualizadas sobre atividade, desempenho e ocorrências</p> -->
                             <tr>
-                                <th>Máquina</th>
+                                <th>
+                                    Máquina
+                                    <br>
+                                    (Serial + Setor)
+                                </th>
                                 <th>Status</th>
-                                <th>Tempo Ativo (h)</th>
-                                <th>CPU (%)</th>
-                                <th>RAM (%)</th>
-                                <th>Disco (%)</th>
+                                <th>Tempo Ativo</th>
+                                <th>Cpu</th>
+                                <th>Ram</th>
+                                <th>Disco</th>
                                 <th>Último Alerta</th>
-                                <th>Alertas</th>
+                                <th>
+                                    Total de
+                                    <br>
+                                    Alertas
+                                </th>
                                 <th>Detalhamento</th>
                             </tr>
                         </thead>
-                        <tbody class="table_body">
-                            <!--Tuplas-->
-                            <td>
-                                <span style="font-weight: bold;">PE037DC0</span>
-                                <br>
-                                <small>Setor/Área</small>
-                            </td>
-                            <td class="status">Ativo</td>
-                            <td class="uptime">4h35min</td>
-                            <td class="cpu">40</td>
-                            <td class="ram">20</td>
-                            <td class="disco">50</td>
-                            <td class="ultimo-alerta">1h12min</td>
-                            <td class="alertas-count">7</td>
-                            <td>
-                                <button class="details-btn">Expandir Análise</button>
-                            </td>
-                        </tbody>
-                        <tbody class="table_body">
-                            <td>
-                                <span style="font-weight: bold;">PE037DC0</span>
-                                <br>
-                                <small>Setor/Área</small>
-                            </td>
-                            <td class="status">Ativo</td>
-                            <td class="uptime">4h35min</td>
-                            <td class="cpu">40</td>
-                            <td class="ram">20</td>
-                            <td class="disco">50</td>
-                            <td class="ultimo-alerta">1h12min</td>
-                            <td class="alertas-count">7</td>
-                            <td>
-                                <button class="details-btn">Expandir Análise</button>
-                            </td>
-                        </tbody> <tbody class="table_body">
-                            <td>
-                                <span style="font-weight: bold;">PE037DC0</span>
-                                <br>
-                                <small>Setor/Área</small>
-                            </td>
-                            <td class="status">Ativo</td>
-                            <td class="uptime">4h35min</td>
-                            <td class="cpu">40</td>
-                            <td class="ram">20</td>
-                            <td class="disco">50</td>
-                            <td class="ultimo-alerta">1h12min</td>
-                            <td class="alertas-count">7</td>
-                            <td>
-                                <button class="details-btn">Expandir Análise</button>
-                            </td>
-                        </tbody>
-                        <tbody class="table_body">
-                            <td>
-                                <span style="font-weight: bold;">PE037DC0</span>
-                                <br>
-                                <small>Setor/Área</small>
-                            </td>
-                            <td class="status">Ativo</td>
-                            <td class="uptime">4h35min</td>
-                            <td class="cpu">40</td>
-                            <td class="ram">20</td>
-                            <td class="disco">50</td>
-                            <td class="ultimo-alerta">1h12min</td>
-                            <td class="alertas-count">7</td>
-                            <td>
-                                <button class="details-btn">Expandir Análise</button>
-                            </td>
-                        </tbody>
-                        <tbody class="table_body">
-                            <td>
-                                <span style="font-weight: bold;">PE037DC0</span>
-                                <br>
-                                <small>Setor/Área</small>
-                            </td>
-                            <td class="status">Ativo</td>
-                            <td class="uptime">4h35min</td>
-                            <td class="cpu">40</td>
-                            <td class="ram">20</td>
-                            <td class="disco">50</td>
-                            <td class="ultimo-alerta">1h12min</td>
-                            <td class="alertas-count">7</td>
-                            <td>
-                                <button class="details-btn">Expandir Análise</button>
-                            </td>
-                        </tbody>
-                        <tbody class="table_body">
-                            <td>
-                                <span style="font-weight: bold;">PE037DC0</span>
-                                <br>
-                                <small>Setor/Área</small>
-                            </td>
-                            <td class="status">Ativo</td>
-                            <td class="uptime">4h35min</td>
-                            <td class="cpu">40</td>
-                            <td class="ram">20</td>
-                            <td class="disco">50</td>
-                            <td class="ultimo-alerta">1h12min</td>
-                            <td class="alertas-count">7</td>
-                            <td>
-                                <button class="details-btn">Expandir Análise</button>
-                            </td>
-                        </tbody>
-                        <tbody class="table_body">
-                            <td>
-                                <span style="font-weight: bold;">PE037DC0</span>
-                                <br>
-                                <small>Setor/Área</small>
-                            </td>
-                            <td class="status">Ativo</td>
-                            <td class="uptime">4h35min</td>
-                            <td class="cpu">40</td>
-                            <td class="ram">20</td>
-                            <td class="disco">50</td>
-                            <td class="ultimo-alerta">1h12min</td>
-                            <td class="alertas-count">7</td>
-                            <td>
-                                <button class="details-btn">Expandir Análise</button>
-                            </td>
-                        </tbody>
-                        <tbody class="table_body">
-                            <td>
-                                <span style="font-weight: bold;">PE037DC0</span>
-                                <br>
-                                <small>Setor/Área</small>
-                            </td>
-                            <td class="status">Ativo</td>
-                            <td class="uptime">4h35min</td>
-                            <td class="cpu">40</td>
-                            <td class="ram">20</td>
-                            <td class="disco">50</td>
-                            <td class="ultimo-alerta">1h12min</td>
-                            <td class="alertas-count">7</td>
-                            <td>
-                                <button class="details-btn">Expandir Análise</button>
-                            </td>
-                        </tbody>
                         <tbody class="table_body">
                             <td>
                                 <span style="font-weight: bold;">PE037DC0</span>
@@ -283,5 +156,4 @@
         </div>
     </body>
 </html>
-<!-- <script src="../scripts/dash_realTime/dash_realTime.js" defert>    -->
-</script>
+<script src="../scripts/dash_realTime/dash_realTime.js" defert></script>
