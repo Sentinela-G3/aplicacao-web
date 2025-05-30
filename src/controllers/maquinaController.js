@@ -174,10 +174,10 @@ function obterMaquinaPorSerial(req, res) {
     );
 }
 
-function buscarModeloComponente(req, res) {
+function dadosModeloComponente(req, res) {
   let modelo = req.params.modelo;
 
-  maquinaModel.buscarModeloComponente(modelo)
+  maquinaModel.dadosModeloComponente(modelo)
     .then(
       (resultado) => { res.status(200).json(resultado) }
     ).catch(
@@ -212,6 +212,6 @@ module.exports = {
   listarMaquinasPorEmpresa,
   listarTempoAtividadePorMaquina,
   obterMaquinaPorSerial,
-  buscarModeloComponente,
+  dadosModeloComponente,
   obterModelosMaquina
 }
