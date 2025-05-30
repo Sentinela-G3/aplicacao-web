@@ -10,7 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Tempo Real</title>
   <script src="../scripts/animacaoMenuMobile.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="../scripts/dashGabriella/dashGabriella.js"></script>
 </head>
 
 <body class="body_dashRealTime" id="dash_RT">
@@ -23,6 +24,7 @@
     <div class="titulo_dashRT">
       <h3>Manutenção de Robôs</h3>
     </div>
+    <p><i>*Atualizado em tempo real</i></p>
 
     <div class="parteDeCima">
 
@@ -31,10 +33,9 @@
         <div class="container-kpi">
 
           <div class="tooltip-container">
-            <i><span class="tooltip2">Classificação baseada na quantidade de alertas não resolvidos por
-                máquina</span></i>
+            <i><span class="tooltip2">Porcentagem/Quantidade de máquinas com cada tipo de alerta</span></i>
             <h2>
-              Status <span class="text">atual</span> das máquinas ⓘ
+              Status das máquinas ⓘ
             </h2>
           </div>
 
@@ -42,22 +43,22 @@
 
             <div>
 
-              <div style="display: flex; align-items: center; border-radius: 100%;">
+              <div style="display: flex; align-items: center; border-radius: 100%;" >
                 <div style="height: 40px; background-color: rgb(254, 73, 78); border-radius: 50px;">
                 </div>
-                <div style="font-size: 23px;">12%</div> <i>(10 máquinasCríticos)</i>
+                <div style="font-size: 23px;" id="pctMaquinasCrit"></div> <i id="qtdMaquinasCrit"></i>
               </div>
 
               <div style="display: flex; align-items: center;">
                 <div style="height: 40px; background-color: rgb(255, 211, 100); border-radius: 50px;">
                 </div>
-                <div style="font-size: 23px;">38%</div> <i>(40 máquinas Em atenção)</i>
+                <div style="font-size: 23px;" id="pctMaquinasGrave"></div> <i id="qtdMaquinasGrave"></i>
               </div>
 
               <div style="display: flex; align-items: center;">
                 <div style="height: 40px; background-color: rgba(118, 198, 126); border-radius: 50px;">
                 </div>
-                <div style="font-size: 23px;">50%</div> <i>(50 máquinas Estáveis)</i>
+                <div style="font-size: 23px;" id="pctMaquinasComuns"></div> <i id="qtdMaquinasComuns"></i>
               </div>
 
             </div>
@@ -78,79 +79,66 @@
           </div>
 
           <div class="grafico">
-            <canvas id="myChart"></canvas>
+            <canvas id="myChart" height="150px"></canvas>
           </div>
         </div>
 
+
+        
       </div>
-
-      <!-- style="display: flex; align-items: end;" -->
-
-      <!-- style="display: flex; flex-direction: column; padding: 10px;" -->
-
-      <div class="input-group">
-        <div>
-          <label for="input-maquina">Pesquisar máquina por número de série:</label>
-          <input type="text" style="width: 400px;" placeholder="ex:.ABC123" id="input-maquina">
-        </div>
-        <button style="width: 100px; margin: 10px; height: 35px;">Pesquisar</button>
-      </div>
-
     </div>
+    <div class="input-group">
+      <div class="input">
+        <label for="input-maquina">Pesquisar máquina por número de série:</label>
+        <input type="text" placeholder="ex:.ABC123" id="input-maquina">
+      </div>
+      <button>Pesquisar</button>
+    </div>
+    <h3>Lista de máquinas com necessidade de manutenção (alertas ainda não resolvidos)</h3> <br>
+    <span><i>*Atualizado em tempo real</i></span>
 
     <div class="container-table">
-      <h3>Lista de máquinas com necessidade de manutenção (alertas ainda não resolvidos)</h3> <br>
-      <span><i>*Da maior prioridade até a menor</i></span>
-      <table class="table">
-        <thead class="table_head">
-          <tr>
-            <th rowspan="1">Prioridade
-              <div class="tooltip">
-                <div class="icon">i</div>
-                <div class="tooltiptext">Por quantidade de alertas críticos, médios e comuns</div>
-              </div>
-            </th>
-            <th colspan="5">Qtd de alertas ainda não resolvidos</th>
-            <th colspan="3">Alertas mais recentes/antigos
-              <div class="tooltip">
-                <div class="icon">i</div>
-                <div class="tooltiptext">Indica se o alerta está dentro do tempo de resolução</div>
-              </div>
-            </th>
-          </tr>
-          <tr>
-            <th>Número de Serial</th>
-            <th>CPU</th>
-            <th>RAM</th>
-            <th>Disco</th>
-            <th>Rede</th>
-            <th>Uptime
-              <div class="tooltip">
-                <div class="icon">i</div>
-                <div class="tooltiptext">Tempo de atividade da máquina</div>
-              </div>
-            </th>
-            <th>Primeiro alerta</th>
-            <th>Último alerta</th>
-            <th>Ver detalhes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <span class="serial-highlight-red">ABC123</span>
-            </td>
-            <td style="color: rgba(255, 106, 106, 1);">1</td>
-            <td style="color: rgba(118, 198, 126, 1);">5</td>
-            <td style="color: rgba(251, 188, 4, 1);">3</td>
-            <td style="color: rgba(251, 188, 4, 1);">4</td>
-            <td style="color: rgba(251, 188, 4, 1);">2</td>
-            <td>2025-05-01</td>
-            <td>2025-05-01</td>
-            <td>2025-05-01</td>
-          </tr>
-        </tbody>
-      </table>
+      <tbody>
+        <table class="table" id="tabaletaMaquinas">
+          <thead class="table_head">
+            <tr>
+              <th rowspan="1">Prioridade
+                <div class="tooltip">
+                  <div class="icon">i</div>
+                  <div class="tooltiptext">Por quantidade de alertas críticos, médios e comuns</div>
+                </div>
+              </th>
+              <th colspan="6">Qtd de alertas ainda não resolvidos</th>
+              <th colspan="3">Alertas ainda não resolvidos
+                <div class="tooltip">
+                  <div class="icon">i</div>
+                  <div class="tooltiptext">Acesso fácil ao alerta mais antigo e mais recente que ainda não foi resolvido</div>
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <th>Número de Serial</th>
+              <th>CPU</th>
+              <th>RAM</th>
+              <th>Disco</th>
+              <th>Rede</th>
+              <th>Uptime
+                <div class="tooltip">
+                  <div class="icon">i</div>
+                  <div class="tooltiptext">Tempo de atividade da máquina</div>
+                </div>
+              </th>
+              <th>Bateria</th>
+              <th>Ver detalhes</th>
+              <th>Mais Antigo</th>
+              <th>Mais Recente</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            </tr>
+        </table>
+      </tbody>
     </div>
 
 
@@ -204,42 +192,3 @@
 </body>
 
 </html>
-
-<script>
-  const ctx = document.getElementById('myChart');
-
-  const dataValues = [12, 19, 3, 5, 2];
-
-  const maxValue = Math.max(...dataValues);
-
-  const backgroundColor = dataValues.map(value => {
-    let alpha = value / maxValue;
-
-    alpha = Math.max(alpha, 0.1);
-
-    return `rgba(254, 73, 78, ${alpha})`;
-  });
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['CPU', 'RAM', 'Disco', 'Rede', 'Uptime'],
-      datasets: [{
-        label: 'Quantidade de conflitos',
-        data: dataValues,
-        backgroundColor: backgroundColor,
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-
-
-
-</script>
