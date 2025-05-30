@@ -79,11 +79,7 @@ CREATE TABLE componente (
     tipo VARCHAR(50) NOT NULL,
     modelo VARCHAR(100) NOT NULL,
     minimo FLOAT NOT NULL,
-    maximo FLOAT NOT NULL,
-    fk_componente_maquina INT NOT NULL,
-    FOREIGN KEY (fk_componente_maquina)
-        REFERENCES maquina(id_maquina) 
-        ON DELETE CASCADE -- Exclui componentes quando a máquina for excluída
+    maximo FLOAT NOT NULL
 );
 
 -- CAPTURA
