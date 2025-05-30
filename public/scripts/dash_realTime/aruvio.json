@@ -1,0 +1,91 @@
+[
+    {
+        "_expands": [
+            "participant",
+            "status",
+            "sla",
+            "requestType",
+            "serviceDesk",
+            "attachment",
+            "action",
+            "comment"
+        ],
+        "issueId": "10084",
+        "issueKey": "SUPSEN-20",
+        "summary": "Máquina HEN1234XPTO",
+        "requestTypeId": "5",
+        "serviceDeskId": "1",
+        "createdDate": {
+            "iso8601": "2025-05-30T13:12:34-0300",
+            "jira": "2025-05-30T13:12:34.829-0300",
+            "friendly": "Hoje 1:12 PM",
+            "epochMillis": 1748621554829
+        },
+        "reporter": {
+            "accountId": "712020:a0e8afdf-e1b4-475e-8401-a4c329de4087",
+            "emailAddress": "henrique_ab8@hotmail.com",
+            "displayName": "Henrique Andrade",
+            "active": true,
+            "timeZone": "America/Sao_Paulo",
+            "_links": {
+                "jiraRest": "https://sentinelacomvc.atlassian.net/rest/api/2/user?accountId=712020%3Aa0e8afdf-e1b4-475e-8401-a4c329de4087",
+                "avatarUrls": {
+                    "48x48": "https://secure.gravatar.com/avatar/b03f80fdae911e0913b7906471505f83?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FHA-0.png",
+                    "24x24": "https://secure.gravatar.com/avatar/b03f80fdae911e0913b7906471505f83?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FHA-0.png",
+                    "16x16": "https://secure.gravatar.com/avatar/b03f80fdae911e0913b7906471505f83?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FHA-0.png",
+                    "32x32": "https://secure.gravatar.com/avatar/b03f80fdae911e0913b7906471505f83?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FHA-0.png"
+                },
+                "self": "https://sentinelacomvc.atlassian.net/rest/api/2/user?accountId=712020%3Aa0e8afdf-e1b4-475e-8401-a4c329de4087"
+            }
+        },
+        "requestFieldValues": [
+            {
+                "fieldId": "summary",
+                "label": "Summary",
+                "value": "Máquina HEN1234XPTO"
+            },
+            {
+                "fieldId": "description",
+                "label": "Descrição",
+                "value": "*Máquina* HEN1234XPTO – Alerta de *nível de bateria abaixo de 10%*",
+                "renderedValue": {
+                    "html": "<p><b>Máquina</b> HEN1234XPTO – Alerta de <b>nível de bateria abaixo de 10%</b></p>"
+                }
+            },
+            {
+                "fieldId": "customfield_10058",
+                "label": "Recurso",
+                "value": {
+                    "self": "https://sentinelacomvc.atlassian.net/rest/api/2/customFieldOption/10058",
+                    "value": "Bateria",
+                    "id": "10058"
+                }
+            },
+            {
+                "fieldId": "customfield_10059",
+                "label": "Urgência",
+                "value": {
+                    "self": "https://sentinelacomvc.atlassian.net/rest/api/2/customFieldOption/10060",
+                    "value": "Grave",
+                    "id": "10060"
+                }
+            }
+        ],
+        "currentStatus": {
+            "status": "Aberto",
+            "statusCategory": "NEW",
+            "statusDate": {
+                "iso8601": "2025-05-30T13:12:34-0300",
+                "jira": "2025-05-30T13:12:34.829-0300",
+                "friendly": "Hoje 1:12 PM",
+                "epochMillis": 1748621554829
+            }
+        },
+        "_links": {
+            "jiraRest": "https://sentinelacomvc.atlassian.net/rest/api/2/issue/10084",
+            "web": "https://sentinelacomvc.atlassian.net/servicedesk/customer/portal/1/SUPSEN-20",
+            "agent": "https://sentinelacomvc.atlassian.net/browse/SUPSEN-20",
+            "self": "https://sentinelacomvc.atlassian.net/rest/servicedeskapi/request/10084"
+        }
+    }
+]

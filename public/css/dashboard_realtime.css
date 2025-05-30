@@ -93,13 +93,11 @@ body {
             .kpi-title {
               font-size: 0.875rem;
               color: #737373;
-              /* line-height: 1.5; */
               font-weight: 600;
             }
 
             .kpi-value {
               font-size: 1.5rem;
-              line-height: 1.375;
               font-weight: 600;
               color: #262626;
             }

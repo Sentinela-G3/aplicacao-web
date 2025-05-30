@@ -1,19 +1,22 @@
-// if (
-//   !sessionStorage.idEmpresa ||
-//   !sessionStorage.idUsuario ||
-//   !sessionStorage.email ||
-//   !sessionStorage.tipoUsuario ||
-//   !sessionStorage.nomeUsuario
-// ) {
-//   alert("Sua sessão expirou! Logue-se novamente.");
-//   window.location.href = "../login.html";
-// }
+// SessionsStorage
+if (
+    !sessionStorage.idEmpresa ||
+    !sessionStorage.idUsuario ||
+    !sessionStorage.email ||
+    !sessionStorage.tipoUsuario ||
+    !sessionStorage.nomeUsuario
+) {
+    alert("Sua sessão expirou! Logue-se novamente.");
+    window.location.href = "../login.html";
+}
 
+// Verifica qual é o nome do host da URL local e atribui na variável
 const BASE_URL =
     window.location.hostname === "localhost" ?
         "localhost:3333" :
         "18.208.5.45:3333";
 
+// Faz um objeto com os dados do sessionStorage para reutilizar depois
 const usuario = {
     idEmpresa: sessionStorage.idEmpresa,
     idUsuario: sessionStorage.idUsuario,
@@ -22,27 +25,55 @@ const usuario = {
     nomeUsuario: sessionStorage.nomeUsuario,
 };
 
+// Função onde busca os dados das máquinas na API e atualiza o HTML com as informações
 async function carregarMaquinas() {
+    // Lidamos com os erros de forma controlada utilizando try catch
     try {
+        // Buscamos dados das máquinas da empresa e seus alertas
         const [machinesResponse, alertsResponse] = await Promise.all([
             fetch(`http://${BASE_URL}/maquinas/${usuario.idEmpresa}`),
             fetch(`http://${BASE_URL}/jira/tickets`),
         ]);
 
-        if (!machinesResponse.ok || !alertsResponse.ok)
-            throw new Error("Erro ao buscar dados");
+        // Resposta caso houve algum erro
+        if (!machinesResponse.ok) { throw new Error("Erro ao buscar dados das máquinas"); }
+        if (!alertsResponse.ok) { throw new Error("Erro ao buscar dados de alertas"); }
 
+        // Armazena o json das máquinas e alertaas em uma variável
         const [machines, alertsData] = await Promise.all([
             machinesResponse.json(),
             alertsResponse.json(),
         ]);
 
-        const allAlerts = (alertsData.values || []).filter(ticket => 
-            ticket && String(ticket.requestTypeId) === "68"
+        // Pega a lista de alertas e filtra com requestTypeId igual a 5
+        const allAlerts = (alertsData.values || []).filter(
+            (ticket) => ticket && String(ticket.requestTypeId) === "5"
         );
 
-        const tableBody = document.querySelector('.table_body');
-        
+        // console.log(allAlerts)
+
+        // Ordena os alertas do mais antigo para o mais recente
+        const alertasOrdenados = allAlerts.sort((a, b) => b.createdDate.epochMillis - a.createdDate.epochMillis);
+        // Ele pega o primeiro alerta da lista de ordenados, no caso o mais recente
+        const ultimoAlerta = alertasOrdenados[0];
+        // Pega o serial number da maquina com o ultimo alerta
+        const maquina = ultimoAlerta.summary?.replace("Máquina ", "") || "";
+        // Faz o cálculo do tempo decorrido desde o último alerta
+        const tempoDecorridoMs = Date.now() - ultimoAlerta.createdDate.epochMillis;
+        // Aqui ele converte em minutos
+        const minutos = Math.floor(tempoDecorridoMs / 60000);
+        // Pega a descrção do alerta
+        const descricaoCampo = ultimoAlerta.requestFieldValues.find(f => f.fieldId === "description")?.value || "";
+        // Pega o nome do alerta
+        const recurso = ultimoAlerta.requestFieldValues.find(f => f.fieldId === "customfield_10058")?.value?.value || "";
+
+        // Aqui ele atribui os dados aos ids do html
+        document.getElementById("alerta-recurso").textContent = `Alerta de ${recurso}`;
+        document.getElementById("alerta-detalhes").textContent = `${maquina} • há ${minutos} min`;
+
+        // Armazena o id do html da lista das máquinas para plotar as máquinas
+        const tableBody = document.querySelector(".table_body");
+
         // Não limpa mais a tabela completamente
         // tableBody.innerHTML = '';  <-- Remover esta linha
 
@@ -53,16 +84,81 @@ async function carregarMaquinas() {
             if (id) existingRows.set(id, row);
         });
 
+        // Variável que irá guardar algumas informações da lista das máquinas
         let ativas = 0,
             inativas = 0,
             semDados = 0,
             totalAlertas = 0;
+
+
+        // Ordenar as máquinas do maior para o menor de alertas
+        machines.sort((a, b) => {
+            const aSerial = a.serial_number;
+            const bSerial = b.serial_number;
+
+            const alertasA = allAlerts.filter(ticket =>
+                ticket.summary?.includes(aSerial) || ticket.issueKey?.includes(aSerial)
+            ).length;
+
+            const alertasB = allAlerts.filter(ticket =>
+                ticket.summary?.includes(bSerial) || ticket.issueKey?.includes(bSerial)
+            ).length;
+
+            return alertasB - alertasA;
+        });
+
+        // console.log(machines)
+        let maiorTempo = 0;
+        let maiorTempoMaquina = null;
+
+        const seriais = [];
+        allAlerts.forEach(alertas => {
+            const resumo = alertas.requestFieldValues.find(
+                campo => campo.fieldId === 'summary'
+            );
+            if (resumo && resumo.value) {
+                const partes = resumo.value.split(' ');
+                const numeroSerial = partes[partes.length - 1];
+                seriais.push(numeroSerial);
+            }
+        });
+        console.log("Seriais extraídos:", seriais);
+
+        // Contagem com Map
+        const contagem = new Map();
+        seriais.forEach(serial => {
+            contagem.set(serial, (contagem.get(serial) || 0) + 1);
+        });
+
+        // Transforma em objeto se quiser ver no console
+        console.log("Contagem:", Object.fromEntries(contagem));
+
+        // Encontra a máquina com mais alertas
+        let maquinaMaisAlerts = null;
+        let maxAlertas = 0;
+
+        // Aqui usamos contagem.entries() para iterar corretamente sobre o Map
+        for (const [serial, qtd] of contagem.entries()) {
+            if (qtd > maxAlertas) {
+                maxAlertas = qtd;
+                maquinaMaisAlerts = serial;
+            }
+        }
+
+        const frase = maxAlertas === 1 ? "alerta registrado" : "alertas registrados";
+        document.querySelector("#kpi-mais-alertas .kpi-value").textContent = maquinaMaisAlerts;
+        document.querySelector("#kpi-mais-alertas .kpi-subtitle").textContent = `${maxAlertas} ${frase}`;
+
+        // console.log(`A máquina com mais alertas é: ${maquinaMaisAlerts} (apareceu ${maxAlertas} vezes)`);
+
 
         for (const machine of machines) {
             const metricsResponse = await fetch(
                 `http://${BASE_URL}/medidas/${machine.id_maquina}`
             );
             const metrics = metricsResponse.ok ? await metricsResponse.json() : {};
+
+            // console.log(metrics)
 
             // Verificar o formato dos dados
             const temDados = metrics.dados && !Array.isArray(metrics.dados);
@@ -125,33 +221,6 @@ async function carregarMaquinas() {
                     ticket.summary?.includes(serial) || ticket.issueKey?.includes(serial)
             );
 
-            let maquinaComMaisAlertas = null;
-            let maxAlertas = 0;
-            machines.forEach((machine) => {
-                if (alertasMaquina.length > maxAlertas) {
-                    maxAlertas = alertasMaquina.length;
-                    maquinaComMaisAlertas = {
-                        serial,
-                        total: maxAlertas,
-                        alertas: alertasMaquina
-                    };
-                }
-            });
-
-            if (maquinaComMaisAlertas) {
-                const frase = maquinaComMaisAlertas.total === 1
-                    ? "alerta registrado"
-                    : "alertas registrados";
-
-                document.querySelector("#kpi-mais-alertas .kpi-value").textContent =
-                    maquinaComMaisAlertas.serial;
-
-                document.querySelector("#kpi-mais-alertas .kpi-subtitle").textContent =
-                    `${maquinaComMaisAlertas.total} ${frase}`;
-            }
-
-
-            totalAlertas += alertasMaquina.length;
             const ultimaDataAlerta = alertasMaquina.reduce((maisRecente, alerta) => {
                 const alertaData = alerta.createdDate?.iso8601 ?
                     new Date(alerta.createdDate.iso8601) :
@@ -181,6 +250,11 @@ async function carregarMaquinas() {
             const machineId = `machine-${machine.id_maquina}`;
             let row = existingRows.get(machineId);
 
+            if (uptime !== null && uptime > maiorTempo) {
+                maiorTempo = uptime;
+                maiorTempoMaquina = machine;
+            }
+
             if (row) {
                 updateTableRow(row, {
                     status: { text: statusText, color: statusColor },
@@ -195,6 +269,7 @@ async function carregarMaquinas() {
                 // Remover do mapa para saber quais linhas permanecem
                 existingRows.delete(machineId);
             } else {
+
                 // Criar uma nova linha se não existir
                 row = document.createElement("tr");
                 row.setAttribute("data-machine-id", machineId);
@@ -204,17 +279,24 @@ async function carregarMaquinas() {
                         <small style="color: ${statusColor};">Setor/Área</small>
                     </td>
                     <td class="status" style="color: ${statusColor}">${statusText}</td>
-                    <td class="uptime">${uptime !== null ? formatarHoras(uptime) : '-'}</td>
-                    <td class="alertas-count">${alertasMaquina.length}</td>
+                    <td class="uptime">${uptime !== null ? formatarHoras(uptime) : "-"}</td>
+                    <td class="cpu">${cpu !== null ? Math.round(cpu) : "-"}</td>
+                    <td class="ram">${ram !== null ? Math.round(ram) : "-"}</td>
+                    <td class="disco">${disco !== null ? Math.round(disco) : "-"}</td>
                     <td class="ultimo-alerta">${linkUltimoAlerta}</td>
-                    <td class="ram">${ram !== null ? Math.round(ram) : '-'}</td>
-                    <td class="cpu">${cpu !== null ? Math.round(cpu) : '-'}</td>
-                    <td class="disco">${disco !== null ? Math.round(disco) : '-'}</td>
+                    <td class="alertas-count">${alertasMaquina.length}</td>
                     <td><button class="details-btn" onclick="analiseDetalhada(${machine.id_maquina})" data-id="${machine.id_maquina}">Expandir Análise</button></td>
                 `;
 
                 tableBody.appendChild(row);
             }
+        }
+
+
+        if (maiorTempoMaquina) {
+            document.getElementById("tempo-uso").textContent = `${formatarHoras(maiorTempo)}`;
+            document.getElementById("maquina-tempo").textContent =
+                `${maiorTempoMaquina.serial_number}`;
         }
 
         // Remover linhas que não correspondem mais a nenhuma máquina ativa
@@ -236,6 +318,15 @@ async function carregarMaquinas() {
 
         const qtdAlertas = document.getElementById("qtd_alertas");
         if (qtdAlertas) qtdAlertas.textContent = totalAlertas;
+
+        const kpiTotal = document.querySelector(".kpi-stack .kpi-mini:nth-child(1) .value");
+        const kpiAtivasStack = document.querySelector(".kpi-stack .kpi-mini.active .value");
+        const kpiInativasStack = document.querySelector(".kpi-stack .kpi-mini.inactive .value");
+
+        if (kpiTotal) kpiTotal.textContent = machines.length;
+        if (kpiAtivasStack) kpiAtivasStack.textContent = ativas;
+        if (kpiInativasStack) kpiInativasStack.textContent = inativas;
+
     } catch (error) {
         console.error("Erro ao carregar máquinas:", error);
         const kpiElements = document.querySelectorAll(
@@ -247,6 +338,8 @@ async function carregarMaquinas() {
         }
         document.getElementById("qtd_alertas").textContent = "0";
     }
+
+
 }
 
 // Função auxiliar para atualizar apenas os valores alterados em uma linha existente
