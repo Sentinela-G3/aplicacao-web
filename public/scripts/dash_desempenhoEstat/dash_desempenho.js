@@ -1,3 +1,15 @@
+window.onload = modelosMaquina(sessionStorage.idEmpresa);
+
+let selectSlt = document.getElementById("slt_modelo")
+let modelo = Number(selectSlt.value)
+
+selectSlt.addEventListener("change", () => {
+  modelo = Number(selectSlt.value);
+  dadosModeloComponente(modelo)
+});
+
+window.addEventListener("load", dadosModeloComponente(modelo))
+
 function modelosMaquina(idEmpresa) {
   fetch(`/maquinas/obterModelosMaquina/${idEmpresa}`, {
     method: 'GET'
@@ -12,16 +24,24 @@ function modelosMaquina(idEmpresa) {
     .then((json) => {
       console.log(json)
       if (json.length > 0) {
-        let select = document.getElementById("slt_modelo")
-
+        let primeiro = true
         json.forEach(item => {
           let idModeloMaquina = item["id_modelo"];
           let modeloMaquina = item["nome"];
 
-          let option = document.createElement("option")
-          option.value = idModeloMaquina
-          option.textContent = modeloMaquina
-          select.appendChild(option)
+          if (primeiro) {
+            primeiro = false
+            let option = document.createElement("option")
+            option.selected
+            option.value = idModeloMaquina
+            option.textContent = modeloMaquina
+            select.appendChild(option)
+          } else {
+            let option = document.createElement("option")
+            option.value = idModeloMaquina
+            option.textContent = modeloMaquina
+            select.appendChild(option)
+          }
         })
       }
     })
