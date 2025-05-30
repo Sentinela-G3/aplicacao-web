@@ -45,7 +45,33 @@ async function listTickets() {
   }
 }
 
+async function buscarMembros(){
+  try {
+    const response = await axios.get(
+      `${JIRA_URL}/rest/api/3/user/assignable/search`, {
+        params: { project: 'SUPSEN' }, // Substitua 'TESTE' pela chave do projeto real
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${EMAIL}:${API_TOKEN}`).toString('base64')}`,
+          Accept: 'application/json'
+        }
+  });
+
+    const usuarios = response.data;
+
+    usuarios.forEach(usuario => {
+      console.log(`Nome: ${usuario.displayName}, AccountId: ${usuario.accountId}`);
+    });
+    
+    return usuarios;
+
+  } catch (error) {
+    console.error('Erro ao buscar membros2:', error.response ? error.response.data : error.message);
+  }
+}
+
+
 module.exports = {
   createTicket,
-  listTickets
+  listTickets,
+  buscarMembros
 };

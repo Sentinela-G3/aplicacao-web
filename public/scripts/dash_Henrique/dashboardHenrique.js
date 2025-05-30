@@ -72,7 +72,7 @@ var timelineAlertas = {
     plotOptions: {
         bar: {
             horizontal: false,
-            columnWidth: '80%',
+            columnWidth: '90%',
             endingShape: 'flat'
         }
     },

@@ -195,6 +195,14 @@ td {
     min-width: 120px;
 }
 
+.status-badge{
+    display: flex;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
 .status-resolvido {
     background-color: #8FE3A0;
 }
@@ -204,7 +212,8 @@ td {
 }
 
 .status-aberto {
-    background-color: #FF8080;
+    background-color: #ff0000;
+    font-weight: bold;
 }
 
 .search-icon {

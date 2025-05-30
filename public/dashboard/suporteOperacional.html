@@ -47,7 +47,7 @@
                         style="width: 50%; justify-content: left; padding-left: 20px; box-sizing: border-box;">Lista de
                         Alertas</span>
                     <div>
-                        <select name="" id="">
+                        <select name="" id="select-urgencia">
                             <option value="">Todos</option>
                             <option value="">Leve</option>
                             <option value="">Grave</option>
@@ -55,32 +55,35 @@
                         </select>
                     </div>
                     <div>
-                        <input type="text" placeholder="Pesquisar dispositivo">
+                        <input id="" type="text" placeholder="Pesquisar dispositivo">
                     </div>
                 </div>
-                <div class="ticket-layout">
-                    <div class="box-urgencia">
-                        <div class="div-urgencia">
-                            <span id="text-urgencia">CRITÍCO</span>
+                <div class="lista-tickets" id="lista-tickets">
+                    <!-- <div class="ticket-layout">
+                        <div class="box-urgencia">
+                            <div class="div-urgencia">
+                                <span id="text-urgencia">CRITÍCO</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="box-esquerda">
-                        <span class="text-infos" id="id-dispositivo">ID Dispositivo: FVFZTLKKL40Y</span>
-                        <span class="text-infos" id="recurso">Recurso: <b>Disco</b></span>
-                        <span class="text-infos" id="descricao">Robô sem acesso à internet</span>
-                        <span class="text-infos" id="hrDeAbertura"><i>Aberto em 28/05 às 14:19</i></span>
-                    </div>
-                    <div class="box-direita">
-                        <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
-                                style="color: red;">20 min e 30 seg</b> </span>
-                        <div class="box-buttons">
-                            <button class="buttons-tickets" id="button-detalhes">Ver Detalhes</button>
-                            <select class="buttons-tickets" name="" id="selection-responsavel">
-                                <option value="">Designar responsável</option>
-                            </select>
+                        <div class="box-esquerda">
+                            <span class="text-infos" id="id-dispositivo">ID Dispositivo: FVFZTLKKL40Y</span>
+                            <span class="text-infos" id="recurso">Recurso: <b>Disco</b></span>
+                            <span class="text-infos" id="descricao">Robô sem acesso à internet</span>
+                            <span class="text-infos" id="hrDeAbertura"><i>Aberto em 28/05 às 14:19</i></span>
                         </div>
-                    </div>
+                        <div class="box-direita">
+                            <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
+                                    style="color: red;">20 min e 30 seg</b> </span>
+                            <div class="box-buttons">
+                                <button class="buttons-tickets" id="button-detalhes">Ver Detalhes</button>
+                                <select class="buttons-tickets" name="" id="selection-responsavel">
+                                    <option value="">Designar responsável</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
                 </div>
+
             </div>
             <div class="box-ranking">
                 <span class="titulo-grafico">Recôrrencia de Alertas</span>
@@ -126,7 +129,11 @@
         </div>
 
         <script src="../scripts/dash_Henrique/dashboardHenrique.js" style="padding: 0;"></script>
-
+        <script src="../scripts/jiraFuncoes.js" style="padding: 0;"></script>
+        <script>
+            listarMembrosDoProjeto()
+            renderTicketsGilberto()
+        </script>
 </body>
 
 </html>

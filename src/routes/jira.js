@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { createTicket, listTickets } = require('../controllers/jiraService');
+const jiraController  = require('../controllers/jiraService');
 
 router.post('/create-ticket', async (req, res) => {
   const { summary, description, priority } = req.body;
 
   try {
-    const result = await createTicket(summary, description, priority);
+    const result = await jiraController .createTicket(summary, description, priority);
     res.json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -15,7 +15,16 @@ router.post('/create-ticket', async (req, res) => {
 
 router.get('/tickets', async (req, res) => {
   try {
-    const result = await listTickets();
+    const result = await jiraController .listTickets();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/membros', async (req, res) => {
+  try {
+    const result = await jiraController.buscarMembros();
     res.json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

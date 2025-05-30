@@ -1,114 +1,223 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const ticketForm = document.getElementById('ticketForm');
-    const ticketsList = document.getElementById('tickets');
-    const apiBaseUrl = window.location.origin;
-    // Função para buscar os tickets
-    async function fetchTickets() {
-        try {
-          const response = await fetch('http://localhost:3333/jira/tickets');
-          
-          if (!response.ok) {
-            throw new Error(`Erro na requisição: ${response.statusText}`);
-          }
-      
-          const data = await response.json();
-          
-          // Verifique o formato dos dados retornados
-          console.log('Resposta da API:', data.values[0]);
-      
-          // A resposta contém os tickets dentro de data.values
-          if (data.values) {
-            renderTickets(data.values);  // Agora estamos passando os tickets de dentro de 'values'
-          } else {
-            console.error('A resposta não contém tickets ou não é um array');
-          }
-        } catch (error) {
-          console.error('Erro ao buscar tickets:', error);
-        }
+
+  const ticketForm = document.getElementById('ticketForm');
+  const ticketsList = document.getElementById('tickets');
+  const apiBaseUrl = window.location.origin;
+  // Função para buscar os tickets
+  async function fetchTickets() {
+    try {
+      const response = await fetch('http://localhost:3333/jira/tickets');
+
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.statusText}`);
       }
-  
-    // Função para renderizar os tickets na lista
-    function renderTickets(tickets) {
-      const div = document.getElementById("box-linhas")
-      tickets.forEach(ticket => {
-        console.log(ticket)
-        const date = new Date(ticket.createdDate.jira);
 
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
+      const data = await response.json();
 
-        const textHoraAbertura = `${day}/${month}/${year} às ${hours}:${minutes}`
+      // Verifique o formato dos dados retornados
+      console.log('Resposta da API:', data.values[0]);
 
-        const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
-        const maquina = ticket.summary.split(" ");
-        const descricaoSeparada = descricao.split('*');
+      // A resposta contém os tickets dentro de data.values
+      if (data.values) {
+        return data.values;  // Agora estamos passando os tickets de dentro de 'values'
+      } else {
+        console.error('A resposta não contém tickets ou não é um array');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar tickets:', error);
+    }
+  }
 
-        const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
+  // Função para renderizar os tickets na lista
+  async function renderTickets() {
+    const div = document.getElementById("box-linhas")
+    const tickets = await fetchTickets()
+    tickets.forEach(ticket => {
+      console.log(ticket)
+      const date = new Date(ticket.createdDate.jira);
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+
+      const textHoraAbertura = `${day}/${month}/${year} às ${hours}:${minutes}`
+
+      const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
+      const maquina = ticket.summary.split(" ");
+      const descricaoSeparada = descricao.split('*');
+
+      const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
+
+     const status = ticket.currentStatus.status;
+     var constVar;
+
+     if(status == "Aberto" || status == "Reaberto"){
+      constVar = "status-aberto"
+     } else if(status == "Fechada"){
+      constVar = "status-resolvido"
+     } else if( status == "Em andamento"){
+      constVar = "status-andamento"
+     }
 
 
-        if( ticket.requestTypeId == "5"){
-          div.innerHTML += `<tr>
+      if (ticket.requestTypeId == "5") {
+        div.innerHTML += `<tr>
                           <td class="alerta-chave">${ticket.issueKey}</td>
                           <td>${descricaoTratada}</td>
                           <td class="alerta-dispositivo">${maquina[1]}</td>
                           <td class= 'alerta-horario'> ${textHoraAbertura}</td>
-                          <td><span class="status-badge status-resolvido" >${ticket.currentStatus.status}</span></td>
+                          <td><span class="status-badge ${constVar}" >${ticket.currentStatus.status}</span></td>
                       </tr>`;
-        }
+      }
+    });
+
+  }
+
+  // Função para criar um novo ticket
+  async function createTicket(event) {
+    event.preventDefault();
+
+    const summary = document.getElementById('summary').value;
+    const description = document.getElementById('description').value;
+    const priority = document.getElementById('priority').value;
+
+    // Dados para criação de ticket
+    const ticketData = {
+      summary: summary,
+      description: description,
+      priority: priority
+    };
+
+    try {
+      const response = await fetch('http://localhost:3333/jira/create-ticket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ticketData),
       });
 
+      if (response.ok) {
+        alert('Ticket criado com sucesso!');
+        fetchTickets(); // Atualiza a lista de tickets
+        ticketForm.reset();
+      } else {
+        const errorData = await response.json();
+        console.error('Erro ao criar ticket:', errorData);
+        alert('Erro ao criar o ticket: ' + (errorData.details || 'Desconhecido'));
+      }
+    } catch (error) {
+      console.error('Erro ao criar ticket:', error);
+      alert('Erro ao criar o ticket');
+    }
+  }
+
+
+
+async function listarMembrosDoProjeto() {
+  try {
+    const response = await fetch('http://localhost:3333/jira/membros');
+
+    if (!response.ok) {
+      throw new Error(`Erro na requisição: ${response.statusText}`);
     }
 
-    // Função para criar um novo ticket
-    async function createTicket(event) {
-        event.preventDefault();
-      
-        const summary = document.getElementById('summary').value;
-        const description = document.getElementById('description').value;
-        const priority = document.getElementById('priority').value;
-      
-        // Dados para criação de ticket
-        const ticketData = {
-            summary: summary,
-            description: description,
-            priority: priority
-          };
-      
-        try {
-          const response = await fetch('http://localhost:3333/jira/create-ticket', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(ticketData),
-          });
-      
-          if (response.ok) {
-            alert('Ticket criado com sucesso!');
-            fetchTickets(); // Atualiza a lista de tickets
-            ticketForm.reset();
-          } else {
-            const errorData = await response.json();
-            console.error('Erro ao criar ticket:', errorData);
-            alert('Erro ao criar o ticket: ' + (errorData.details || 'Desconhecido'));
-          }
-        } catch (error) {
-          console.error('Erro ao criar ticket:', error);
-          alert('Erro ao criar o ticket');
-        }
+    const data = await response.json();
+
+
+    console.log('Resposta da API:', data) 
+    if (data.values) {
+      console.log("Deu certo")
+    } else {
+      console.error('A resposta não contém membros ou não é um array');
+    }
+    } catch (error) {
+      console.error('Erro ao buscar membros1:', error);
+    }
+}
+
+async function renderTicketsGilberto() {
+    const div = document.getElementById("lista-tickets")
+    const tickets = await fetchTickets()
+    var contar = 0;
+    tickets.forEach(ticket => {
+      contar++;
+      console.log(ticket)
+      const date = new Date(ticket.createdDate.jira);
+
+      const month = String(date.getMonth() + 1).padStart(2, '0'); 
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+
+      const textHoraAbertura = `${day}/${month} às ${hours}:${minutes}`
+
+      const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
+      const maquina = ticket.summary.split(" ");
+      const descricaoSeparada = descricao.split('*');
+
+      const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
+
+      const status = ticket.currentStatus.status;
+
+
+      const recurso = ticket.requestFieldValues[2].value.value;
+      const urgencia = ticket.requestFieldValues[3].value.value;
+
+      var styleUrgencia;
+
+      if(urgencia == "Crítico"){
+        styleUrgencia = "critico"
+      } else if(urgencia == "Grave"){
+        styleUrgencia = "grave"
+      } else if(urgencia == "Leve"){
+        styleUrgencia = "leve"
       }
-  
-    // Evento de submit do formulário
-    // ticketForm.addEventListener('submit', createTicket);
-  
-    // Carrega os tickets ao carregar a página
-    fetchTickets();
-  });
-  
+      var brancoOuCinza;
+      if(contar% 2 == 0){
+        brancoOuCinza = 'par'
+      } else if(contar% 2 == 1){
+        brancoOuCinza = 'impar'
+      }
+
+      
+      if (ticket.requestTypeId == "5" && status == "Aberto" || status == "Reaberto") {
+
+        div.innerHTML += `<div class="ticket-layout ${brancoOuCinza}">
+                        <div class="box-urgencia ${styleUrgencia}">
+                            <div class="div-urgencia ${styleUrgencia}">
+                                <span id="text-urgencia">${urgencia.toUpperCase()}</span>
+                            </div>
+                        </div>
+                        <div class="box-esquerda">
+                            <span class="text-infos" id="id-dispositivo">ID Dispositivo: ${maquina[1]}</span>
+                            <span class="text-infos" id="recurso">Recurso: <b>${recurso}</b></span>
+                            <span class="text-infos" id="descricao">${descricaoTratada}</span>
+                            <span class="text-infos" id="hrDeAbertura"><i>Aberto em ${textHoraAbertura}</i></span>
+                        </div>
+                        <div class="box-direita">
+                            <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
+                                    style="color: red;">20 min e 30 seg</b> </span>
+                            <div class="box-buttons">
+                                <button class="buttons-tickets" id="button-detalhes">Ver Detalhes</button>
+                                <select class="buttons-tickets" id="selection-responsavel">
+                                    <option value="">Designar responsável</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>`
+
+      }
+
+      
+    });
+
+  }
+
+
+
 
 //Função para filtar alertas de acordo com status e periodo
 function filtrarAlertas() {
@@ -123,13 +232,13 @@ function filtrarAlertas() {
 
   linhas.forEach(linha => {
     const status = linha.querySelector('.status-resolvido').textContent.toLowerCase();
-    const dataTexto = linha.querySelector('.alerta-horario').textContent; 
+    const dataTexto = linha.querySelector('.alerta-horario').textContent;
 
     const [dataParte, horaParte] = dataTexto.split(' às ');
     const [dia, mes, ano] = dataParte.split('/');
     const [hora, minuto] = horaParte.split(':');
 
-    const dataChamado = new Date(ano, mes - 1, dia, hora, minuto); 
+    const dataChamado = new Date(ano, mes - 1, dia, hora, minuto);
 
     let exibir = true;
 
@@ -148,7 +257,7 @@ function filtrarAlertas() {
     linha.style.display = exibir ? '' : 'none';
   });
 }
-    
+
 function pesquisarChaveOuId() {
   const termo = document.getElementById('inputBusca').value.toLowerCase();
   const linhas = document.querySelectorAll('#lista-alertas tbody tr');
