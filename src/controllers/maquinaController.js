@@ -2,186 +2,216 @@ var maquinaModel = require("../models/maquinaModel");
 
 
 function cadastrar(req, res) {
-    var serial = req.body.serialServer;
-    var setor = req.body.setorServer;
-    var fkEndereco = req.body.fkEnderecoServer;
-    var fkModelo = req.body.fkModeloServer;
+  var serial = req.body.serialServer;
+  var setor = req.body.setorServer;
+  var fkEndereco = req.body.fkEnderecoServer;
+  var fkModelo = req.body.fkModeloServer;
 
-        maquinaModel.cadastrar(serial, setor, fkEndereco, fkModelo)
-            .then(
-                function (resultado) {
-                    res.json(resultado);
-                }
-            ).catch(
-                function (erro) {
-                    console.log(erro);
-                    console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
-                        erro.sqlMessage
-                    );
-                    res.status(500).json(erro.sqlMessage);
-                }
-            );
-}
-
-function obterFkModelo(req, res){
-    var fkEmpresa = req.body.fkEmpresaServer;
-
-    maquinaModel.obterFkModelo(fkEmpresa)
-            .then(
-                function (resultado) {
-                    res.json(resultado);
-                }
-            ).catch(
-                function (erro) {
-                    console.log(erro);
-                    console.log(
-                        "\nHouve um erro ao obter os modelos! Erro: ",
-                        erro.sqlMessage
-                    );
-                    res.status(500).json(erro.sqlMessage);
-                }
-            );
-}
-
-function obterMaquinas(req, res){
-    var fkEmpresa = req.body.fkEmpresaServer;
-
-    maquinaModel.obterMaquinas(fkEmpresa)
+  maquinaModel.cadastrar(serial, setor, fkEndereco, fkModelo)
     .then(
-        function (resultado) {
-            res.json(resultado);
-        }
+      function (resultado) {
+        res.json(resultado);
+      }
     ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao obter as maquinas! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
+      function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao realizar o cadastro! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      }
+    );
+}
+
+function obterFkModelo(req, res) {
+  var fkEmpresa = req.body.fkEmpresaServer;
+
+  maquinaModel.obterFkModelo(fkEmpresa)
+    .then(
+      function (resultado) {
+        res.json(resultado);
+      }
+    ).catch(
+      function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao obter os modelos! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      }
+    );
+}
+
+function obterMaquinas(req, res) {
+  var fkEmpresa = req.body.fkEmpresaServer;
+
+  maquinaModel.obterMaquinas(fkEmpresa)
+    .then(
+      function (resultado) {
+        res.json(resultado);
+      }
+    ).catch(
+      function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao obter as maquinas! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      }
     );
 }
 
 function listarMaquinasPorEmpresa(req, res) {
-    var idEmpresa = req.params.idEmpresa;
+  var idEmpresa = req.params.idEmpresa;
 
-    maquinaModel.obterMaquinas(idEmpresa)
+  maquinaModel.obterMaquinas(idEmpresa)
     .then(
-        function (resultado) {
-            res.json(resultado);
-        }
+      function (resultado) {
+        res.json(resultado);
+      }
     ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao obter as maquinas! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
+      function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao obter as maquinas! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      }
     );
 
 }
 
 function listarModelosDetalhados(req, res) {
-    var fkEmpresa = req.body.fkEmpresaServer;
+  var fkEmpresa = req.body.fkEmpresaServer;
 
-    console.log("fkEmpresa:", fkEmpresa);
-  
-    maquinaModel.listarModelosDetalhados(fkEmpresa)
-      .then((resultado) => {
-        res.json(resultado);    
-      })
-      .catch((erro) => {
-        res.status(500).json(erro.sqlMessage); 
-      });
-  }
+  console.log("fkEmpresa:", fkEmpresa);
 
-  function listarTempoAtividadePorMaquina(req, res) {
-    var fkEmpresa = req.body.fkEmpresaServer;
-
-    maquinaModel.listarTempoAtividadePorMaquina(fkEmpresa)
-      .then((resultado) => {
-        res.json(resultado);
-      })
-      .catch((erro) => {
-        res.status(500).json(erro.sqlMessage);
-      });
+  maquinaModel.listarModelosDetalhados(fkEmpresa)
+    .then((resultado) => {
+      res.json(resultado);
+    })
+    .catch((erro) => {
+      res.status(500).json(erro.sqlMessage);
+    });
 }
-  
 
-function editar(req, res){
-    var setor = req.body.setorServer;
-    var fkEndereco = req.body.enderecoServer;
-    var idMaquina = req.body.idMaquinaServer;
+function listarTempoAtividadePorMaquina(req, res) {
+  var fkEmpresa = req.body.fkEmpresaServer;
 
-    maquinaModel.editar(setor, fkEndereco, idMaquina)
+  maquinaModel.listarTempoAtividadePorMaquina(fkEmpresa)
+    .then((resultado) => {
+      res.json(resultado);
+    })
+    .catch((erro) => {
+      res.status(500).json(erro.sqlMessage);
+    });
+}
+
+
+function editar(req, res) {
+  var setor = req.body.setorServer;
+  var fkEndereco = req.body.enderecoServer;
+  var idMaquina = req.body.idMaquinaServer;
+
+  maquinaModel.editar(setor, fkEndereco, idMaquina)
     .then(
-        function (resultado) {
-            res.json(resultado);
-        }
+      function (resultado) {
+        res.json(resultado);
+      }
     ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao excluir a maquina! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
+      function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao excluir a maquina! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      }
     );
 }
 
-function excluir(req, res){
-    var idMaquina = req.body.idMaquinaServer;
+function excluir(req, res) {
+  var idMaquina = req.body.idMaquinaServer;
 
-    maquinaModel.excluir(idMaquina)
+  maquinaModel.excluir(idMaquina)
     .then(
-        function (resultado) {
-            res.json(resultado);
-        }
+      function (resultado) {
+        res.json(resultado);
+      }
     ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao obter os modelo! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
+      function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao obter os modelo! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      }
     );
 }
 
 function obterMaquinaPorSerial(req, res) {
-    var serialNumber = req.params.serialNumber;
+  var serialNumber = req.params.serialNumber;
 
-    maquinaModel.obterMaquinaPorSerial(serialNumber)
+  maquinaModel.obterMaquinaPorSerial(serialNumber)
     .then(
-        function (resultado) {
-            res.json(resultado);
-        }
+      function (resultado) {
+        res.json(resultado);
+      }
     ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao obter as maquinas! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
+      function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao obter as maquinas! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      }
     );
 }
 
+function dadosModeloComponente(req, res) {
+  let modelo = req.params.modelo;
+
+  maquinaModel.dadosModeloComponente(modelo)
+    .then(
+      (resultado) => { res.status(200).json(resultado) }
+    ).catch(
+      function (erro) {
+        console.log(erro)
+        console.log("\nHouve um erro ao pegar os modelos! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+      }
+    )
+}
+
+function obterModelosMaquina(req, res) {
+  let empresa = req.params.idEmpresa
+  maquinaModel.obterModelosMaquina(empresa)
+    .then((resultado) => { res.status(200).json(resultado) }
+    ).catch(
+      function (erro) {
+        console.log(erro)
+        console.log("\nHouve um erro ao pegar os modelos de maquinas! Erro: ", erro.sqlMessage)
+        res.status(500).json(erro.sqlMessage)
+      }
+    )
+}
+
 module.exports = {
-    cadastrar,
-    obterFkModelo,
-    obterMaquinas,
-    editar,
-    excluir,
-    listarModelosDetalhados,
-    listarMaquinasPorEmpresa,
-    listarTempoAtividadePorMaquina,
-    obterMaquinaPorSerial
+  cadastrar,
+  obterFkModelo,
+  obterMaquinas,
+  editar,
+  excluir,
+  listarModelosDetalhados,
+  listarMaquinasPorEmpresa,
+  listarTempoAtividadePorMaquina,
+  obterMaquinaPorSerial,
+  dadosModeloComponente,
+  obterModelosMaquina
 }

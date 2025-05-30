@@ -1,133 +1,102 @@
-if (!sessionStorage.idEmpresa || !sessionStorage.idUsuario || !sessionStorage.email || !sessionStorage.tipoUsuario || !sessionStorage.nomeUsuario) {
-    alert("Sua sessão expirou! Logue-se novamente.");
-    window.location.href = "../login.html";
+window.onload = modelosMaquina(sessionStorage.idEmpresa);
+
+let selectSlt = document.getElementById("slt_modelo")
+let modelo = Number(selectSlt.value)
+
+selectSlt.addEventListener("change", () => {
+  modelo = Number(selectSlt.value);
+  dadosModeloComponente(modelo)
+});
+
+window.addEventListener("load", dadosModeloComponente(modelo))
+
+function modelosMaquina(idEmpresa) {
+  fetch(`/maquinas/obterModelosMaquina/${idEmpresa}`, {
+    method: 'GET'
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json()
+      } else {
+        throw new Error("Erro na requisição")
+      }
+    })
+    .then((json) => {
+      console.log(json)
+      if (json.length > 0) {
+        let primeiro = true
+        json.forEach(item => {
+          let idModeloMaquina = item["id_modelo"];
+          let modeloMaquina = item["nome"];
+
+          if (primeiro) {
+            primeiro = false
+            let option = document.createElement("option")
+            option.selected
+            option.value = idModeloMaquina
+            option.textContent = modeloMaquina
+            select.appendChild(option)
+          } else {
+            let option = document.createElement("option")
+            option.value = idModeloMaquina
+            option.textContent = modeloMaquina
+            select.appendChild(option)
+          }
+        })
+      }
+    })
 }
 
-window.onload = listarModelosDetalhados;
-window.addEventListener("load", contarAlertasUltimaSemana);
-window.addEventListener("load", listarTempoAtividade);
-
-
-function listarModelosDetalhados() {
-    console.log("fkEmpresaServer enviado:", { fkEmpresaServer: 1 });
-    fetch("/maquinas/listarModelosDetalhados", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkEmpresaServer: sessionStorage.idEmpresa })
+function dadosModeloComponente(modelo) {
+  fetch(`/maquinas/dadosModeloComponente/${modelo}`, {
+    method: 'GET'
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json()
+      } else {
+        throw new Error("Erro na requisição")
+      }
     })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Falha na requisição. Status: " + res.status);
-            }
-            return res.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById("corpo-tabela-modelos");
-            tbody.innerHTML = "";
-            if (Array.isArray(data)) {
-                data.forEach(maquina => {
-                    const tr = document.createElement("tr");
+    .then((json) => {
+      console.log(json)
+      const esp_CPU = document.getElementById("met-esp_CPU")
+      const esp_RAM = document.getElementById("met-esp_RAM")
+      const esp_Rede = document.getElementById("met-esp_Rede")
+      const esp_Bateria = document.getElementById("met-esp_Bateria")
+      const esp_Disco = document.getElementById("met-esp_Disco")
+      const esp_max_CPU = document.getElementById("met-esp-max_CPU")
+      const esp_max_RAM = document.getElementById("met-esp-max_RAM")
+      const esp_max_Rede = document.getElementById("met-esp-max_Rede")
+      const esp_max_Bateria = document.getElementById("met-esp-max_Bateria")
+      const esp_max_Disco = document.getElementById("met-esp-max_Disco")
 
-                    tr.innerHTML =
-                        `<td>${maquina.modelo}</td>
-                    <td>${maquina.cpu}</td>
-                    <td>${maquina.ram_gb}</td>
-                    <td>${maquina.capacidade_disco_gb}</td>
-                    <td>${maquina.capacidade_tda}</td>
-                    `
-                        ;
+      const modelo_CPU = document.getElementById("comp_CPU")
+      const modelo_RAM = document.getElementById("comp_RAM")
+      const modelo_Rede = document.getElementById("comp_Rede")
+      const modelo_Bateria = document.getElementById("comp_Bateria")
+      const modelo_Disco = document.getElementById("comp_Disco")
+      if (json.length > 0) {
+        let dados = json[0]
+        esp_CPU.innerHTML = dados.usoComumCpu
+        esp_RAM.innerHTML = dados.usoComumRam
+        esp_Rede.innerHTML = dados.usoComumRede
+        esp_Bateria.innerHTML = dados.usoComumBateria
+        esp_Disco.innerHTML = dados.usoComumDisco
+        esp_max_CPU.innerHTML = dados.usoMaximoCpu
+        esp_max_RAM.innerHTML = dados.usoMaximoRam
+        esp_max_Rede.innerHTML = dados.usoMaximoRede
+        esp_max_Bateria.innerHTML = dados.usoMaximoBateria
+        esp_max_Disco.innerHTML = dados.usoMaximoDisco
 
-                    tbody.appendChild(tr);
-                });
-            } else {
-                console.error("Dados recebidos não são um array.");
-            }
-        })
-        .catch(err => {
-            console.error("Erro ao buscar modelos detalhados:", err);
-        });
+        modelo_CPU.innerHTML = dados.modelo_cpu
+        modelo_RAM.innerHTML = dados.modelo_ram
+        modelo_Rede.innerHTML = dados.modelo_placaRede
+        modelo_Bateria.innerHTML = dados.modelo_bateria
+        modelo_Disco.innerHTML = dados.modelo_disco
+      } else {
+        console.warn("Nenhum dado encontrado para o modelo informado.")
+      }
+    })
+    .catch((erro) => console.error("Erro ao buscar dados do modelo:", erro))
 }
-
-function listarTempoAtividade() {
-    fetch("/maquinas/listarTempoAtividade", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkEmpresaServer: 1 })
-    })
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.getElementById("corpo-tabela-maquinas");
-            tbody.innerHTML = "";
-
-            data.forEach(maquina => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-            <td>${maquina.serial_number}</td>
-            <td>${maquina.tempo_atividade ?? 'Desligada'}</td>
-            <td>${maquina.sistema_operacional}</td>
-            <td>${maquina.modelo}</td>
-        `;
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(err => console.error("Erro ao buscar tempo de atividade:", err));
-}
-
-function contarAlertasUltimaSemana() {
-    console.log("Enviando fkEmpresa para alertas da semana:", { fkEmpresaServer: 1 });
-
-    fetch("/alertas/quantidadeUltimaSemana", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkEmpresaServer: 1 })
-    })
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error("Erro ao obter quantidade de alertas.");
-            }
-            return response.json();
-        })
-        .then(function (data) {
-            console.log("Qtd total de alertas na ultima semana: ", data.totalUltimaSemana);
-            document.getElementById('alertas-box-id').innerText = `Alertas da semana: \n\n ${data.totalUltimaSemana}`;
-        })
-        .catch(function (error) {
-            console.error("Erro ao obter o qtd de alertas:", error);
-        });
-}
-
-fetch("/alertas/quantidadeMaquinas", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ fkEmpresaServer: 1 })
-})
-    .then(res => res.json())
-    .then(data => {
-        const ctx = document.getElementById('myChart');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['ativas', 'com alertas', 'TDA em risco', 'desativas'],
-                datasets: [{
-                    label: 'qtd de maquinas',
-                    data: [
-                        data.maquinas_ligadas,
-                        data.maquinas_com_alertas,
-                        data.maquinas_em_risco,
-                        data.maquinas_desligadas
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    })
-    .catch(err => {
-        console.error("Erro ao carregar o gráfico:", err);
-    });
