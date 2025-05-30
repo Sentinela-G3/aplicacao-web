@@ -39,14 +39,36 @@ CREATE TABLE colaborador (
         ON DELETE CASCADE -- Exclui colaboradores quando a empresa for excluída
 );
 
+CREATE TABLE modelo (
+    id_modelo INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    fk_componente_cpu INT NOT NULL,
+    fk_componente_ram INT NOT NULL,
+    fk_componente_bateria INT NOT NULL,
+    fk_componente_placaRede INT NOT NULL,
+    fk_componente_disco INT NOT NULL,
+    FOREIGN KEY (fk_componente_cpu) 
+      REFERENCES componente(id_componente),
+    FOREIGN KEY (fk_componente_ram) 
+      REFERENCES componente(id_componente),
+    FOREIGN KEY (fk_componente_bateria) 
+      REFERENCES componente(id_componente),
+    FOREIGN KEY (fk_componente_placaRede) 
+      REFERENCES componente(id_componente),
+    FOREIGN KEY (fk_componente_disco) 
+      REFERENCES componente(id_componente)
+);
+
 CREATE TABLE maquina (
     id_maquina INT PRIMARY KEY AUTO_INCREMENT,
-    modelo VARCHAR(100) NOT NULL,
+    fk_modelo INT NOT NULL,
     so VARCHAR(100) NOT NULL,
     serial_number VARCHAR(100) NOT NULL,
     status TINYINT NOT NULL,
     setor VARCHAR(50) NOT NULL,
     fk_maquina_empresa INT NOT NULL,
+    FOREIGN KEY (fk_modelo)
+        REFERENCES modelo(id_modelo),
     FOREIGN KEY (fk_maquina_empresa)
         REFERENCES empresa(id_empresa) 
         ON DELETE CASCADE -- Exclui máquinas quando a empresa for excluída
@@ -56,7 +78,6 @@ CREATE TABLE componente (
     id_componente INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(50) NOT NULL,
     modelo VARCHAR(100) NOT NULL,
-    valor FLOAT NOT NULL,
     minimo FLOAT NOT NULL,
     maximo FLOAT NOT NULL,
     fk_componente_maquina INT NOT NULL,
