@@ -72,7 +72,7 @@ var timelineAlertas = {
     plotOptions: {
         bar: {
             horizontal: false,
-            columnWidth: '90%',
+            columnWidth: '80%',
             endingShape: 'flat'
         }
     },
@@ -84,47 +84,3 @@ var timelineAlertas = {
 
 var timelineAlertasTela = new ApexCharts(document.querySelector("#timelineAlertas"), timelineAlertas);
 timelineAlertasTela.render();
-
-// GRAFICO ROSCA
-var graficoRosca = {
-    chart: {
-        type: 'donut',
-        height: '80%',
-        width: '100%',
-    },
-    series: [15,15,15,15,15,25],
-    labels: ['Produto A', 'Produto B', 'Produto C', 'Produto D', 'Produto E' , 'Produto F'],
-    plotOptions: {
-        pie: {
-            donut: {
-                size: '50%'  
-            }
-        }
-    },
-    dataLabels: {
-        dropShadow: {
-            enabled: false 
-        },
-        style: {
-            colors: ['#000'],
-            fontSize: '14px' 
-        }
-    },
-    legend: {
-        position: 'right',         
-        horizontalAlign: 'center' ,    
-        offsetY: -10,        
-        offsetX: 30         
-    },
-    responsive: [{
-        breakpoint: 480,
-        options: {
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }]
-};
-
-var graficoRoscaTela = new ApexCharts(document.querySelector("#graficoRosca"), graficoRosca);
-graficoRoscaTela.render();

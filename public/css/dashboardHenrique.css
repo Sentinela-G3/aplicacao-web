@@ -73,7 +73,7 @@ body {
 
 #timelineAlertas {
     width: 100%;
-    height: 90%;
+    max-height: 90%;
     padding: 0;
     margin: 0;
 }
@@ -169,7 +169,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .alertas-com-filtros {
@@ -177,12 +177,42 @@ body {
     display: flex;
     border-radius: 5px 5px 0 0;
     align-items: center;
+    height: 30px;
+
+}
+
+.filtros-direita{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+
+.select-urgencia{
+    border-radius: 5px;
+    width: 30%;
+    height: 80%;
+    text-align: center;
+    border: 0px;
+    margin-right: 5px;
+}
+
+.searh-urgencia{
+    border-radius: 5px;
+    width: 50%;
+    height: 80%;
+    border: 0px;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .lista-tickets{
-    max-height: 306px;
+    width: 100%;
+    height: 43vh;
     overflow-y: auto;
-    border-radius: 0  0 0 10px;
+    border-radius:   0 0 10px 10px;
 }
 
 .ticket-layout {

@@ -13,6 +13,17 @@ router.post('/create-ticket', async (req, res) => {
   }
 });
 
+router.put('/setar-responsavel', async (req, res) => {
+  const { issueKey, accountId } = req.body;
+
+  try {
+    const result = await jiraController .setarResponsavel(issueKey, accountId);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.get('/tickets', async (req, res) => {
   try {
     const result = await jiraController .listTickets();

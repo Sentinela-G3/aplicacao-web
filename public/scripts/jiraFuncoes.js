@@ -1,120 +1,118 @@
 
-  const ticketForm = document.getElementById('ticketForm');
-  const ticketsList = document.getElementById('tickets');
-  const apiBaseUrl = window.location.origin;
-  // Função para buscar os tickets
-  async function fetchTickets() {
-    try {
-      const response = await fetch('http://localhost:3333/jira/tickets');
+const ticketForm = document.getElementById('ticketForm');
+const ticketsList = document.getElementById('tickets');
+const apiBaseUrl = window.location.origin;
+// Função para buscar os tickets
+async function fetchTickets() {
+  try {
+    const response = await fetch('http://localhost:3333/jira/tickets');
 
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      // Verifique o formato dos dados retornados
-      console.log('Resposta da API:', data.values[0]);
-
-      // A resposta contém os tickets dentro de data.values
-      if (data.values) {
-        return data.values;  // Agora estamos passando os tickets de dentro de 'values'
-      } else {
-        console.error('A resposta não contém tickets ou não é um array');
-      }
-    } catch (error) {
-      console.error('Erro ao buscar tickets:', error);
+    if (!response.ok) {
+      throw new Error(`Erro na requisição: ${response.statusText}`);
     }
+
+    const data = await response.json();
+
+    // Verifique o formato dos dados retornados
+    console.log('Resposta da API:', data.values[0]);
+
+    // A resposta contém os tickets dentro de data.values
+    if (data.values) {
+      return data.values;  // Agora estamos passando os tickets de dentro de 'values'
+    } else {
+      console.error('A resposta não contém tickets ou não é um array');
+    }
+  } catch (error) {
+    console.error('Erro ao buscar tickets:', error);
   }
+}
 
-  // Função para renderizar os tickets na lista
-  async function renderTickets() {
-    const div = document.getElementById("box-linhas")
-    const tickets = await fetchTickets()
-    tickets.forEach(ticket => {
-      console.log(ticket)
-      const date = new Date(ticket.createdDate.jira);
+// Função para renderizar os tickets na lista
+async function renderTickets() {
+  const div = document.getElementById("box-linhas")
+  const tickets = await fetchTickets()
+  tickets.forEach(ticket => {
+    console.log(ticket)
+    const date = new Date(ticket.createdDate.jira);
 
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const seconds = String(date.getSeconds()).padStart(2, '0');
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
 
-      const textHoraAbertura = `${day}/${month}/${year} às ${hours}:${minutes}`
+    const textHoraAbertura = `${day}/${month}/${year} às ${hours}:${minutes}`
 
-      const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
-      const maquina = ticket.summary.split(" ");
-      const descricaoSeparada = descricao.split('*');
+    const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
+    const maquina = ticket.summary.split(" ");
+    const descricaoSeparada = descricao.split('*');
 
-      const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
+    const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
 
-     const status = ticket.currentStatus.status;
-     var constVar;
+    const status = ticket.currentStatus.status;
+    var constVar;
 
-     if(status == "Aberto" || status == "Reaberto"){
+    if (status == "Aberto" || status == "Reaberto") {
       constVar = "status-aberto"
-     } else if(status == "Fechada"){
+    } else if (status == "Fechada") {
       constVar = "status-resolvido"
-     } else if( status == "Em andamento"){
+    } else if (status == "Em andamento") {
       constVar = "status-andamento"
-     }
+    }
 
 
-      if (ticket.requestTypeId == "5") {
-        div.innerHTML += `<tr>
+    if (ticket.requestTypeId == "5") {
+      div.innerHTML += `<tr>
                           <td class="alerta-chave">${ticket.issueKey}</td>
                           <td>${descricaoTratada}</td>
                           <td class="alerta-dispositivo">${maquina[1]}</td>
                           <td class= 'alerta-horario'> ${textHoraAbertura}</td>
                           <td><span class="status-badge ${constVar}" >${ticket.currentStatus.status}</span></td>
                       </tr>`;
-      }
+    }
+  });
+
+}
+
+// Função para criar um novo ticket
+async function createTicket(event) {
+  event.preventDefault();
+
+  const summary = document.getElementById('summary').value;
+  const description = document.getElementById('description').value;
+  const priority = document.getElementById('priority').value;
+
+  // Dados para criação de ticket
+  const ticketData = {
+    summary: summary,
+    description: description,
+    priority: priority
+  };
+
+  try {
+    const response = await fetch('http://localhost:3333/jira/create-ticket', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(ticketData),
     });
 
-  }
-
-  // Função para criar um novo ticket
-  async function createTicket(event) {
-    event.preventDefault();
-
-    const summary = document.getElementById('summary').value;
-    const description = document.getElementById('description').value;
-    const priority = document.getElementById('priority').value;
-
-    // Dados para criação de ticket
-    const ticketData = {
-      summary: summary,
-      description: description,
-      priority: priority
-    };
-
-    try {
-      const response = await fetch('http://localhost:3333/jira/create-ticket', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ticketData),
-      });
-
-      if (response.ok) {
-        alert('Ticket criado com sucesso!');
-        fetchTickets(); // Atualiza a lista de tickets
-        ticketForm.reset();
-      } else {
-        const errorData = await response.json();
-        console.error('Erro ao criar ticket:', errorData);
-        alert('Erro ao criar o ticket: ' + (errorData.details || 'Desconhecido'));
-      }
-    } catch (error) {
-      console.error('Erro ao criar ticket:', error);
-      alert('Erro ao criar o ticket');
+    if (response.ok) {
+      alert('Ticket criado com sucesso!');
+      fetchTickets(); // Atualiza a lista de tickets
+      ticketForm.reset();
+    } else {
+      const errorData = await response.json();
+      console.error('Erro ao criar ticket:', errorData);
+      alert('Erro ao criar o ticket: ' + (errorData.details || 'Desconhecido'));
     }
+  } catch (error) {
+    console.error('Erro ao criar ticket:', error);
+    alert('Erro ao criar o ticket');
   }
-
-
+}
 
 async function listarMembrosDoProjeto() {
   try {
@@ -127,65 +125,88 @@ async function listarMembrosDoProjeto() {
     const data = await response.json();
 
 
-    console.log('Resposta da API:', data) 
+    console.log('Resposta da API:', data)
     if (data.values) {
       console.log("Deu certo")
     } else {
       console.error('A resposta não contém membros ou não é um array');
     }
-    } catch (error) {
-      console.error('Erro ao buscar membros1:', error);
-    }
+  } catch (error) {
+    console.error('Erro ao buscar membros1:', error);
+  }
+}
+
+async function setarResponsavel(){
+  // Dados para criação de ticket
+  const ticketData = {
+    issueKey: 'SUPSEN-17',
+    accountId: '712020:31e6d166-d5bc-4dda-86cb-bbd7647ad2bc'
+  };
+
+  try {
+    const response = await fetch('http://localhost:3333/jira/setar-responsavel', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(ticketData),
+    });
+  } catch (error) {
+    console.error('Erro ao setar responsavel:', error);
+  }
 }
 
 async function renderTicketsGilberto() {
-    const div = document.getElementById("lista-tickets")
-    const tickets = await fetchTickets()
-    var contar = 0;
-    tickets.forEach(ticket => {
+  // listarMembrosDoProjeto()
+  setarResponsavel()
+  const div = document.getElementById("lista-tickets")
+  const tickets = await fetchTickets()
+  var contar = 1;
+  tickets.forEach(ticket => {
+    
+    const date = new Date(ticket.createdDate.jira);
+
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    const textHoraAbertura = `${day}/${month} às ${hours}:${minutes}`
+
+    const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
+    const maquina = ticket.summary.split(" ");
+    const descricaoSeparada = descricao.split('*');
+
+    const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
+
+    const status = ticket.currentStatus.status;
+
+
+    const recurso = ticket.requestFieldValues[2].value.value;
+    const urgencia = ticket.requestFieldValues[3].value.value;
+
+    var styleUrgencia;
+
+    if (urgencia == "Crítico") {
+      styleUrgencia = "critico"
+    } else if (urgencia == "Grave") {
+      styleUrgencia = "grave"
+    } else if (urgencia == "Leve") {
+      styleUrgencia = "leve"
+    }
+    
+
+
+
+    if (ticket.requestTypeId == "5" && status == "Aberto" || status == "Reaberto") {
       contar++;
-      console.log(ticket)
-      const date = new Date(ticket.createdDate.jira);
-
-      const month = String(date.getMonth() + 1).padStart(2, '0'); 
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-
-      const textHoraAbertura = `${day}/${month} às ${hours}:${minutes}`
-
-      const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
-      const maquina = ticket.summary.split(" ");
-      const descricaoSeparada = descricao.split('*');
-
-      const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
-
-      const status = ticket.currentStatus.status;
-
-
-      const recurso = ticket.requestFieldValues[2].value.value;
-      const urgencia = ticket.requestFieldValues[3].value.value;
-
-      var styleUrgencia;
-
-      if(urgencia == "Crítico"){
-        styleUrgencia = "critico"
-      } else if(urgencia == "Grave"){
-        styleUrgencia = "grave"
-      } else if(urgencia == "Leve"){
-        styleUrgencia = "leve"
-      }
-      var brancoOuCinza;
-      if(contar% 2 == 0){
+      var brancoOuCinza ;
+      if (contar % 2 == 0) {
         brancoOuCinza = 'par'
-      } else if(contar% 2 == 1){
+      } else if (contar % 2 == 1) {
         brancoOuCinza = 'impar'
       }
-
-      
-      if (ticket.requestTypeId == "5" && status == "Aberto" || status == "Reaberto") {
-
-        div.innerHTML += `<div class="ticket-layout ${brancoOuCinza}">
+      div.innerHTML += `<div class="ticket-layout ${brancoOuCinza}">
                         <div class="box-urgencia ${styleUrgencia}">
                             <div class="div-urgencia ${styleUrgencia}">
                                 <span id="text-urgencia">${urgencia.toUpperCase()}</span>
@@ -201,7 +222,7 @@ async function renderTicketsGilberto() {
                             <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
                                     style="color: red;">20 min e 30 seg</b> </span>
                             <div class="box-buttons">
-                                <button class="buttons-tickets" id="button-detalhes">Ver Detalhes</button>
+                                <button class="buttons-tickets" id="button-detalhes" onclick="analiseDetalhada(${maquina[1]})">Ver Detalhes</button>
                                 <select class="buttons-tickets" id="selection-responsavel">
                                     <option value="">Designar responsável</option>
                                 </select>
@@ -209,13 +230,168 @@ async function renderTicketsGilberto() {
                         </div>
                     </div>`
 
+    }
+
+
+  });
+  alertasPorComponente(tickets)
+}
+
+function alertasPorComponente(tickets) {
+  const divQtd = document.getElementById("subtitulo-grafico")
+  var contarTempo = 0;
+  var contarRede = 0;
+  var contarCPU = 0;
+  var contarMemoria = 0;
+  var contarDisco = 0;
+  var contarBateria = 0;
+  var contarQtd = 0;
+
+  tickets.forEach(ticket => {
+    const status = ticket.currentStatus.status;
+
+    if (ticket.requestTypeId == "5" && status == "Aberto" || status == "Reaberto") {
+      const recurso = ticket.requestFieldValues[2].value.value;
+      contarQtd++;
+      if (recurso == "Tempo de Uso") {
+        contarTempo++;
+      } else if (recurso == "Rede") {
+        contarRede++;
+      } else if (recurso == "CPU") {
+        contarCPU++;
+      } else if (recurso == "Memória") {
+        contarMemoria++;
+      } else if (recurso == "Disco") {
+        contarDisco++;
+      } else if (recurso == "Bateria") {
+        contarBateria++;
       }
+    }
+  })
 
-      
-    });
+  var listaQtdComponentes = [contarTempo, contarRede, contarCPU, contarMemoria, contarDisco, contarBateria]
 
+
+  divQtd.innerHTML = `<i>Quantidade:</i> <b> ${contarQtd}</b> `
+
+  var graficoRosca = {
+    chart: {
+      type: 'donut',
+      height: '80%',
+      width: '100%',
+    },
+    series: listaQtdComponentes,
+    labels: ['Tempo', 'Rede', 'CPU', 'Memória', 'Disco', 'Bateria'],
+    plotOptions: {
+      pie: {
+        donut: {
+          size: '50%'
+        }
+      }
+    },
+    dataLabels: {
+      dropShadow: {
+        enabled: false
+      },
+      style: {
+        colors: ['#000'],
+        fontSize: '14px',
+      }
+    },
+    legend: {
+      position: 'right',
+      horizontalAlign: 'center',
+      offsetY: -10,
+      offsetX: 30,
+      labels: {
+        colors: ['#000'], // cor do texto da legenda
+        useSeriesColors: false,
+        fontSize: '20px', // aumenta o tamanho da legenda
+        fontWeight: 700    // 700 = negrito
+      }
+    },
+    responsive: [{
+      breakpoint: 480,
+      options: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }]
+  };
+
+  var graficoRoscaTela = new ApexCharts(document.querySelector("#graficoRosca"), graficoRosca);
+  graficoRoscaTela.render();
+  recorrenciaDeAlertas(tickets)
+}
+
+
+function recorrenciaDeAlertas(tickets) {
+  let jsonRecorrencia = []
+
+  tickets.forEach(ticket => {
+    const descricao = ticket.requestFieldValues?.find(f => f.fieldId == "description")?.value;
+    const descricaoSeparada = descricao.split('*');
+    const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
+
+    const itemExistente = jsonRecorrencia.find(item => item.tipo === descricaoTratada);
+
+    if (itemExistente) {
+      // Se ja existe adiciona mais um
+      itemExistente.quantidade += 1;
+    } else {
+      //  Se não existe, adiciona um novo
+      jsonRecorrencia.push({ tipo: descricaoTratada, quantidade: 1 });  
+    }
+
+  })
+
+  for (let index = 0; index < jsonRecorrencia.length - 1; index++) {
+    let minIdex = index;
+
+    for (let index2 = index + 1; index2 < jsonRecorrencia.length; index2++) {
+      if (jsonRecorrencia[index2].quantidade > jsonRecorrencia[minIdex].quantidade) {
+        minIdex = index2;
+      }
+    }
+
+    if (minIdex != index) {
+      let temporario = jsonRecorrencia[index];
+      jsonRecorrencia[index] = jsonRecorrencia[minIdex];
+      jsonRecorrencia[minIdex] = temporario;
+    }
   }
+  console.log(jsonRecorrencia)
 
+  aliceDiv = document.getElementById('alice')
+
+  aliceDiv.innerHTML = `<tr class="tr-posicoes">
+                        <td class="text-posicao">1º</td>
+                        <td class="text-tipo">${jsonRecorrencia[0].tipo}</td>
+                        <td class="text-qtd">${jsonRecorrencia[0].quantidade}</td>
+                    </tr>
+                    <tr class="tr-posicoes">
+                        <td class="text-posicao">2º</td>
+                        <td class="text-tipo">${jsonRecorrencia[1].tipo}</td>
+                        <td class="text-qtd">${jsonRecorrencia[1].quantidade}</td>
+                    </tr>
+                    <tr class="tr-posicoes">
+                        <td class="text-posicao">3º</td>
+                        <td class="text-tipo">${jsonRecorrencia[2].tipo}</td>
+                        <td class="text-qtd">${jsonRecorrencia[2].quantidade}</td>
+                    </tr>
+                    <tr class="tr-posicoes">
+                        <td class="text-posicao">4º</td>
+                        <td class="text-tipo">${jsonRecorrencia[3].tipo}</td>
+                        <td class="text-qtd">${jsonRecorrencia[3].quantidade}</td>
+                    </tr>
+                    <tr class="tr-posicoes">
+                        <td class="text-posicao">5º</td>
+                        <td class="text-tipo">${jsonRecorrencia[4].tipo}</td>
+                        <td class="text-qtd">${jsonRecorrencia[4].quantidade}</td>
+                    </tr>`
+
+}
 
 
 
@@ -272,4 +448,8 @@ function pesquisarChaveOuId() {
       linha.style.display = 'none';
     }
   });
+}
+
+function analiseDetalhada(idMaquina) {
+  window.location = `./dash_analiseDetalhada.html?id=${idMaquina}`;
 }

@@ -69,9 +69,30 @@ async function buscarMembros(){
   }
 }
 
+async function setarResponsavel(issueKey, accountId) {
+  try {
+    console.log(issueKey,accountId)
+    const response = await axios.put(
+      `${JIRA_URL}/rest/api/3/issue/${issueKey}/assignee`,
+      { accountId }, // corpo da requisição
+      {
+        auth,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    console.log('Usuário atribuído com sucesso:', response.status);
+  } catch (error) {
+    console.error('Erro ao atribuir usuário:', error.response?.data || error.message);
+  }
+}
+
 
 module.exports = {
   createTicket,
   listTickets,
-  buscarMembros
+  buscarMembros,
+  setarResponsavel
 };

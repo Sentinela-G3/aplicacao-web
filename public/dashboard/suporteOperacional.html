@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <link rel="icon" href="../assets/img/logoSentinela.ico" type="image/x-icon">
 
-
 </head>
 
 <body>
@@ -35,7 +34,7 @@
             </div>
             <div class="box-pizza"">
                 <span class=" titulo-grafico">Alertas em Aberto por Componente</span>
-                <span class="subtitulo-grafico">Quantidade: 80</span>
+                <span class="subtitulo-grafico" id="subtitulo-grafico"></span>
                 <div id="graficoRosca"></div>
             </div>
         </div>
@@ -46,16 +45,14 @@
                     <span class="titulo-grafico"
                         style="width: 50%; justify-content: left; padding-left: 20px; box-sizing: border-box;">Lista de
                         Alertas</span>
-                    <div>
-                        <select name="" id="select-urgencia">
+                    <div class="filtros-direita">
+                        <select name="" id="select-urgencia" class="select-urgencia">
                             <option value="">Todos</option>
                             <option value="">Leve</option>
                             <option value="">Grave</option>
                             <option value="">Crítico</option>
                         </select>
-                    </div>
-                    <div>
-                        <input id="" type="text" placeholder="Pesquisar dispositivo">
+                        <input id="" type="text" placeholder="Pesquisar dispositivo" class="searh-urgencia">
                     </div>
                 </div>
                 <div class="lista-tickets" id="lista-tickets">
@@ -83,8 +80,8 @@
                         </div>
                     </div> -->
                 </div>
-
             </div>
+
             <div class="box-ranking">
                 <span class="titulo-grafico">Recôrrencia de Alertas</span>
                 <table class="tabela-ranking">
@@ -95,8 +92,8 @@
                             <th class="text-qtd">Qtd</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="tr-posicoes">
+                    <tbody id="alice">
+                        <!-- <tr class="tr-posicoes">
                             <td class="text-posicao">1º</td>
                             <td class="text-tipo">Alimentos</td>
                             <td class="text-qtd">60</td>
@@ -120,7 +117,7 @@
                             <td class="text-posicao">5º</td>
                             <td class="text-tipo">Higiene</td>
                             <td class="text-qtd">20</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
 
@@ -131,7 +128,7 @@
         <script src="../scripts/dash_Henrique/dashboardHenrique.js" style="padding: 0;"></script>
         <script src="../scripts/jiraFuncoes.js" style="padding: 0;"></script>
         <script>
-            listarMembrosDoProjeto()
+            // listarMembrosDoProjeto()
             renderTicketsGilberto()
         </script>
 </body>
