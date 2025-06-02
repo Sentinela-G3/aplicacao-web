@@ -72,7 +72,7 @@ function preencherBotoes() {
         1: [ // Administrador
             { id: 'btn_rt', label: 'Análise em tempo real', url: './dash_realTime.html' },
             { id: 'btn_hist', label: 'Análise detalhada', url: './dash_analiseDetalhada.html' },
-            { id: 'btn_geral', label: 'Análise geral', url: './dash_analiseGeral.html' },
+            { id: 'btn_geral', label: 'Máquinas em manutenção', url: './dashManutencao.html' },
             { id: 'btn_func', label: 'Gerenciamento de Funcionário', url: './gerenciar_funcionarios.html' },
             ...botoesPadrao
         ],
@@ -81,9 +81,8 @@ function preencherBotoes() {
             { id: 'btn_hist', label: 'Análise detalhada', url: './dash_analiseDetalhada.html' },
             ...botoesPadrao
         ],
-        3: [ // Engenheiro de Produção
-            { id: 'btn_geral', label: 'Desempenho Estatístico', url: './desempenhoEstatistico.html' },
-            { id: 'btn_md', label: 'Gerência de Modelo', url: './gerenciarModelo.html' },
+        3: [ // Analista
+            { id: 'btn_geral', label: 'Análise geral', url: './dash_analiseGeral.html' },
             ...botoesPadrao
         ]
     };

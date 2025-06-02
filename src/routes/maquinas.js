@@ -43,12 +43,12 @@ router.get("/serial/:serialNumber", function(req, res) {
     maquinaController.obterMaquinaPorSerial(req, res);
 })
 
-router.get(`/buscarModeloComponente/${modelo}`, function(req, res) {
-    maquinaController.buscarModeloComponente(req, res)
+router.get(`/dadosModeloComponente/${modelo}`, function(req, res) {
+    maquinaController.dadosModeloComponente(req, res)
 })
 
-router.get("/obterModelosMaquina", function(req, res) {
-    maquinaController.obterModelosMaquinas(req, res)
+router.get(`/obterModelosMaquina/${idEmpresa}`, function(req, res) {
+    maquinaController.obterModelosMaquina(req, res)
 })
 
 module.exports = router;
