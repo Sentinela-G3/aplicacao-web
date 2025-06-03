@@ -11,7 +11,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | Tempo Real</title>
+    <title>Monitoramento em Tempo Real - Sentinela</title>
     <script src="../scripts/animacaoMenuMobile.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
@@ -43,66 +43,103 @@
       </div>
       <div class="container2">
         <div class="box_kpi">
-          <div class="kpi-card" id="kpi-mais-alertas">
-            <div class="kpi-content">
-              <div class="kpi-title">Máquina com Mais Alertas</div>
-              <div class="kpi-value" title="Número Serial da màquina">...</div>
-              <div class="kpi-subtitle">...</div>
-            </div>
-          </div>
           <div class="kpi-card" id="ultimo-alerta-kpi">
             <div class="kpi-content">
-              <div class="kpi-title">Último Alerta Detectado</div>
-              <div class="kpi-value" id="alerta-recurso">...</div>
-              <div class="kpi-subtitle" id="alerta-detalhes">...</div>
+              <div class="part1">
+                <div class="kpi-title">Último Alerta Detectado</div>
+                <div class="kpi-value" id="alerta-recurso">...</div>
+                <div class="kpi-value" id="alerta-tipo">...</div>
+              </div>
+              <span
+                class="material-symbols-rounded"
+                id="icone-alerta"
+                style="color: var(--color-positivo-verde)"
+                >warning</span
+              >
+              <div
+                class="kpi-subtitle"
+                id="alerta-detalhes"
+                style="
+                  color: #fff;
+                  background-color: var(--color-positivo-verde);
+                "
+              >
+                ...
+              </div>
+            </div>
+          </div>
+          <div class="kpi-card" id="kpi-mais-alertas">
+            <div class="kpi-content">
+              <div class="part1">
+                <div class="kpi-title">Máquina com Mais Alertas</div>
+                <div class="kpi-value" title="Número Serial da màquina">
+                  ...
+                </div>
+              </div>
+              <span
+                class="material-symbols-rounded alert-icon"
+                id="icone-mais-alertas"
+                style="color: var(--color-positivo-verde)"
+                >build_circle</span
+              >
+              <div
+                class="kpi-subtitle"
+                id="texto-mais-alertas"
+                style="
+                  background-color: var(--color-positivo-verde);
+                  color: #fff;
+                "
+              >
+                ...
+              </div>
             </div>
           </div>
           <div class="kpi-card" id="kpi-maior-tempo">
             <div class="kpi-content">
-              <div class="kpi-title">Maior Tempo de Atividade</div>
-              <div class="kpi-value" id="tempo-uso">0h 00min</div>
-              <div class="kpi-subtitle" id="maquina-tempo">Nenhuma máquina</div>
+              <div class="part1">
+                <div class="kpi-title">Maior Tempo de Atividade</div>
+                <div class="kpi-value" id="tempo-uso">0h 00min</div>
+              </div>
+              <span
+                class="material-symbols-rounded good-icon"
+                style="color: var(--color-alerta-vermelho)"
+                >schedule</span
+              >
+              <div
+                class="kpi-subtitle"
+                id="maquina-tempo"
+                style="
+                  background-color: var(--color-alerta-vermelho);
+                  color: #fff;
+                "
+              >
+                Nenhuma máquina
+              </div>
             </div>
           </div>
           <div class="kpi-stack">
             <div class="kpi-mini">
               <span class="label">Máquinas</span>
-              <span class="value">120</span>
+              <span class="value">-</span>
             </div>
             <div class="kpi-mini active">
               <span class="label">Ativas</span>
-              <span class="value">85</span>
+              <span class="value">-</span>
             </div>
             <div class="kpi-mini inactive">
               <span class="label">Inativas</span>
-              <span class="value">35</span>
+              <span class="value">-</span>
             </div>
           </div>
         </div>
-        <!-- <div id="filter" class="filter">
-                    <div id="search" class="search">
-                        <input type="text" id="serial" placeholder="Digite o N° Serial">
-                        <button id="confirm_button">
-                            <img src="../assets/img/lupa.png" alt="">
-                        </button>
-                    </div>
-                    <div id="setor-select" class="search">
-                        <select id="setor">
-                            <option value="" disabled selected>Selecione o Setor/Área</option>
-                            <option value="setor_1">Setor 1</option>
-                            <option value="setor_2">Setor 2</option>
-                            <option value="setor_3">Setor 3</option>
-                        </select>
-                    </div>
-                    <div id="setor-select" class="search">
-                        <select id="setor">
-                            <option value="" disabled selected>Nível de Alertas</option>
-                            <option value="financeiro">Crítico</option>
-                            <option value="tecnologia">Médio</option>
-                            <option value="recursos-humanos">Baixo</option>
-                        </select>
-                    </div>
-                </div> -->
+        <div id="filter" class="filter">
+          <select class="select-filtro">
+            <option value="todos">Todos</option>
+            <option value="Leve">Leve</option>
+            <option value="Grave">Grave</option>
+            <option value="Crítico">Crítico</option>
+          </select>
+        </div>
         <div class="box_table">
           <table class="table">
             <thead class="table_head">
@@ -113,6 +150,9 @@
                 <th>Cpu (%)</th>
                 <th>Ram (%)</th>
                 <th>Disco (%)</th>
+                <th>Download (Mbps)</th>
+                <th>Upload (Mbps)</th>
+                <th>Bateria (%)</th>
                 <th>Último Alerta</th>
                 <th>Total de<br />Alertas</th>
                 <th>Detalhamento</th>
