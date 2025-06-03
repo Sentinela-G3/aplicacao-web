@@ -48,7 +48,7 @@
                     <div class="filtros-direita">
                         <select name="" id="select-urgencia" class="select-urgencia">
                             <option value="">Todos</option>
-                            <option value="">Leve</option>
+                            <option value="" >Leve</option>
                             <option value="">Grave</option>
                             <option value="">Crítico</option>
                         </select>
@@ -72,10 +72,11 @@
                             <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
                                     style="color: red;">20 min e 30 seg</b> </span>
                             <div class="box-buttons">
-                                <button class="buttons-tickets" id="button-detalhes">Ver Detalhes</button>
-                                <select class="buttons-tickets" name="" id="selection-responsavel">
-                                    <option value="">Designar responsável</option>
+                                <button class="buttons-tickets btn" id="button-detalhes">Ver Detalhes</button>
+                                <select class="buttons-tickets" id="selection-responsavel">
+                                    <option value="">Responsável</option>
                                 </select>
+                                <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel()">Designar</button>
                             </div>
                         </div>
                     </div> -->

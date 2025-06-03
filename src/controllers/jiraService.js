@@ -45,23 +45,23 @@ async function listTickets() {
   }
 }
 
-async function buscarMembros(){
+async function buscarMembros() {
   try {
     const response = await axios.get(
       `${JIRA_URL}/rest/api/3/user/assignable/search`, {
-        params: { project: 'SUPSEN' }, // Substitua 'TESTE' pela chave do projeto real
-        headers: {
-          Authorization: `Basic ${Buffer.from(`${EMAIL}:${API_TOKEN}`).toString('base64')}`,
-          Accept: 'application/json'
-        }
-  });
+      params: { project: 'SUPSEN' }, // Substitua 'TESTE' pela chave do projeto real
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${EMAIL}:${API_TOKEN}`).toString('base64')}`,
+        Accept: 'application/json'
+      }
+    });
 
     const usuarios = response.data;
 
     usuarios.forEach(usuario => {
       console.log(`Nome: ${usuario.displayName}, AccountId: ${usuario.accountId}`);
     });
-    
+
     return usuarios;
 
   } catch (error) {
@@ -69,23 +69,63 @@ async function buscarMembros(){
   }
 }
 
-async function setarResponsavel(issueKey, accountId) {
+
+async function buscarResponsavel(issueKey) {
+  const auth = btoa(`${EMAIL}:${API_TOKEN}`);
   try {
-    console.log(issueKey,accountId)
+    const response = await axios.get(`${JIRA_URL}/rest/api/3/issue/${issueKey}`, {
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Accept': 'application/json'
+      }
+    });
+
+    const assignee = response.data.fields.assignee;
+
+    if (assignee) {
+      console.log('Responsável pelo ticket:');
+      console.log(`Nome: ${assignee.displayName}`);
+      console.log(`ID: ${assignee.accountId}`);
+      return assignee.displayName
+      // console.log(`Email: ${assignee.emailAddress}`); // Pode estar indisponível
+    } else {
+      console.log('Este ticket não possui responsável atribuído.');
+      return "Ninguem"
+    }
+
+  } catch (error) {
+    if (error.response) {
+      console.error('Erro da API:', error.response.status, error.response.data);
+    } else {
+      console.error('Erro na requisição:', error.message);
+    }
+  }
+}
+
+async function setarResponsavel(issueKey, accountId) {
+  const auth = btoa(`${EMAIL}:${API_TOKEN}`);
+  console.log(issueKey, accountId);
+
+  try {
+    console.log(issueKey, accountId)
     const response = await axios.put(
       `${JIRA_URL}/rest/api/3/issue/${issueKey}/assignee`,
-      { accountId }, // corpo da requisição
       {
-        auth,
+        accountId: accountId  // corpo correto
+      },
+      {
         headers: {
-          'Accept': 'application/json',
+          'Authorization': `Basic ${auth}`,
           'Content-Type': 'application/json',
-        },
+          'Accept': 'application/json'
+        }
       }
     );
     console.log('Usuário atribuído com sucesso:', response.status);
+    return response.data;  // caso queira retornar algo ao front
   } catch (error) {
-    console.error('Erro ao atribuir usuário:', error.response?.data || error.message);
+    console.error('❌ Erro ao atualizar campo de texto:', error.response?.data || error.message);
+    throw error;
   }
 }
 
@@ -94,5 +134,6 @@ module.exports = {
   createTicket,
   listTickets,
   buscarMembros,
+  buscarResponsavel,
   setarResponsavel
 };

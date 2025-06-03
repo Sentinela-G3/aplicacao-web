@@ -33,6 +33,16 @@ router.get('/tickets', async (req, res) => {
   }
 });
 
+router.get(`/buscarResponsavel/:chaveTicket`, async (req, res) => {
+  try {
+    const { chaveTicket } = req.params;
+    const result = await jiraController.buscarResponsavel(chaveTicket);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.get('/membros', async (req, res) => {
   try {
     const result = await jiraController.buscarMembros();

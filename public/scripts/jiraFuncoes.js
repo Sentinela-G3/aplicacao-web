@@ -127,7 +127,7 @@ async function listarMembrosDoProjeto() {
 
     console.log('Resposta da API:', data)
     if (data.values) {
-      console.log("Deu certo")
+      return data
     } else {
       console.error('A resposta não contém membros ou não é um array');
     }
@@ -136,11 +136,29 @@ async function listarMembrosDoProjeto() {
   }
 }
 
-async function setarResponsavel(){
+async function buscarResponsavel(chaveTicket) {
+  try {
+    const response = await fetch(`http://localhost:3333/jira/buscarResponsavel/${chaveTicket}`);
+
+    if (!response.ok) {
+      throw new Error(`Erro na requisição: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    console.log(`Responsavel pelo ticket ${chaveTicket} é ${data}`)
+
+    return data;
+  } catch (error) {
+    console.error('Erro ao buscar responsavel:', error);
+  }
+}
+
+async function setarResponsavel(chaveTicket, idNovoResposnavel) {
   // Dados para criação de ticket
   const ticketData = {
-    issueKey: 'SUPSEN-17',
-    accountId: '712020:31e6d166-d5bc-4dda-86cb-bbd7647ad2bc'
+    issueKey: chaveTicket,
+    accountId: idNovoResposnavel
   };
 
   try {
@@ -157,35 +175,33 @@ async function setarResponsavel(){
 }
 
 async function renderTicketsGilberto() {
-  // listarMembrosDoProjeto()
-  setarResponsavel()
+  const listaMembros = await listarMembrosDoProjeto()
   const div = document.getElementById("lista-tickets")
   const tickets = await fetchTickets()
   var contar = 1;
-  tickets.forEach(ticket => {
-    
+  for (const ticket of tickets) {
     const date = new Date(ticket.createdDate.jira);
-
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-
     const textHoraAbertura = `${day}/${month} às ${hours}:${minutes}`
 
     const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
     const maquina = ticket.summary.split(" ");
     const descricaoSeparada = descricao.split('*');
-
     const descricaoTratada = descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1);
 
     const status = ticket.currentStatus.status;
 
+    const chaveTicket = ticket.issueKey;
 
     const recurso = ticket.requestFieldValues[2].value.value;
+
     const urgencia = ticket.requestFieldValues[3].value.value;
 
     var styleUrgencia;
+
 
     if (urgencia == "Crítico") {
       styleUrgencia = "critico"
@@ -194,13 +210,10 @@ async function renderTicketsGilberto() {
     } else if (urgencia == "Leve") {
       styleUrgencia = "leve"
     }
-    
-
-
 
     if (ticket.requestTypeId == "5" && status == "Aberto" || status == "Reaberto") {
       contar++;
-      var brancoOuCinza ;
+      var brancoOuCinza;
       if (contar % 2 == 0) {
         brancoOuCinza = 'par'
       } else if (contar % 2 == 1) {
@@ -222,18 +235,34 @@ async function renderTicketsGilberto() {
                             <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
                                     style="color: red;">20 min e 30 seg</b> </span>
                             <div class="box-buttons">
-                                <button class="buttons-tickets" id="button-detalhes" onclick="analiseDetalhada(${maquina[1]})">Ver Detalhes</button>
-                                <select class="buttons-tickets" id="selection-responsavel">
-                                    <option value="">Designar responsável</option>
+                                <button class="buttons-tickets btn" id="button-detalhes">Ver Detalhes</button>
+                                <select class="buttons-tickets select" id="selection-responsavel${chaveTicket}">
+                                    <option value="" >Responsável</option>
                                 </select>
+                                <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel('${chaveTicket}', document.getElementById('selection-responsavel${chaveTicket}').value)">Designar</button>
                             </div>
                         </div>
-                    </div>`
+                    </div>`;
 
+      const select = document.getElementById(`selection-responsavel${chaveTicket}`)
+
+      var responsavelTicket = await buscarResponsavel(chaveTicket)
+
+      for (let index = 0; index < listaMembros.length; index++) {
+        var element = listaMembros[index];
+        displayName = element?.displayName;
+        AccountId = element?.accountId
+
+        if (displayName == responsavelTicket) {
+          select.innerHTML += `<option value="${AccountId}" selected>${responsavelTicket}</option>`
+        } else {
+          select.innerHTML += `<option value="${AccountId}">${displayName}</option>`
+        }
+
+      }
     }
+  };
 
-
-  });
   alertasPorComponente(tickets)
 }
 
@@ -341,7 +370,7 @@ function recorrenciaDeAlertas(tickets) {
       itemExistente.quantidade += 1;
     } else {
       //  Se não existe, adiciona um novo
-      jsonRecorrencia.push({ tipo: descricaoTratada, quantidade: 1 });  
+      jsonRecorrencia.push({ tipo: descricaoTratada, quantidade: 1 });
     }
 
   })
