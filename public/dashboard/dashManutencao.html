@@ -12,6 +12,8 @@
   <script src="../scripts/animacaoMenuMobile.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="../scripts/dashGabriella/dashGabriella.js"></script>
+  <script src="../scripts/dashGabriella/arquivoTeste.js"></script>
+  
 </head>
 
 <body class="body_dashRealTime" id="dash_RT">
@@ -24,7 +26,7 @@
     <div class="titulo_dashRT">
       <h3>Manutenção de Robôs</h3>
     </div>
-    <p><i>*Atualizado em tempo real</i></p>
+    <p><i>*Atualizado em tempo de execução</i></p>
 
     <div class="parteDeCima">
 
@@ -43,7 +45,7 @@
 
             <div>
 
-              <div style="display: flex; align-items: center; border-radius: 100%;" >
+              <div style="display: flex; align-items: center; border-radius: 100%;">
                 <div style="height: 40px; background-color: rgb(254, 73, 78); border-radius: 50px;">
                 </div>
                 <div style="font-size: 23px;" id="pctMaquinasCrit"></div> <i id="qtdMaquinasCrit"></i>
@@ -73,7 +75,7 @@
 
             <i><span class="tooltip2">Quantidade de máquinas com alertas não resolvido por componente</span></i>
             <h2>
-              Componentes com mais <span class="text">incidentes</span> no momento ⓘ
+              Componentes com mais <span class="text">incidentes</span> ⓘ
             </h2>
 
           </div>
@@ -84,18 +86,21 @@
         </div>
 
 
-        
+
       </div>
     </div>
     <div class="input-group">
       <div class="input">
         <label for="input-maquina">Pesquisar máquina por número de série:</label>
-        <input type="text" placeholder="ex:.ABC123" id="input-maquina">
+        <input type="text" placeholder="ex:.ABC123" id="iptMaquina">
       </div>
-      <button>Pesquisar</button>
+      <button onclick="fetchTickets()">Pesquisar</button>
     </div>
-    <h3>Lista de máquinas com necessidade de manutenção (alertas ainda não resolvidos)</h3> <br>
-    <span><i>*Atualizado em tempo real</i></span>
+    <div style="display: flex;">
+      <h3>Lista de máquinas com necessidade de manutenção (alertas ainda não resolvidos)</h3> <br>
+      <span><i>*Atualizado em tempo de execução</i></span>
+      <button onclick="salvarHistoricoEmS3()">Baixar histórico de alertas</button>
+    </div>
 
     <div class="container-table">
       <tbody>
@@ -112,7 +117,8 @@
               <th colspan="3">Alertas ainda não resolvidos
                 <div class="tooltip">
                   <div class="icon">i</div>
-                  <div class="tooltiptext">Acesso fácil ao alerta mais antigo e mais recente que ainda não foi resolvido</div>
+                  <div class="tooltiptext">Acesso fácil ao alerta mais antigo e mais recente que ainda não foi resolvido
+                  </div>
                 </div>
               </th>
             </tr>
