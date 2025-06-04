@@ -88,7 +88,7 @@ function listarMaquinasPorEmpresa(req, res) {
 function listarModelosDetalhados(req, res) {
   var fkEmpresa = req.body.fkEmpresaServer;
 
-  console.log("fkEmpresa:", fkEmpresa);
+  // console.log("fkEmpresa:", fkEmpresa);
 
   maquinaModel.listarModelosDetalhados(fkEmpresa)
     .then((resultado) => {

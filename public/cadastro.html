@@ -214,7 +214,7 @@
             const dadosEmpresa = JSON.parse(localStorage.getItem('empresa'));
 
 
-            console.log(dadosEmpresa)
+            // console.log(dadosEmpresa)
 
 
             // Fazer chamada para API
@@ -233,7 +233,7 @@
             })
                 .then((resposta => {
                     if (resposta.ok) {
-                        console.log("Empresa cadastrada com sucesso")
+                        // console.log("Empresa cadastrada com sucesso")
                         resposta.json()
                             .then(dados => {
                                 const idNovaEmpresa = dados.insertId;
@@ -252,9 +252,9 @@
         }
 
         function cadastrarEndereco(idEmpresa) {
-            console.log(idEmpresa)
+            // console.log(idEmpresa)
             const dadosEndereco = JSON.parse(localStorage.getItem('endereco'));
-            console.log(dadosEndereco)
+            // console.log(dadosEndereco)
 
             fetch("/empresas/cadastrarEndereco", {
                 method: "POST",
@@ -273,7 +273,7 @@
             })
                 .then((resposta => {
                     if (resposta.ok) {
-                        console.log("Endereço cadastrado com sucesso")
+                        // console.log("Endereço cadastrado com sucesso")
                         resposta.json()
                             .then(dados => {
                                 const idNovaEmpresa = dados.insertId;

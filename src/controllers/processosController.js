@@ -9,7 +9,7 @@ function receberProcessos(req, res) {
     }
 
     const payload = req.body;
-    console.log("Payload recebido:", payload);
+    // console.log("Payload recebido:", payload);
 
     if (!payload.timestamp || !Array.isArray(payload.processos) || payload.processos.length === 0) {
         return res.status(400).json({ erro: 'Faltam dados obrigatórios no payload ou o formato está incorreto.' });

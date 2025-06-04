@@ -38,8 +38,8 @@ function autenticar(req, res) {
         usuarioModel.autenticar(email, senha)
             .then(
                 function (resultadoAutenticar) {
-                    console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
-                    console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`);
+                    // console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
+                    // console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`);
 
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
@@ -177,11 +177,11 @@ function buscarInformacoesPorEmail(req, res) {
         usuarioModel.buscarInformacoesPorEmail(email)
             .then(
                 function (resultadoAutenticar) {
-                    console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
-                    console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`);
+                   // console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
+                    // console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`);
 
                     if (resultadoAutenticar.length == 1) {
-                        console.log(resultadoAutenticar);
+                        // console.log(resultadoAutenticar);
                         res.json({
                             resultadoAutenticar
                         })
@@ -206,7 +206,7 @@ function buscarInformacoesPorEmail(req, res) {
 function alterarImagem(req, res) {
     const imagem = req.file.filename;
     const id = req.body.id;
-    console.log(id)
+    // console.log(id)
     const usuario = {id ,imagem }
     
     usuarioModel.alterarImagem(usuario)

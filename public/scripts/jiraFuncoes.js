@@ -14,7 +14,7 @@ async function fetchTickets() {
     const data = await response.json();
 
     // Agora data é um array diretamente
-    console.log('Primeiro ticket:', data[0]);
+    // console.log('Primeiro ticket:', data[0]);
 
     if (Array.isArray(data)) {
       return data;

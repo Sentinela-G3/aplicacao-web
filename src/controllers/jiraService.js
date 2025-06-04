@@ -50,7 +50,7 @@ async function listTickets() {
 
       tickets.push(...data.values);
       start += limit;
-      console.log(tickets)
+      // console.log(tickets)
       if (data.values.length < limit) break;
     }
 
@@ -75,7 +75,7 @@ async function buscarMembros() {
     const usuarios = response.data;
 
     usuarios.forEach(usuario => {
-      console.log(`Nome: ${usuario.displayName}, AccountId: ${usuario.accountId}`);
+      // console.log(`Nome: ${usuario.displayName}, AccountId: ${usuario.accountId}`);
     });
 
     return usuarios;
@@ -114,10 +114,10 @@ async function buscarResponsavel(issueKey) {
 
 async function setarResponsavel(issueKey, accountId) {
   const auth = btoa(`${EMAIL}:${API_TOKEN}`);
-  console.log(issueKey, accountId);
+  // console.log(issueKey, accountId);
 
   try {
-    console.log(issueKey, accountId)
+    // console.log(issueKey, accountId)
     const response = await axios.put(
       `${JIRA_URL}/rest/api/3/issue/${issueKey}/assignee`,
       {

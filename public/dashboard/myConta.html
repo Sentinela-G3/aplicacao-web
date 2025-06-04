@@ -109,10 +109,10 @@
         }).then(function (resposta) {
 
         if (resposta.ok) {
-            console.log(resposta);
+            // console.log(resposta);
             resposta.json().then(json => {
                 const dados = json.resultadoAutenticar[0];
-                console.log(dados)
+                // console.log(dados)
                 const data = new Date(dados.data_criacao);
 
                 const div_ft = document.getElementById('imagem-noticia')
