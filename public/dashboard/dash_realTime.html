@@ -7,16 +7,16 @@
     <link
       rel="icon"
       href="../assets/img/logoSentinela.ico"
-      type="image/x-icon"
-    />
+      type="image/x-icon" />
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monitoramento em Tempo Real - Sentinela</title>
     <script src="../scripts/animacaoMenuMobile.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      rel="stylesheet">
   </head>
   <body class="body_dashRealTime" id="dash_RT">
     <!-- MENU LATERAL-->
@@ -33,17 +33,13 @@
           </span>
         </div>
         <div class="subtitulo_dashRT">
-          <span
-            ><i
-              >Acompanhe os alertas recentes e identifique rapidamente
-              asmáquinas com maior número de falhas</i
-            ></span
-          >
+          <span><i>Acompanhe os alertas recentes e identifique rapidamente
+              as máquinas com maior número de falhas</i></span>
         </div>
       </div>
       <div class="container2">
         <div class="box_kpi">
-          <div class="kpi-card" id="ultimo-alerta-kpi">
+          <div class="kpi-card" id="ultimo-alerta-kpi" title="Expandir Análise">
             <div class="kpi-content">
               <div class="part1">
                 <div class="kpi-title">Último Alerta Detectado</div>
@@ -53,48 +49,42 @@
               <span
                 class="material-symbols-rounded"
                 id="icone-alerta"
-                style="color: var(--color-positivo-verde)"
-                >warning</span
-              >
+                style="color: var(--color-positivo-verde)">warning</span>
               <div
                 class="kpi-subtitle"
                 id="alerta-detalhes"
                 style="
                   color: #fff;
                   background-color: var(--color-positivo-verde);
-                "
-              >
+                ">
                 ...
               </div>
             </div>
           </div>
-          <div class="kpi-card" id="kpi-mais-alertas">
+          <div class="kpi-card" id="kpi-mais-alertas" title="Expandir Análise">
             <div class="kpi-content">
               <div class="part1">
-                <div class="kpi-title" >Máquina com Mais Alertas</div>
-                <div class="kpi-value" title="Número Serial da màquina">
+                <div class="kpi-title">Máquina com Mais Alertas</div>
+                <div class="kpi-value">
                   ...
                 </div>
               </div>
               <span
                 class="material-symbols-rounded alert-icon"
                 id="icone-mais-alertas"
-                style="color: var(--color-positivo-verde)"
-                >build_circle</span
-              >
+                style="color: var(--color-positivo-verde)">build_circle</span>
               <div
                 class="kpi-subtitle"
                 id="texto-mais-alertas"
                 style="
                   background-color: var(--color-positivo-verde);
                   color: #fff;
-                "
-              >
+                ">
                 ...
               </div>
             </div>
           </div>
-          <div class="kpi-card" id="kpi-maior-tempo">
+          <div class="kpi-card" id="kpi-maior-tempo" title="Expandir Análise">
             <div class="kpi-content">
               <div class="part1">
                 <div class="kpi-title">Maior Tempo de Atividade</div>
@@ -102,60 +92,95 @@
               </div>
               <span
                 class="material-symbols-rounded good-icon"
-                style="color: var(--color-alerta-vermelho)"
-                >schedule</span
-              >
+                style="color: var(--color-alerta-vermelho)">schedule</span>
               <div
                 class="kpi-subtitle"
                 id="maquina-tempo"
                 style="
                   background-color: var(--color-alerta-vermelho);
                   color: #fff;
-                "
-              >
+                ">
                 Nenhuma máquina
               </div>
             </div>
           </div>
           <div class="kpi-stack">
-            <div class="kpi-mini">
+            <div class="kpi-mini" data-status="todas">
               <span class="label">Máquinas</span>
               <span class="value">-</span>
             </div>
-            <div class="kpi-mini active">
+            <div class="kpi-mini active" data-status="ativa">
               <span class="label">Ativas</span>
               <span class="value">-</span>
             </div>
-            <div class="kpi-mini inactive">
+            <div class="kpi-mini inactive" data-status="todas">
               <span class="label">Inativas</span>
               <span class="value">-</span>
             </div>
           </div>
         </div>
-        <div id="filter" class="filter">
+        <!-- <div id="filter" class="filter">
           <select class="select-filtro">
             <option value="todos">Todos</option>
             <option value="Leve">Leve</option>
             <option value="Grave">Grave</option>
             <option value="Crítico">Crítico</option>
           </select>
-        </div>
+        </div> -->
         <div class="box_table">
+          <div class="descricao">
+            <span>⚠️ Máquinas Monitoradas – Prioridade Crítica</span>
+          </div>
           <table class="table">
             <thead class="table_head">
               <tr>
-                <th>Máquina<br />(Serial + Setor)</th>
-                <th>Status</th>
-                <th>Tempo Ativo</th>
-                <th>Cpu (%)</th>
-                <th>Ram (%)</th>
-                <th>Disco (%)</th>
-                <th>Download (Mbps)</th>
-                <th>Upload (Mbps)</th>
-                <th>Bateria (%)</th>
-                <th>Último Alerta</th>
-                <th>Total de<br />Alertas</th>
-                <th>Detalhamento</th>
+                <th></th>
+                <th
+                  title="Identificação da máquina: número de série e setor onde está instalada">
+                  Máquina<br />(Serial + Setor)
+                </th>
+                <th
+                  title="Indica o status atual da máquina: Ativo (enviando dados), Inativo (sem conexão) ou Sem Dados (nunca conectou)">
+                  Status
+                </th>
+                <th
+                  title="Tempo total que a máquina permaneceu ativa desde a última inicialização">
+                  Tempo Ativo
+                </th>
+                <th title="Uso atual da CPU da máquina em porcentagem">
+                  CPU (%)
+                </th>
+                <th title="Uso atual da memória RAM da máquina em porcentagem">
+                  RAM (%)
+                </th>
+                <th
+                  title="Uso atual do espaço em disco da máquina em porcentagem">
+                  Disco (%)
+                </th>
+                <th
+                  title="Taxa de download da rede da máquina em megabits por segundo (Mbps)">
+                  Download (Mbps)
+                </th>
+                <th
+                  title="Taxa de upload da rede da máquina em megabits por segundo (Mbps)">
+                  Upload (Mbps)
+                </th>
+                <th
+                  title="Nível atual da bateria da máquina, se aplicável (em porcentagem)">
+                  Bateria (%)
+                </th>
+                <th
+                  title="Data e hora do último alerta gerado por esta máquina">
+                  Último Alerta
+                </th>
+                <th
+                  title="Quantidade total de alertas gerados por esta máquina">
+                  Total de<br />Alertas
+                </th>
+                <th
+                  title="Ver detalhes completos e histórico da máquina selecionada">
+                  Detalhamento
+                </th>
               </tr>
             </thead>
             <tbody class="table_body"></tbody>

@@ -28,8 +28,6 @@ async function carregarMaquinas() {
 
         kpiUltimoAlerta(machines, alerts);
         kpiMaisAlertas(machines, alerts);
-        // console.log(machines);
-        // console.log(alerts);
 
         const machinesOrdenadas = ordenarLista(machines, alerts);
 
@@ -254,17 +252,39 @@ function calcularAlertas(machine, alerts) {
 }
 
 function extrairUltimoAlerta(alertasMaquina) {
-    const ultimaData = alertasMaquina.reduce((maisRecente, alerta) => {
+     const alertaMaisRecente = alertasMaquina.reduce((maisRecente, alerta) => {
         const alertaData = alerta.createdDate?.iso8601 ? new Date(alerta.createdDate.iso8601) : null;
-        return (!maisRecente || (alertaData && alertaData > maisRecente)) ? alertaData : maisRecente;
+        if (!alertaData) return maisRecente;
+        if (!maisRecente) return alerta;
+        const maisRecenteData = new Date(maisRecente.createdDate.iso8601);
+        return alertaData > maisRecenteData ? alerta : maisRecente;
     }, null);
 
+    if (!alertaMaisRecente) return;
+
+    const ultimaData = new Date(alertaMaisRecente.createdDate.iso8601);
+    const tempoDecorridoMs = Date.now() - ultimaData;
+    const minutos = Math.floor(tempoDecorridoMs / 60000);
+
+    const urgenciaField = alertaMaisRecente.requestFieldValues?.find(f => f.label === "Urgência");
+    const nivel = urgenciaField?.value?.value;
+
+    if (nivel === "Leve") {
+        cor = "#f2c94c"
+    } if (nivel === "Grave") {
+        cor = "#f57c00"
+    } if (nivel === "Crítico") {
+        cor = "#d32f2f"
+    }
+
     return alertasMaquina.length > 0
-        ? ` <a href="${alertasMaquina[0]._links?.web || "#"}" target="_blank" 
-                style="color: #d32f2f; text-decoration: none; font-weight: 500;"
-                title="Abrir chamado no Jira"> ${ultimaData?.toLocaleString("pt-BR") || "N/A"}<br>
-                Ticket: ${alertasMaquina[0].issueKey || "N/A"}
-            </a>`
+        ? ` <a href="${alertasMaquina[0]._links?.web || "#"}" 
+            target="_blank" 
+            title="Clique para abrir o chamado no Jira" 
+            style="text-decoration: none; color: ${cor};">
+            ${`há ${minutos} min` || "N/A"} 🔗
+                </a>
+            `
         : "Nenhum";
 }
 
@@ -309,19 +329,31 @@ function criarOuAtualizarLinha(tableBody, rowMap, machine, status, metrics, aler
         row = document.createElement("tr");
         row.setAttribute("data-machine-id", id);
         row.innerHTML = `
-            <td><span style="font-weight: bold; color: ${status.statusColor};">${machine.serial_number}</span><br>
-                <small style="color: ${status.statusColor};">${setor}</small></td>
-            <td class="status">${status.statusText}</td>
-            <td class="uptime">${data.uptime}</td>
-            <td class="cpu">${data.cpu}</td>
-            <td class="ram">${data.ram}</td>
-            <td class="disco">${data.disco}</td>
-            <td class="download">${data.downloadMbps}</td>
-            <td class="upload">${data.uploadMbps}</td>
-            <td class="bateria">${data.bateria ?? "-"}</td>
+            <td style="background-color: ${status.statusColor};"></td>
+
+            <td title="Máquina: Serial e Setor">
+            <span style="font-weight: bold; color: ${status.statusColor};">${machine.serial_number}</span><br>
+            <small style="color: ${status.statusColor};">${setor}</small>
+            </td>
+
+            <td class="status" title="Status da máquina">
+            ${status.statusText}
+            </td>
+            <td class="uptime" title="Tempo Ativo">${data.uptime}</td>
+            <td class="cpu" title="Uso de CPU (%)">${data.cpu}</td>
+            <td class="ram" title="Uso de RAM (%)">${data.ram}</td>
+            <td class="disco" title="Uso de Disco (%)">${data.disco}</td>
+            <td class="download" title="Taxa de Download (Mbps)">${data.downloadMbps}</td>
+            <td class="upload" title="Taxa de Upload (Mbps)">${data.uploadMbps}</td>
+            <td class="bateria" title="Nível de Bateria (%)">${data.bateria ?? "-"}</td>
             <td class="ultimo-alerta">${data.ultimoAlerta}</td>
-            <td class="alertas-count">${data.alertasCount}</td>
-            <td><button class="details-btn" onclick="analiseDetalhada(${machine.id_maquina})" data-id="${machine.id_maquina}">Expandir Análise</button></td>
+            <td class="alertas-count" title="Total de Alertas">${data.alertasCount}</td>
+
+            <td>
+            <button class="details-btn" onclick="analiseDetalhada(${machine.id_maquina})" data-id="${machine.id_maquina}" title="Ver detalhes da máquina">
+                Expandir Análise
+            </button>
+            </td>
         `;
         tableBody.appendChild(row);
     }
@@ -393,7 +425,6 @@ async function exibirMaquinas(machines, alerts) {
             card.onclick = () => analiseDetalhada(idMaquina);
             card.style.cursor = "pointer";
         }
-
     }
 
     existingRows.forEach(row => row.remove());
