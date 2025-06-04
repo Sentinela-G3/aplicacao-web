@@ -24,6 +24,7 @@ var medidasRouter = require("./src/routes/medidas")
 var jiraRouter = require("./src/routes/jira");
 var alertaRouter = require("./src/routes/alertas");
 var processoRouter = require("./src/routes/processos");
+var bucketRouter = require("./src/routes/bucket");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -40,6 +41,7 @@ app.use("/maquinas", maquinasRouter);
 app.use("/jira", jiraRouter);
 app.use("/alertas", alertaRouter);
 app.use("/processos", processoRouter);
+app.use("/bucket", bucketRouter);
 
 
 app.listen(PORTA_APP, function () {
