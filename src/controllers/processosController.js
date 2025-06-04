@@ -1,7 +1,8 @@
+var processoModel = require("../models/processoModel");
 const dadosProcessos = {};
 
 function receberProcessos(req, res) {
-    var idMaquina = req.params.id_maquina;
+    const idMaquina = req.params.id_maquina;
 
     if (!idMaquina) {
         return res.status(400).json({ erro: 'ID da máquina é obrigatório.' });
@@ -14,29 +15,33 @@ function receberProcessos(req, res) {
         return res.status(400).json({ erro: 'Faltam dados obrigatórios no payload ou o formato está incorreto.' });
     }
 
+    // Inicializa se necessário
     if (!dadosProcessos[idMaquina]) {
         dadosProcessos[idMaquina] = {
             processos: [],
-            pidsArmazenados: new Set() 
+            pidsArmazenados: new Set()
         };
     }
+
+    // LIMPA os dados antigos — modo "snapshot"
+    dadosProcessos[idMaquina].processos = [];
+    dadosProcessos[idMaquina].pidsArmazenados.clear();
 
     let processosAdicionados = 0;
 
     payload.processos.forEach(processo => {
-
         if (processo.nome === 'System Idle Process' || processo.pid === 0) {
-            return; 
+            return; // Ignora processos irrelevantes
         }
 
-        if (!processo.timestamp || !processo.pid || !processo.nome || !processo.cpu_percent || !processo.memory_percent) {
-           
-           // console.log(`Processo com PID ${processo.pid} não possui dados completos e será ignorado.`);
-            return;
-        }
-
-        if (dadosProcessos[idMaquina].pidsArmazenados.has(processo.pid)) {
-            return;
+        if (
+            !processo.timestamp ||
+            processo.pid == null ||
+            !processo.nome ||
+            processo.cpu_percent == null ||
+            processo.memory_percent == null
+        ) {
+            return; // Ignora dados incompletos
         }
 
         dadosProcessos[idMaquina].processos.push(processo);
@@ -44,20 +49,13 @@ function receberProcessos(req, res) {
         processosAdicionados++;
     });
 
-    if (processosAdicionados > 0) {
-        res.json({
-            mensagem: `${processosAdicionados} novos processos foram recebidos e armazenados para a máquina de ID ${idMaquina}.`,
-            idMaquina: idMaquina,
-            dados: payload.processos
-        });
-    } else {
-        res.json({
-            mensagem: `Nenhum novo processo foi adicionado para a máquina de ID ${idMaquina}. Todos os processos já foram recebidos anteriormente ou são inválidos.`,
-            idMaquina: idMaquina,
-            dados: []
-        });
-    }
+    res.json({
+        mensagem: `${processosAdicionados} processos armazenados para a máquina de ID ${idMaquina}.`,
+        idMaquina: idMaquina,
+        dados: dadosProcessos[idMaquina].processos
+    });
 }
+
 
 
 function obterProcessos(req, res) {
@@ -94,13 +92,42 @@ function obterProcessos(req, res) {
         });
     });
 
+   
+
     res.json({
         mensagem: `Dados de processos da máquina de ID ${idMaquina}`,
         dados: agrupado
     });
 }
 
+function matarProcesso(req, res) {
+    const idMaquina = req.params.id_maquina;
+    const pid = req.body.pid;
+    const tipo_comando = req.body.tipo_comando;
+
+    if (!idMaquina || !pid || !tipo_comando) {
+        return res.status(400).json({ erro: 'Faltam dados no payload' });
+    }
+
+    processoModel.matarProcesso(pid, idMaquina, tipo_comando)
+    .then((resposta => {
+        res.status(200).json({
+            resposta
+        })
+    }))
+    .catch(
+        function (erro) {
+            console.log(erro);
+            console.log("\nHouve um erro ao realizar o encerramento do processo! Erro: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        }
+    );
+
+    
+}
+
 module.exports = {
     obterProcessos,
-    receberProcessos
+    receberProcessos,
+    matarProcesso
 }

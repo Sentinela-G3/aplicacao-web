@@ -3,6 +3,10 @@ var router = express.Router();
 
 var maquinaController = require("../controllers/maquinaController");
 
+router.post("/obterSerialPorId", function (req, res) {
+    maquinaController.obterSerialMaquinaPorId(req, res);
+})
+
 router.post("/cadastrar", function (req, res) {
     maquinaController.cadastrar(req, res);
 })
