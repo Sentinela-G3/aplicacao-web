@@ -85,7 +85,6 @@ async function buscarMembros() {
   }
 }
 
-
 async function buscarResponsavel(issueKey) {
   const auth = btoa(`${EMAIL}:${API_TOKEN}`);
   try {

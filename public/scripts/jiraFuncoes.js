@@ -438,7 +438,6 @@ function recorrenciaDeAlertas(tickets) {
                         <td class="text-qtd">${jsonRecorrencia[4].quantidade}</td>
                     </tr>`
 
-  // renderTicketsGilberto(tickets)
   graficoQtdHora(tickets)
 }
 
@@ -611,7 +610,6 @@ function graficoQtdHora(tickets) {
     disco,
     bateria,
     tempo)
-
 
   var timelineAlertas = {
     grid: {
