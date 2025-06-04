@@ -1,3 +1,5 @@
+const { buscarArquivoDoS3 } = require("../services/s3Service");
+
 const { buscarArquivoDoS3 } = require("../../services/aws/s3Service");
 
 async function buscarDados(req, res) {

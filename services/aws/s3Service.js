@@ -5,8 +5,19 @@ const s3 = new S3Client({
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    sessionToken: process.env.AWS_SESSION_TOKEN,
   },
 });
+
+async function listarArquivosPrefixo(bucket, prefix) {
+  const command = new ListObjectsV2Command({
+    Bucket: bucket,
+    Prefix: prefix,
+  });
+
+  const response = await s3.send(command);
+  return response.Contents || [];
+}
 
 async function buscarArquivoDoS3(bucket, key) {
   const command = new GetObjectCommand({ Bucket: bucket, Key: key });
@@ -15,4 +26,4 @@ async function buscarArquivoDoS3(bucket, key) {
   return content;
 }
 
-module.exports = { buscarArquivoDoS3 };
+module.exports = { buscarArquivoDoS3, listarArquivosPrefixo };
