@@ -10,7 +10,7 @@ window.addEventListener("load", listarTempoAtividade);
 
 
 function listarModelosDetalhados() {
-    console.log("fkEmpresaServer enviado:", { fkEmpresaServer: 1 });
+    // console.log("fkEmpresaServer enviado:", { fkEmpresaServer: 1 });
     fetch("/maquinas/listarModelosDetalhados", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -75,7 +75,7 @@ function listarTempoAtividade() {
 }
 
 function contarAlertasUltimaSemana() {
-    console.log("Enviando fkEmpresa para alertas da semana:", { fkEmpresaServer: 1 });
+    // console.log("Enviando fkEmpresa para alertas da semana:", { fkEmpresaServer: 1 });
 
     fetch("/alertas/quantidadeUltimaSemana", {
         method: "POST",
@@ -89,7 +89,7 @@ function contarAlertasUltimaSemana() {
             return response.json();
         })
         .then(function (data) {
-            console.log("Qtd total de alertas na ultima semana: ", data.totalUltimaSemana);
+           //  console.log("Qtd total de alertas na ultima semana: ", data.totalUltimaSemana);
             document.getElementById('alertas-box-id').innerText = `Alertas da semana: \n\n ${data.totalUltimaSemana}`;
         })
         .catch(function (error) {

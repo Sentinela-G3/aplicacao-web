@@ -70,12 +70,12 @@ function obterMaquinas(){
       }),
     })
       .then(function (resposta) {
-        console.log("resposta: ", resposta);
+        // console.log("resposta: ", resposta);
 
         if (resposta.ok) {
           resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
+                   //  console.log(json);
+                   //  console.log(JSON.stringify(json));
                     for (i = 0; i < json.length; i ++){
                       var opcao = document.createElement('option')
                       opcao.innerHTML = `<option value="${json[i].idMaquina}">${json[i].serial}</option>`;
@@ -107,12 +107,12 @@ function obterFkEndereco(){
       }),
     })
       .then(function (resposta) {
-        console.log("resposta: ", resposta);
+        // console.log("resposta: ", resposta);
 
         if (resposta.ok) {
           resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
+                    // console.log(json);
+                    // console.log(JSON.stringify(json));
                     for (i = 0; i < json.length; i ++){
                       var opcao = document.createElement('option')
                       opcao.innerHTML = `<option value="${json[i].idEndereco}">${json[i].logradouro}</option>`;
@@ -152,11 +152,11 @@ for(i = 0; i < maquinas.length; i++){
       }),
     })
       .then(function (resposta) {
-        console.log("resposta: ", resposta);
+        // console.log("resposta: ", resposta);
 
         if (resposta.ok) {
           resposta.json().then(json => {
-                    console.log("Máquina excluida.")
+                    // console.log("Máquina excluida.")
                     window.location = './edicaoMaquina.html';
                 });
 
@@ -204,11 +204,11 @@ function editar(){
       }),
     })
       .then(function (resposta) {
-        console.log("resposta: ", resposta);
+        // console.log("resposta: ", resposta);
 
         if (resposta.ok) {
           resposta.json().then(json => {
-                    console.log("Máquina editada.")
+                    // console.log("Máquina editada.")
                     window.location = './edicaoMaquina.html';
                 });
 

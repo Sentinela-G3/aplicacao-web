@@ -75,18 +75,6 @@ function calcularTotalRAM(usoGB, percentualUso) {
     return total.toFixed(2);
 }
 
-function calcularCapacidadeDisco(gbEmUso, percentualUso) {
-    if (percentualUso === 0) return { capacidadeTotal: 0, capacidadeLivre: 0 };
-
-    const capacidadeTotal = gbEmUso / (percentualUso / 100);
-    const capacidadeLivre = capacidadeTotal - gbEmUso;
-
-    return {
-        capacidadeTotal: capacidadeTotal.toFixed(2),
-        capacidadeLivre: capacidadeLivre.toFixed(2)
-    };
-}
-
 async function buscarThreshold(idMaquina) {
     try {
         const response = await fetch(`http://${BASE_URL}/medidas/thresholds/${idMaquina}`);
@@ -106,19 +94,17 @@ function getUnitForTipo(tipo) {
     if (tipo.includes('_mbps')) return 'Mbps';
     if (tipo.includes('_ghz')) return 'GHz';
     if (tipo.includes('_hours')) return 'h';
-    // Adicione mais unidades conforme necessário para outros tipos de métricas
-    return ''; // Retorna string vazia se nenhuma unidade específica for encontrada
+    return ''; 
 }
 
 function criarAnotacoesThreshold(thresholdValues, tipoMetrica) {
     const annotations = [];
     const unit = getUnitForTipo(tipoMetrica);
 
-    // Define cores e textos para cada nível de threshold
     const thresholdLevels = [
-        { key: 'leve', color: '#FFC300', label: 'Leve', offsetY: 0 },       // Amarelo
-        { key: 'grave', color: '#FF5733', label: 'Grave', offsetY: -15 },  // Laranja/Vermelho claro
-        { key: 'critico', color: '#E02519', label: 'Crítico', offsetY: 15 } // Vermelho escuro
+        { key: 'leve', color: '#FFC300', label: 'Leve', offsetY: 0 },    
+        { key: 'grave', color: '#FF5733', label: 'Grave', offsetY: -15 }, 
+        { key: 'critico', color: '#E02519', label: 'Crítico', offsetY: 15 } 
     ];
 
     thresholdLevels.forEach(levelInfo => {
@@ -128,13 +114,13 @@ function criarAnotacoesThreshold(thresholdValues, tipoMetrica) {
                 y: value,
                 borderColor: levelInfo.color,
                 label: {
-                    borderColor: levelInfo.color, // Opcional: borda no label
+                    borderColor: levelInfo.color, 
                     style: {
-                        color: '#fff', // Cor do texto do label
-                        background: levelInfo.color, // Cor de fundo do label
+                        color: '#fff', 
+                        background: levelInfo.color, 
                         fontSize: '10px',
                         fontWeight: 'normal',
-                        padding: { // Adiciona um pouco de padding ao label
+                        padding: { 
                             left: 5,
                             right: 5,
                             top: 2,
@@ -142,9 +128,9 @@ function criarAnotacoesThreshold(thresholdValues, tipoMetrica) {
                         }
                     },
                     text: `${levelInfo.label} (${value}${unit})`,
-                    position: 'right', // Posição do label ('left' ou 'right')
-                    offsetX: 5,       // Deslocamento horizontal do label
-                    offsetY: levelInfo.offsetY // Deslocamento vertical para evitar sobreposição
+                    position: 'right', 
+                    offsetX: 5,       
+                    offsetY: levelInfo.offsetY 
                 }
             });
         }
@@ -158,24 +144,20 @@ function atualizarGraficosComThreshold() {
         return;
     }
 
-    // Mapeamento dos tipos de métrica para as instâncias dos gráficos
     const graficosParaAtualizar = [
         { chart: chartCPU, tipo: 'cpu_percent' },
         { chart: chartMemoria, tipo: 'ram_percent' },
-        { chart: chartDownload, tipo: 'net_download' },   // Ajuste o tipo se necessário
-        { chart: chartDisco, tipo: 'disk_percent' }
-        // Adicione outros gráficos e seus tipos correspondentes aqui
-        // Ex: { chart: chartNetUsage, tipo: 'net_usage_percent'}
+        { chart: chartDownload, tipo: 'net_download' }
     ];
 
     graficosParaAtualizar.forEach(item => {
-        if (item.chart) { // Verifica se a instância do gráfico existe
+        if (item.chart) { 
             const thresholdValues = getThreshold(item.tipo);
             const yaxisAnnotations = criarAnotacoesThreshold(thresholdValues, item.tipo);
 
             item.chart.updateOptions({
                 annotations: {
-                    yaxis: yaxisAnnotations.length > 0 ? yaxisAnnotations : [] // Garante que não passamos undefined
+                    yaxis: yaxisAnnotations.length > 0 ? yaxisAnnotations : [] 
                 }
             });
         } else {
@@ -194,7 +176,7 @@ const getThreshold = (tipo) => {
         };
     } else {
         console.warn(`Threshold não encontrado para o tipo: ${tipo}. Nenhum limite será plotado.`);
-        return { leve: null, grave: null, critico: null }; // Retorna nulls para não plotar nada
+        return { leve: null, grave: null, critico: null }; 
     }
 };
 
@@ -275,35 +257,6 @@ function inicializarGraficos() {
     chartDownload.render();
 
 
-    // chartDisco = new ApexCharts(document.querySelector("#chart6"), {
-    //     series: [{ name: "Disco %", data: [] }],
-    //     chart: {
-    //         type: 'line',
-    //         height: 200
-    //     },
-    //     annotations: {
-    //         yaxis: [
-    //             {
-    //                 y: 100,
-    //                 borderColor: '#E02519',
-    //                 label: {
-    //                     text: 'Valor máximo',
-    //                     style: {
-    //                         color: '#E02519',
-    //                         fontSize: '12px',
-    //                         fontWeight: 'bold'
-    //                     }
-    //                 }
-    //             }
-    //         ]
-    //     },
-    //     xaxis: { categories: [] },
-    //     yaxis: {
-    //         title: { text: 'Porcentagem (%)' },
-    //         max: 100,
-    //     }
-    // });
-    // chartDisco.render();
 }
 
 async function buscarMetricas(idMaquina) {
@@ -468,14 +421,14 @@ async function buscarAlertas(serialNumber) {
         }
 
         const data = await response.json();
+        console.log(data);
 
-        if (!Array.isArray(data.values)) {
+        if (!Array.isArray(data)) {
             console.error("A resposta não contém um array de tickets.");
             return;
         }
 
-        // Filtra os tickets com o serial e tipo correto
-        const ticketsFiltrados = data.values
+        const ticketsFiltrados = data
             .filter(ticket =>
                 ticket.summary.includes(serialNumber) &&
                 ticket.requestTypeId === "5"
@@ -490,8 +443,7 @@ async function buscarAlertas(serialNumber) {
                 const textHoraAbertura = `${dia}/${mes}/${ano} às ${hora}:${minuto}`;
 
                 const descricaoRaw = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value || "";
-                const descricaoSeparada = descricaoRaw.split('*');
-                const descricaoTratada = descricaoRaw
+                const descricaoTratada = descricaoRaw;
 
                 const idDispositivo = ticket.summary.split(" ")[1] || "N/A";
                 const status = ticket.currentStatus?.status || "Desconhecido";
@@ -519,6 +471,7 @@ async function buscarAlertas(serialNumber) {
         console.error("Erro ao buscar tickets:", error);
     }
 }
+
 
 function gerarCardsAcoes() {
     const container = document.getElementById("hero-actions");
@@ -783,7 +736,7 @@ function confirmarEncerrarProcesso(pid, nome) {
             return response.json(); 
         })
         .then(data => {
-            console.log("Sucesso ao enviar comando:", data);
+           //  console.log("Sucesso ao enviar comando:", data);
             alert("Comando de encerramento enviado com sucesso! O processo será encerrado em breve.");
 
         })
@@ -812,7 +765,7 @@ if (id) {
 
     obterSerialPorId(id).then(serial => {
         if (serial) {
-            console.log(serial[0].serial_number)
+            // console.log(serial[0].serial_number)
             buscarAlertas(serial[0].serial_number);
         } else {
             console.warn("Serial não encontrado. Não será possível buscar alertas.");

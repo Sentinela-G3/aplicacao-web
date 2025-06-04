@@ -58,12 +58,12 @@
     }).then(function (resposta) {
 
       if (resposta.ok) {
-        console.log(resposta);
+        // console.log(resposta);
 
         resposta.json().then(json => {
           const dados = json.resultadoAutenticar[0];
           const statusEmpresa = dados.status;
-          console.log(dados)
+          // console.log(dados)
 
           if (statusEmpresa == 1) {
     alert("O acesso da sua empresa está inativo. Quando o contrato for fechado, seu acesso será liberado.");

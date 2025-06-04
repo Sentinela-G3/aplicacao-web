@@ -51,4 +51,13 @@ router.get(`/obterModelosMaquina/:idEmpresa`, function(req, res) {
     maquinaController.obterModelosMaquina(req, res)
 })
 
+
+router.post("/obterSerialPorId", function (req, res) {
+
+
+    maquinaController.obterSerialMaquinaPorId(req, res);
+
+
+})
+
 module.exports = router;
