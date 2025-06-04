@@ -33,15 +33,31 @@ async function createTicket(summary, description, priority) {
 }
 
 async function listTickets() {
+  const tickets = [];
+  let start = 0;
+  const limit = 100;
+
   try {
-    const response = await axios.get(
-      `${JIRA_URL}/rest/servicedeskapi/request`,
-      auth
-    );
-    return response.data;
+    while (true) {
+      const response = await axios.get(
+        `${JIRA_URL}/rest/servicedeskapi/request?limit=${limit}&start=${start}`,
+        auth
+      );
+
+      const data = response.data;
+
+      if (!data.values || data.values.length === 0) break;
+
+      tickets.push(...data.values);
+      start += limit;
+      console.log(tickets)
+      if (data.values.length < limit) break;
+    }
+
+    return tickets;
   } catch (error) {
     console.error('Erro ao obter tickets:', error.response?.data || error.message);
-    throw new Error('Erro ao obter tickets');
+    throw new Error('Erro ao obter todos os tickets');
   }
 }
 
@@ -49,7 +65,7 @@ async function buscarMembros() {
   try {
     const response = await axios.get(
       `${JIRA_URL}/rest/api/3/user/assignable/search`, {
-      params: { project: 'SUPSEN' }, // Substitua 'TESTE' pela chave do projeto real
+      params: { project: 'SUPSEN' },
       headers: {
         Authorization: `Basic ${Buffer.from(`${EMAIL}:${API_TOKEN}`).toString('base64')}`,
         Accept: 'application/json'
@@ -83,13 +99,8 @@ async function buscarResponsavel(issueKey) {
     const assignee = response.data.fields.assignee;
 
     if (assignee) {
-      console.log('Responsável pelo ticket:');
-      console.log(`Nome: ${assignee.displayName}`);
-      console.log(`ID: ${assignee.accountId}`);
       return assignee.displayName
-      // console.log(`Email: ${assignee.emailAddress}`); // Pode estar indisponível
     } else {
-      console.log('Este ticket não possui responsável atribuído.');
       return "Ninguem"
     }
 
@@ -111,7 +122,7 @@ async function setarResponsavel(issueKey, accountId) {
     const response = await axios.put(
       `${JIRA_URL}/rest/api/3/issue/${issueKey}/assignee`,
       {
-        accountId: accountId  // corpo correto
+        accountId: accountId 
       },
       {
         headers: {
@@ -122,7 +133,7 @@ async function setarResponsavel(issueKey, accountId) {
       }
     );
     console.log('Usuário atribuído com sucesso:', response.status);
-    return response.data;  // caso queira retornar algo ao front
+    return response.data;
   } catch (error) {
     console.error('❌ Erro ao atualizar campo de texto:', error.response?.data || error.message);
     throw error;

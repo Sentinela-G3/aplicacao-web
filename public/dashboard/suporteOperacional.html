@@ -45,17 +45,23 @@
                     <span class="titulo-grafico"
                         style="width: 50%; justify-content: left; padding-left: 20px; box-sizing: border-box;">Lista de
                         Alertas</span>
-                    <div class="filtros-direita">
-                        <select name="" id="select-urgencia" class="select-urgencia">
-                            <option value="">Todos</option>
-                            <option value="" >Leve</option>
-                            <option value="">Grave</option>
-                            <option value="">Crítico</option>
+                    <!-- <div class="filtros-direita">
+                        <select id="select-urgencia" class="select-urgencia">
+                            <option value="#">Todos</option>
+                            <option value="Leve" >Leve</option>
+                            <option value="Grave">Grave</option>
+                            <option value="Crítico">Crítico</option>
                         </select>
-                        <input id="" type="text" placeholder="Pesquisar dispositivo" class="searh-urgencia">
-                    </div>
+                        <input id="searh-urgencia" type="text" placeholder="Pesquisar dispositivo" class="searh-urgencia">
+                    </div> -->
                 </div>
+
                 <div class="lista-tickets" id="lista-tickets">
+                    <div id="loading" style="display: flex; height: 91%; width: 100%; justify-content: center; align-items: center;flex-direction: column;">
+                        <img src="../assets/img/loading.gif" alt="Carregando" width="150">
+                        <span style="font-weight: bold; margin-left: 10px; color: rgb(222, 189, 0);" >Carregando...</span>
+                    </div>
+                    <div id="tickets-container" style="display:none; flex-direction: column; "></div>
                     <!-- <div class="ticket-layout">
                         <div class="box-urgencia">
                             <div class="div-urgencia">
@@ -130,7 +136,8 @@
         <script src="../scripts/jiraFuncoes.js" style="padding: 0;"></script>
         <script>
             // listarMembrosDoProjeto()
-            renderTicketsGilberto()
+            // renderTicketsGilberto()
+            alertasPorComponente()
         </script>
 </body>
 
