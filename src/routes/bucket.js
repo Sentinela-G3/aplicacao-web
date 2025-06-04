@@ -6,14 +6,14 @@ const s3Service = require("../../services/aws/s3_export_metrics")
 router.get("/dados-componente", bucketController.buscarDados);
 
 router.get('/exportar', async (req, res) => {
-    const { serialNumber, date } = req.query;
+    const { date } = req.query;
 
-    if (!serialNumber || !date) {
-        return res.status(400).json({ message: 'Os parâmetros "serialNumber" e "date" são obrigatórios para exportação de métricas JSON.' });
+    if (!date) {
+        return res.status(400).json({ message: 'Os parâmetros "date" são obrigatórios para exportação de métricas JSON.' });
     }
 
     try {
-        const result = await s3Service.exportMetricsJsonToS3(serialNumber, date);
+        const result = await s3Service.exportMetricsJsonToS3(date);
         res.status(200).json(result);
     } catch (error) {
         console.error('Erro na rota de exportação de métricas JSON:', error);
