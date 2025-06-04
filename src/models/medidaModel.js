@@ -3,8 +3,9 @@ var database = require("../database/config");
 function obterThreshold(idMaquina) {
      var instrucaoSQL = `
 SELECT 
-    c.maximo,
-    c.minimo,
+    c.threshold_leve,
+    c.threshold_grave,
+    c.threshold_critico,
     c.tipo
 FROM componente c
 WHERE c.fk_componente_maquina = ${idMaquina}`;

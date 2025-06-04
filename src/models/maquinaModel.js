@@ -12,6 +12,12 @@ function obterFkModelo(fkEmpresa) {
   return database.executar(instrucaoSql);
 }
 
+function obterIdMaquinaPorSerial(id) {
+  var instrucaoSQl = `SELECT serial_number from maquina where id_maquina = '${id}';`;
+  return database.executar(instrucaoSQl);
+
+}
+
 function obterMaquinaPorSerial(serialNumber) {
   var instrucaoSql = `SELECT id_maquina, serial_number from maquina where serial_number = '${serialNumber}';`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -134,5 +140,6 @@ module.exports =
   listarTempoAtividadePorMaquina,
   obterMaquinaPorSerial,
   dadosModeloComponente,
-  obterModelosMaquina
+  obterModelosMaquina,
+  obterIdMaquinaPorSerial
 }

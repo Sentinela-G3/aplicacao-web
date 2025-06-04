@@ -1,12 +1,18 @@
+<<<<<<< HEAD
 CREATE DATABASE Sentinela;
 USE Sentinela;
+=======
+create database sentinela;
+use sentinela;
+
+>>>>>>> 1482ad44585692dc2801b8d0313e0e033c6b8ec7
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY AUTO_INCREMENT,
     razao_social VARCHAR(100) NOT NULL,
     cnpj CHAR(14) NOT NULL,
     categoria VARCHAR(50) NOT NULL,
     data_inicio DATE NOT NULL,
-    status TINYINT NOT NULL
+    status TINYINT NOT NULL DEFAULT 2
 );
 
 CREATE TABLE endereco_empresa (
@@ -20,7 +26,7 @@ CREATE TABLE endereco_empresa (
     fk_endereco_empresa INT UNIQUE NOT NULL,
     FOREIGN KEY (fk_endereco_empresa)
         REFERENCES empresa(id_empresa) 
-        ON DELETE CASCADE -- Exclui registros dependentes quando a empresa for excluída
+        ON DELETE CASCADE 
 );
 
 CREATE TABLE colaborador (
@@ -35,24 +41,35 @@ CREATE TABLE colaborador (
     fk_colaborador_empresa INT NOT NULL,
     FOREIGN KEY (fk_colaborador_empresa)
         REFERENCES empresa(id_empresa) 
-        ON DELETE CASCADE -- Exclui colaboradores quando a empresa for excluída
+        ON DELETE CASCADE 
+);
+
+<<<<<<< HEAD
+CREATE TABLE maquina (
+    id_maquina INT PRIMARY KEY AUTO_INCREMENT,
+    modelo VARCHAR(100) NOT NULL,
+=======
+CREATE TABLE modelo (
+    id_modelo INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100)
 );
 
 CREATE TABLE maquina (
     id_maquina INT PRIMARY KEY AUTO_INCREMENT,
-    modelo VARCHAR(100) NOT NULL,
+    modelo INT,
+>>>>>>> 1482ad44585692dc2801b8d0313e0e033c6b8ec7
     so VARCHAR(100) NOT NULL,
     serial_number VARCHAR(100) NOT NULL,
-    status TINYINT NOT NULL,
     setor VARCHAR(50) NOT NULL,
     fk_maquina_empresa INT NOT NULL,
     FOREIGN KEY (fk_maquina_empresa)
         REFERENCES empresa(id_empresa) 
-        ON DELETE CASCADE -- Exclui máquinas quando a empresa for excluída
+        ON DELETE CASCADE 
 );
 
 CREATE TABLE componente (
     id_componente INT PRIMARY KEY AUTO_INCREMENT,
+<<<<<<< HEAD
     tipo VARCHAR(50) NOT NULL,
     modelo VARCHAR(100) NOT NULL,
     valor FLOAT NOT NULL,
@@ -62,13 +79,32 @@ CREATE TABLE componente (
     FOREIGN KEY (fk_componente_maquina)
         REFERENCES maquina(id_maquina) 
         ON DELETE CASCADE -- Exclui componentes quando a máquina for excluída
+=======
+    tipo VARCHAR(50) NULL,
+    modelo VARCHAR(100),
+    valor FLOAT NOT NULL,
+    threshold_grave FLOAT, 
+    threshold_critico FLOAT,
+    threshold_leve FLOAT,
+    unidade_medida VARCHAR(10),
+    minimo FLOAT NULL,
+    maximo FLOAT NULL,
+    fk_componente_maquina INT NOT NULL,
+    FOREIGN KEY (fk_componente_maquina)
+        REFERENCES maquina(id_maquina) 
+        ON DELETE CASCADE 
+>>>>>>> 1482ad44585692dc2801b8d0313e0e033c6b8ec7
 );
 
 CREATE TABLE comandos_agente (
     id_comando INT PRIMARY KEY AUTO_INCREMENT,
     id_maquina VARCHAR(255) NOT NULL, 
     pid_processo INT NOT NULL,         
+<<<<<<< HEAD
     tipo_comando VARCHAR(50) NOT NULL DEFAULT 'encerrar_processo', -
+=======
+    tipo_comando VARCHAR(50) NOT NULL DEFAULT 'encerrar_processo', 
+>>>>>>> 1482ad44585692dc2801b8d0313e0e033c6b8ec7
     status VARCHAR(50) NOT NULL DEFAULT 'pendente', 
     data_solicitacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     data_execucao DATETIME NULL,
@@ -76,7 +112,6 @@ CREATE TABLE comandos_agente (
     INDEX (id_maquina, status) 
 );
 
--- CAPTURA
 CREATE TABLE historico (
     id_historico INT PRIMARY KEY AUTO_INCREMENT,
     data_captura DATETIME NOT NULL,
@@ -84,7 +119,7 @@ CREATE TABLE historico (
     fk_historico_componente INT NOT NULL,
     FOREIGN KEY (fk_historico_componente)
         REFERENCES componente(id_componente) 
-        ON DELETE CASCADE -- Exclui histórico quando o componente for excluído
+        ON DELETE CASCADE 
 );
 
 CREATE TABLE alerta (
@@ -94,5 +129,12 @@ CREATE TABLE alerta (
     fk_alerta_componente INT NOT NULL,
     FOREIGN KEY (fk_alerta_componente)
         REFERENCES componente(id_componente) 
-        ON DELETE CASCADE -- Exclui alertas quando o componente for excluído
+        ON DELETE CASCADE 
 );
+
+INSERT INTO empresa (razao_social, cnpj, categoria, data_inicio, status) VALUES
+('Sentinela Tech Solutions Ltda.', '12345678000100', 'Tecnologia', '2023-01-15', 1);
+INSERT INTO endereco_empresa (cep, numero, logradouro, estado, cidade, complemento, fk_endereco_empresa) VALUES
+('01000-000', 123, 'Rua da Tecnologia', 'São Paulo', 'São Paulo', 'Andar 5', 1);
+INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
+('Vinicius Silva', 'vinicius@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
