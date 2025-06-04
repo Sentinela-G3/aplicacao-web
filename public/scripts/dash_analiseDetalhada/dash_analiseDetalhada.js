@@ -1,6 +1,13 @@
 const urlParams = new URLSearchParams(window.location.search);
 let id = urlParams.get('id');
 
+// Lógica de redirecionamento:
+if (!id) {
+    console.warn("ID da máquina não fornecido na URL. Redirecionando para a página de lista de máquinas.");
+    window.location.href = '../html/lista_de_maquinas.html'; 
+    throw new Error("Redirecionamento: ID da máquina ausente."); 
+}
+
 const BASE_URL = window.location.hostname === "localhost"
     ? "localhost:3333"
     : "18.208.5.45:3333";
@@ -12,6 +19,23 @@ let estadoOrdenacao = {
     campo: null,
     crescente: true
 };
+let processosAtuais = [];
+let alertasAtuais = [];
+let estadoOrdenacaoAlertas = {
+    campo: null,
+    crescente: true
+};
+
+// --- NOVAS FLAGS DE STATUS DE DADOS ---
+let hasCpuRamNetData = false; // Indica se há dados para CPU, RAM, Rede (gráficos/KPIs)
+let hasProcessData = false;   // Indica se há dados de processos
+let hasAlertData = false;     // Indica se há dados de alertas
+let hasAnyData = false;       // Indica se há qualquer dado em alguma seção
+
+// Referências aos elementos principais de conteúdo
+const section1Content = document.getElementById('section1_content');
+const section2Content = document.getElementById('section2_content');
+const noDataMessage = document.getElementById('noDataMessage');
 
 // Adicionando evento de click nos headers da tabela
 document.getElementById('th-pid').addEventListener('click', () => ordenarPor('pid'));
@@ -23,15 +47,6 @@ document.getElementById("th-chave").addEventListener("click", () => ordenarTabel
 document.getElementById("th-desc").addEventListener("click", () => ordenarTabelaAlertasPor("descricaoTratada"));
 document.getElementById("th-disp").addEventListener("click", () => ordenarTabelaAlertasPor("idDispositivo"));
 document.getElementById("th-data").addEventListener("click", () => ordenarTabelaAlertasPor("textHoraAbertura"));
-
-
-// Ordenação de alertas
-let alertasAtuais = [];
-let estadoOrdenacaoAlertas = {
-    campo: null,
-    crescente: true
-};
-
 
 
 // Funções auxiliares para cálculos e conversões
@@ -51,7 +66,6 @@ async function obterSerialPorId(id) {
         }
 
         const json = await response.json();
-        //console.log(json);
         return json[0]?.serial_number ?? null;
 
     } catch (error) {
@@ -59,8 +73,6 @@ async function obterSerialPorId(id) {
         return null;
     }
 }
-
-
 
 function converterHorasParaTexto(horasFloat) {
     const horas = Math.floor(horasFloat);
@@ -70,7 +82,7 @@ function converterHorasParaTexto(horasFloat) {
 }
 
 function calcularTotalRAM(usoGB, percentualUso) {
-    if (percentualUso === 0) return 0;
+    if (percentualUso === 0 || percentualUso === null || percentualUso === undefined) return 0; 
     const total = usoGB / (percentualUso / 100);
     return total.toFixed(2);
 }
@@ -80,7 +92,6 @@ async function buscarThreshold(idMaquina) {
         const response = await fetch(`http://${BASE_URL}/medidas/thresholds/${idMaquina}`);
         const json = await response.json();
         thresholdData = json;
-
 
         atualizarGraficosComThreshold();
     } catch (error) {
@@ -255,8 +266,6 @@ function inicializarGraficos() {
         }
     });
     chartDownload.render();
-
-
 }
 
 async function buscarMetricas(idMaquina) {
@@ -265,93 +274,72 @@ async function buscarMetricas(idMaquina) {
         const json = await response.json();
         const dados = json.dados;
 
-        // Verificações de existência dos dados
-        if (!dados || Object.keys(dados).length === 0) {
-            console.warn('Nenhum dado recebido da API.');
+        if (!dados || Object.keys(dados).length === 0 || 
+            (!Array.isArray(dados.cpu_percent) || dados.cpu_percent.length === 0) &&
+            (!Array.isArray(dados.ram_percent) || dados.ram_percent.length === 0) &&
+            (!Array.isArray(dados.net_download) || dados.net_download.length === 0) &&
+            (!Array.isArray(dados.net_usage_percent) || dados.net_usage_percent.length === 0)
+        ) {
+            console.warn('Nenhum dado de CPU, RAM ou Rede recebido da API.');
+            hasCpuRamNetData = false;
+            document.querySelector('.container-graphs').style.display = 'none';
             return;
         }
 
+        hasCpuRamNetData = true; 
+        document.querySelector('.container-graphs').style.display = 'flex'; 
+
         const cpuFreq = dados.cpu_freq?.length > 0 ? dados.cpu_freq.at(-1).valor.toFixed(2) : null;
         const cpuPercent = dados.cpu_percent?.[0]?.valor ?? null;
-        const cpuUptime = dados.cpu_uptime ?? null;
+        const cpuUptime = dados.uptime_hours?.[0]?.valor ?? null; 
         const ramUsed = dados.ram_usage_gb ?? null;
-        const ramTotal = dados.ram_total ?? null;
+        const ramTotal = dados.ram_total ?? null; 
         const ramPercent = dados.ram_percent?.[0]?.valor ?? null;
         const netDownload = dados.net_download?.[0]?.valor ?? null;
-        const diskUsage = dados.disk_percent?.length > 0 ? dados.disk_percent.at(-1) : null;
-        const diskUsedGB = dados.disk_usage_gb?.length > 0 ? dados.disk_usage_gb.at(-1) : null;
-        const uptime = dados.uptime_hours?.length > 0 ? dados.uptime_hours.at(-1) : null;
         const netUsage = dados.net_usage_percent?.[0]?.valor ?? null;
 
-        if (
-            cpuFreq !== null ||
-            cpuPercent !== null ||
-            cpuUptime !== null ||
-            ramUsed !== null ||
-            ramTotal !== null ||
-            ramPercent !== null ||
-            netDownload !== null ||
-            netUpload !== null ||
-            diskUsage !== null ||
-            diskUsedGB !== null ||
-            uptime !== null ||
-            netUsage !== null
-        ) {
-            atualizarBoxes({
-                cpu_percent: cpuPercent,
-                cpu_uptime: cpuUptime,
-                ram_used: ramUsed,
-                ram_total: ramTotal,
-                ram_percent: ramPercent,
-                net_download: netDownload,
-                uptime: uptime,
-                net_usage_percent: netUsage
-            });
-        }
+        atualizarBoxes({
+            cpu_percent: cpuPercent,
+            cpu_uptime: cpuUptime,
+            ram_used: ramUsed,
+            ram_total: ramTotal,
+            ram_percent: ramPercent,
+            net_download: netDownload,
+            uptime: { valor: cpuUptime }, 
+            net_usage_percent: netUsage
+        });
+        
+        const timestamps = dados.cpu_percent.map(item => new Date(item.timestamp).toLocaleTimeString('pt-BR', { hour12: false }));
+        const cpu = dados.cpu_percent.map(item => item.valor);
+        const memoria = dados.ram_percent.map(item => item.valor);
+        const netUsageData = dados.net_usage_percent.map(item => item.valor); 
 
-        // Atualiza gráficos apenas se houver dados suficientes
-        if (
-            Array.isArray(dados.cpu_percent) &&
-            Array.isArray(dados.ram_percent) &&
-            Array.isArray(dados.net_download) &&
-            Array.isArray(dados.net_usage_percent)
-        ) {
-            const timestamps = dados.cpu_percent.map(item => new Date(item.timestamp).toLocaleTimeString('pt-BR', { hour12: false }));
-            const cpu = dados.cpu_percent.map(item => item.valor);
-            const memoria = dados.ram_percent.map(item => item.valor);
-            const netUsage = dados.net_usage_percent.map(item => item.valor);
-            // const disco = dados.disk_percent.map(item => item.valor);
-
-            atualizarGraficos({ cpu, memoria, timestamps, netUsage });
-        }
+        atualizarGraficos({ cpu, memoria, timestamps, netUsage: netUsageData });
 
     } catch (error) {
         console.error('Erro ao buscar métricas:', error);
+        hasCpuRamNetData = false;
+        document.querySelector('.container-graphs').style.display = 'none'; 
+    } finally {
+        checkOverallDataStatus(); 
     }
 }
 
 function atualizarGraficos(dados) {
-
-    // Atualiza os gráficos com os dados
     chartCPU.updateOptions({
         xaxis: { categories: dados.timestamps }
     });
     chartCPU.updateSeries([{ name: "CPU %", data: dados.cpu }]);
-    chartCPU.update();
 
     chartMemoria.updateOptions({
         xaxis: { categories: dados.timestamps }
     });
     chartMemoria.updateSeries([{ name: "Memória %", data: dados.memoria }]);
-    chartMemoria.update();
-
 
     chartDownload.updateOptions({
         xaxis: { categories: dados.timestamps }
     });
-    chartDownload.updateSeries([{ name: "Download (Mbps)", data: dados.netUsage }]);
-    chartDownload.update();
-
+    chartDownload.updateSeries([{ name: "Uso da Rede (%)", data: dados.netUsage }]);
 }
 
 function atualizarBoxes(dados) {
@@ -368,12 +356,17 @@ function atualizarBoxes(dados) {
             ? converterHorasParaTexto(dados.uptime.valor)
             : "Sem dados";
 
+    const ramUsedValue = Array.isArray(dados.ram_used) && dados.ram_used.length > 0 ? dados.ram_used[dados.ram_used.length - 1].valor : dados.ram_used;
+    const ramPercentValue = Array.isArray(dados.ram_percent) && dados.ram_percent.length > 0 ? dados.ram_percent[0].valor : dados.ram_percent;
 
-    document.getElementById("ramUsedKPI").textContent = validarDado(dados.ram_used[dados.ram_used.length - 1].valor, "Sem dados", 2) + " GB de " +
-        validarDado(calcularTotalRAM(dados.ram_used[0].valor, dados.ram_percent), "Sem dados", 2) + " GB";
-    document.getElementById("ramPercentKPI").textContent = validarDado(dados.ram_percent, "Sem dados") + "%";
+    const ramTotalCalculado = calcularTotalRAM(ramUsedValue, ramPercentValue);
 
-    document.getElementById("downloadKPI").textContent = validarDado(dados.net_usage_percent, "Sem dados", 2) + "%";
+    document.getElementById("ramUsedKPI").textContent = 
+        validarDado(ramUsedValue, "Sem dados", 2) + " GB de " +
+        validarDado(ramTotalCalculado, "Sem dados", 2) + " GB";
+    document.getElementById("ramPercentKPI").textContent = validarDado(ramPercentValue, "Sem dados") + "%";
+
+    document.getElementById("downloadKPI").textContent = validarDado(dados.net_usage_percent, "Sem dados", 2) + "%"; 
 }
 
 async function buscarProcessos(idMaquina) {
@@ -381,38 +374,40 @@ async function buscarProcessos(idMaquina) {
         const response = await fetch(`http://${BASE_URL}/processos/${idMaquina}`);
         const json = await response.json();
 
-        // Verifica se json e json.dados existem
-        if (!json || !json.dados) {
-            console.warn('Resposta da API não contém "dados".');
-            return;
-        }
+        const chaves = Object.keys(json.dados || {}); 
+        const processos_vetor = chaves.length > 0 ? json.dados[chaves[0]] : [];
 
-        // Se a estrutura estiver mesmo como json.dados.undefined, precisamos extrair a chave real
-        const chaves = Object.keys(json.dados);
-        if (chaves.length === 0) {
-            console.warn('Nenhum processo disponível na resposta.');
-            return;
-        }
-        const chaveProcessos = chaves[0];
-        const processos_vetor = json.dados[chaveProcessos];
-
-        if (Array.isArray(processos_vetor) && processos_vetor.length > 0) {
-            processosAtuais = processos_vetor;
-            gerarCardsAcoes();
-            const processosOrdenados = ordenarProcessos(processosAtuais, estadoOrdenacao.campo || 'cpu_percent', estadoOrdenacao.crescente);
-            atualizarTabelaProcessos(processosOrdenados);
-        } else {
+        if (!Array.isArray(processos_vetor) || processos_vetor.length === 0) {
             console.warn('Nenhum processo válido recebido.');
+            hasProcessData = false;
+            document.querySelector('.section2 .containerComponent:nth-child(1)').style.display = 'none'; 
+            document.getElementById("hero-actions").style.display = 'none'; 
+            return;
         }
 
+        hasProcessData = true; 
+        document.querySelector('.section2 .containerComponent:nth-child(1)').style.display = 'flex'; 
+        document.getElementById("hero-actions").style.display = 'flex'; 
 
+        processosAtuais = processos_vetor;
+        gerarCardsAcoes('loaded'); // Chama com 'loaded' para popular os cards de ação
+        const processosOrdenados = ordenarProcessos(processosAtuais, estadoOrdenacao.campo || 'cpu_percent', estadoOrdenacao.crescente);
+        atualizarTabelaProcessos(processosOrdenados);
 
     } catch (error) {
         console.error('Erro ao buscar processos:', error);
+        hasProcessData = false;
+        document.querySelector('.section2 .containerComponent:nth-child(1)').style.display = 'none'; 
+        document.getElementById("hero-actions").style.display = 'none'; 
+    } finally {
+        checkOverallDataStatus(); 
     }
 }
 
 async function buscarAlertas(serialNumber) {
+    // A chamada a gerarCardsAcoes('loading') foi movida para o Promise.all inicial
+    // const containerHeroActions = document.getElementById("hero-actions"); // Não é mais necessário aqui
+    
     try {
         const response = await fetch(`http://${BASE_URL}/jira/tickets`);
 
@@ -421,10 +416,12 @@ async function buscarAlertas(serialNumber) {
         }
 
         const data = await response.json();
-        console.log(data);
 
-        if (!Array.isArray(data)) {
-            console.error("A resposta não contém um array de tickets.");
+        if (!Array.isArray(data) || data.length === 0) {
+            console.warn("A resposta não contém um array de tickets válidos.");
+            hasAlertData = false;
+            document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none'; 
+            gerarCardsAcoes('no_alerts'); // Chama com 'no_alerts' para exibir o card de "sem chamados"
             return;
         }
 
@@ -456,6 +453,17 @@ async function buscarAlertas(serialNumber) {
                     currentStatus: { status }
                 };
             });
+        
+        if (ticketsFiltrados.length === 0) {
+            console.warn("Nenhum alerta filtrado para este serial number.");
+            hasAlertData = false;
+            document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none';
+            gerarCardsAcoes('no_alerts'); // Chama com 'no_alerts'
+            return;
+        }
+
+        hasAlertData = true; 
+        document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'flex'; 
 
         alertasAtuais = ticketsFiltrados;
 
@@ -466,19 +474,56 @@ async function buscarAlertas(serialNumber) {
         );
 
         atualizarTabelaAlertas(ordenados);
+        gerarCardsAcoes('loaded'); // Chama com 'loaded' após sucesso
 
     } catch (error) {
         console.error("Erro ao buscar tickets:", error);
+        hasAlertData = false;
+        document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none'; 
+        gerarCardsAcoes('error'); // Chama com 'error' em caso de falha
+    } finally {
+        checkOverallDataStatus(); 
     }
 }
 
+function checkOverallDataStatus() {
+    hasAnyData = hasCpuRamNetData || hasProcessData || hasAlertData;
 
-function gerarCardsAcoes() {
+    if (hasAnyData) {
+        noDataMessage.style.display = 'none'; 
+        section1Content.style.display = 'flex'; 
+        section2Content.style.display = 'flex'; 
+    } else {
+        noDataMessage.style.display = 'block'; 
+        section1Content.style.display = 'none'; 
+        section2Content.style.display = 'none'; 
+    }
+}
+
+// --- FUNÇÃO GERAR CARDS DE AÇÕES MODIFICADA ---
+function gerarCardsAcoes(status = 'loaded') { // Adicionado parâmetro 'status'
     const container = document.getElementById("hero-actions");
-    container.innerHTML = ''; 
-    let algumAlertaGerado = false;
+    container.innerHTML = ''; // Limpa o conteúdo anterior
 
-    //Card de Chamados Abertos
+    if (status === 'loading') {
+        container.innerHTML = `
+            <div class="action-card info" style="text-align: center; width: 100%;">
+                <h3>⏳ Carregando chamados e processos...</h3>
+                <p>Aguarde enquanto buscamos os dados.</p>
+            </div>
+        `;
+        return; // Sai da função para não popular outros cards
+    } else if (status === 'error') {
+        container.innerHTML = `
+            <div class="action-card critical" style="text-align: center; width: 100%;">
+                <h3>❌ Erro ao Carregar Dados</h3>
+                <p>Não foi possível carregar os chamados ou processos. Tente novamente mais tarde.</p>
+            </div>
+        `;
+        return; // Sai da função
+    }
+
+    // Lógica para Chamados Abertos (agora dentro do status 'loaded' ou 'no_alerts')
     const chamadosAbertos = alertasAtuais.filter(alerta => alerta.currentStatus.status !== "Resolvido");
     if (chamadosAbertos.length > 0) {
         const cardChamados = document.createElement("div");
@@ -492,8 +537,7 @@ function gerarCardsAcoes() {
             <button onclick="abrirChamadoJira('${primeiroChamado.issueKey}')">Abrir no Jira</button>
         `;
         container.appendChild(cardChamados);
-        algumAlertaGerado = true;
-    } else {
+    } else if (status === 'no_alerts' || alertasAtuais.length === 0) { // Se não houver alertas filtrados ou nenhum alerta
         const cardSemChamados = document.createElement("div");
         cardSemChamados.className = "action-card success";
         cardSemChamados.innerHTML = `
@@ -503,7 +547,7 @@ function gerarCardsAcoes() {
         container.appendChild(cardSemChamados);
     }
 
-    // Cards para Processos com Alto Consumo
+    // Lógica para Processos com Alto Consumo (agora dentro do status 'loaded')
     if (processosAtuais.length > 0) {
         const processosComUso = processosAtuais.filter(proc => proc.cpu_percent > 0 || proc.memory_percent > 0);
 
@@ -528,7 +572,6 @@ function gerarCardsAcoes() {
                         <button onclick="confirmarEncerrarProcesso(${processo.pid}, '${processo.nome}')">Encerrar Processo</button>
                     `;
                     container.appendChild(cardProcessoAltoConsumo);
-                    algumAlertaGerado = true;
                 });
             } else {
                 const cardSemAltoConsumo = document.createElement("div");
@@ -538,7 +581,6 @@ function gerarCardsAcoes() {
                     <p>Nenhum processo com consumo significativamente acima da média.</p>
                 `;
                 container.appendChild(cardSemAltoConsumo);
-                if (chamadosAbertos.length === 0) algumAlertaGerado = true;
             }
         } else {
             const cardSemProcessosAtivos = document.createElement("div");
@@ -548,7 +590,6 @@ function gerarCardsAcoes() {
                 <p>Não há processos ativos para verificar o consumo.</p>
             `;
             container.appendChild(cardSemProcessosAtivos);
-            if (chamadosAbertos.length === 0) algumAlertaGerado = true;
         }
     } else {
         const cardSemProcessos = document.createElement("div");
@@ -558,10 +599,7 @@ function gerarCardsAcoes() {
             <p>Não há dados de processos disponíveis para análise.</p>
         `;
         container.appendChild(cardSemProcessos);
-        if (chamadosAbertos.length === 0) algumAlertaGerado = true;
     }
-
-
 }
 
 function abrirChamadoJira(issueKey) {
@@ -569,12 +607,9 @@ function abrirChamadoJira(issueKey) {
     window.open(jiraUrlBase + issueKey, '_blank');
 }
 
-
-
 function atualizarTabelaAlertas(alertas) {
     const tabelaBody = document.getElementById("tabela-chamados-body");
     tabelaBody.innerHTML = "";
-
 
     if (!alertas || alertas.length === 0) {
         tabelaBody.innerHTML = `<tr><td colspan="5">Nenhum chamado encontrado.</td></tr>`;
@@ -599,7 +634,6 @@ function atualizarTabelaAlertas(alertas) {
         let cellStatus = row.insertCell();
         cellStatus.textContent = alerta.currentStatus.status;
 
-        // Nova célula para o botão do Jira
         let cellAcao = row.insertCell();
         const botaoJira = document.createElement('button');
         botaoJira.textContent = 'Abrir no Jira';
@@ -609,7 +643,6 @@ function atualizarTabelaAlertas(alertas) {
         cellAcao.appendChild(botaoJira);
     });
 }
-
 
 function ordenarAlertas(array, campo, crescente = true) {
     return [...array].sort((a, b) => {
@@ -622,13 +655,12 @@ function ordenarAlertas(array, campo, crescente = true) {
         }
 
         if (typeof valA === 'string') {
-            return crescente ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            return crescente ? valA.localeCompare(valB) : valB.localeCompare(a[campo]); // Corrigido b[campo].localeCompare(a[campo])
         }
 
         return crescente ? valA - valB : valB - valA;
     });
 }
-
 
 function ordenarPor(campo) {
     if (estadoOrdenacao.campo === campo) {
@@ -664,8 +696,6 @@ function atualizarSetasOrdenacao() {
     });
 }
 
-
-
 function ordenarProcessos(array, campo, crescente = true) {
     if (campo === "timestamp") {
         throw new Error("Ordenação por 'timestamp' não é permitida.");
@@ -685,19 +715,23 @@ function ordenarProcessos(array, campo, crescente = true) {
 function atualizarTabelaProcessos(processos) {
     const tbody = document.getElementById('tabela-processos-body');
     tbody.innerHTML = '';
-    for (let i = 0; i < 10; i++) {
-        let proc = processos[i];
+    const processosParaExibir = processos.slice(0, 10); 
+    processosParaExibir.forEach(proc => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${proc.pid}</td>
             <td>${proc.nome}</td>
             <td>${proc.cpu_percent.toFixed(1)}%</td>
             <td>${proc.memory_percent.toFixed(1)}%</td>
+            <td><button class="kill-process-btn" onclick="confirmarEncerrarProcesso(${proc.pid}, '${proc.nome}')">
+                    ❌ 
+                </button></td>
         `;
         tbody.appendChild(row);
-
+    });
+    if (processosParaExibir.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">Nenhum processo em execução.</td></tr>`;
     }
-  
 }
 
 function ordenarTabelaAlertasPor(campo) {
@@ -713,11 +747,37 @@ function ordenarTabelaAlertasPor(campo) {
 }
 
 function confirmarEncerrarProcesso(pid, nome) {
-    if (confirm(`Tem certeza que deseja encerrar o processo ${nome} (PID: ${pid})?`)) {
+    const modalConfirm = document.createElement('div');
+    modalConfirm.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.5); display: flex;
+        justify-content: center; align-items: center; z-index: 1000;
+    `;
+    modalConfirm.innerHTML = `
+        <div style="
+            background-color: white; padding: 20px; border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); max-width: 400px; text-align: center;
+        ">
+            <h3>Confirmar Encerramento</h3>
+            <p>Tem certeza que deseja encerrar o processo ${nome} (PID: ${pid})?</p>
+            <button id="confirmYes" style="
+                background-color: #f44336; color: white; border: none; padding: 10px 20px;
+                margin: 10px; border-radius: 5px; cursor: pointer;
+            ">Sim</button>
+            <button id="confirmNo" style="
+                background-color: #ccc; color: black; border: none; padding: 10px 20px;
+                margin: 10px; border-radius: 5px; cursor: pointer;
+            ">Não</button>
+        </div>
+    `;
+    document.body.appendChild(modalConfirm);
+
+    document.getElementById('confirmYes').onclick = () => {
+        modalConfirm.remove();
         const id_maquina = id;
         const tipo_comando = "encerrar_processo";
 
-        fetch(`/processos/matarProcesso/${id_maquina}`, {
+        fetch(`http://${BASE_URL}/processos/matarProcesso/${id_maquina}`, {
             method: "POST", 
             headers: {
                 "Content-Type": "application/json"
@@ -736,68 +796,96 @@ function confirmarEncerrarProcesso(pid, nome) {
             return response.json(); 
         })
         .then(data => {
-           //  console.log("Sucesso ao enviar comando:", data);
-            alert("Comando de encerramento enviado com sucesso! O processo será encerrado em breve.");
-
+            showCustomMessage("Comando de encerramento enviado com sucesso! O processo será encerrado em breve.", "success");
         })
         .catch(error => {
             console.error("Erro ao enviar comando de encerramento:", error);
-            alert(`Erro ao tentar encerrar o processo: ${error.message}. Por favor, tente novamente.`);
+            showCustomMessage(`Erro ao tentar encerrar o processo: ${error.message}. Por favor, tente novamente.`, "error");
         });
+    };
 
-    } else {
+    document.getElementById('confirmNo').onclick = () => {
+        modalConfirm.remove();
         console.log("Encerramento do processo cancelado pelo usuário.");
-    }
+    };
 }
 
-function enviarComandoEncerrarProcesso(pid) {
+function showCustomMessage(message, type = "info") {
+    const modalMessage = document.createElement('div');
+    modalMessage.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.5); display: flex;
+        justify-content: center; align-items: center; z-index: 1001;
+    `;
+    let bgColor = '#4CAF50'; 
+    if (type === 'error') bgColor = '#f44336'; 
+    if (type === 'warning') bgColor = '#ff9800'; 
+    if (type === 'info') bgColor = '#2196F3'; 
 
+    modalMessage.innerHTML = `
+        <div style="
+            background-color: white; padding: 20px; border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); max-width: 400px; text-align: center;
+        ">
+            <p>${message}</p>
+            <button id="messageOk" style="
+                background-color: ${bgColor}; color: white; border: none; padding: 10px 20px;
+                margin-top: 15px; border-radius: 5px; cursor: pointer;
+            ">OK</button>
+        </div>
+    `;
+    document.body.appendChild(modalMessage);
+
+    document.getElementById('messageOk').onclick = () => {
+        modalMessage.remove();
+    };
 }
-
-
 
 
 inicializarGraficos();
-if (id) {
-    buscarMetricas(id);
-    buscarThreshold(id);
-    buscarProcessos(id);
 
+// Exibir estado de carregamento ANTES de iniciar todas as buscas
+gerarCardsAcoes('loading'); // <-- Chamada inicial de carregamento
+
+// Chamar todas as funções de busca de dados
+Promise.all([
+    buscarMetricas(id),
+    buscarThreshold(id), 
+    buscarProcessos(id),
     obterSerialPorId(id).then(serial => {
         if (serial) {
-            // console.log(serial[0].serial_number)
-            buscarAlertas(serial[0].serial_number);
+            return buscarAlertas(serial); 
         } else {
             console.warn("Serial não encontrado. Não será possível buscar alertas.");
+            hasAlertData = false; 
+            document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none';
+            gerarCardsAcoes('no_alerts'); // Exibe o card de "sem chamados" se o serial não for encontrado
+            return Promise.resolve(); 
         }
-    });
+    })
+]).then(() => {
+    checkOverallDataStatus(); 
+}).catch(error => {
+    console.error("Erro em uma das buscas iniciais de dados:", error);
+    checkOverallDataStatus(); 
+});
 
-    intervaloAtualizacao = setInterval(() => {
-        buscarMetricas(id);
-        buscarThreshold(id);
-        buscarProcessos(id);
+
+intervaloAtualizacao = setInterval(async () => {
+    await Promise.all([
+        buscarMetricas(id),
+        buscarThreshold(id),
+        buscarProcessos(id),
         obterSerialPorId(id).then(serial => {
             if (serial) {
-                buscarAlertas(serial);
+                return buscarAlertas(serial);
             } else {
                 console.warn("Serial não encontrado. Não será possível buscar alertas.");
+                hasAlertData = false;
+                document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none';
+                gerarCardsAcoes('no_alerts'); // Exibe o card de "sem chamados" se o serial não for encontrado
+                return Promise.resolve();
             }
-        });
-    }, 5000);
-
-
-
-
-
-    intervaloProcessosAlertas = setInterval(() => {
-        obterSerialPorId(id).then(serial => {
-            if (serial) {
-                buscarAlertas(serial);
-            } else {
-                console.warn("Serial não encontrado. Não será possível buscar alertas.");
-            }
-        });
-    }, 10000)
-}
-
-
+        })
+    ]);
+}, 5000);
