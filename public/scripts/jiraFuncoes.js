@@ -195,20 +195,19 @@ async function renderTicketsGilberto(tickets) {
     return dataA - dataB;
   });
 
-  // Filtrar tickets para renderizar
   const ticketsParaRenderizar = tickets.filter(t => t.requestTypeId == "5" && (t.currentStatus.status == "Aberto" || t.currentStatus.status == "Reaberto"));
 
-  // Buscar responsáveis de todos os tickets em paralelo
   const responsaveisPromises = ticketsParaRenderizar.map(t => buscarResponsavel(t.issueKey));
   const responsaveis = await Promise.all(responsaveisPromises);
 
-  // Agora renderiza com dados completos
   let contar = 0;
   ticketsParaRenderizar.forEach((ticket, index) => {
     contar++;
     const responsavelTicket = responsaveis[index];
 
-    const date = new Date(ticket.createdDate.jira);
+    const horaDoTicket = ticket.requestFieldValues[4];
+    const horaAberturaStr = horaDoTicket.value || horaDoTicket.renderedValue;
+    const date = new Date(horaAberturaStr);
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
@@ -229,6 +228,27 @@ async function renderTicketsGilberto(tickets) {
 
     const brancoOuCinza = (contar % 2 === 0) ? "par" : "impar";
 
+    // Cálculo da SLA
+    let prazoSlaHoras = 0;
+    if (urgencia === "Crítico") prazoSlaHoras = 6;
+    else if (urgencia === "Grave") prazoSlaHoras = 12;
+    else if (urgencia === "Leve") prazoSlaHoras = 24;
+
+    const dataAbertura = new Date(horaAberturaStr);
+    const dataLimite = new Date(dataAbertura.getTime() + prazoSlaHoras * 60 * 60 * 1000);
+    const agora = new Date();
+    const tempoRestanteMs = dataLimite - agora;
+
+    let textoSLA = "";
+    const horas = Math.floor(Math.abs(tempoRestanteMs) / (1000 * 60 * 60));
+    const minutos = Math.floor((Math.abs(tempoRestanteMs) % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (tempoRestanteMs > 0) {
+      textoSLA = `<b style="color: orange;">${horas}h ${minutos}min restantes</b>`;
+    } else {
+      textoSLA = `<b style="color: red;">- ${horas}h ${minutos}min</b>`;
+    }
+
     container.innerHTML += `<div class="ticket-layout ${brancoOuCinza}">
       <div class="box-urgencia ${styleUrgencia}">
           <div class="div-urgencia ${styleUrgencia}">
@@ -242,15 +262,15 @@ async function renderTicketsGilberto(tickets) {
           <span class="text-infos" id="hrDeAbertura"><i>Aberto em ${textHoraAbertura}</i></span>
       </div>
       <div class="box-direita">
-          <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b style="color: red;">20 min e 30 seg</b></span>
+          <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> ${textoSLA}</span>
           <div class="box-buttons">
               <button class="buttons-tickets btn" id="button-detalhes" onclick="redirecionar(${maquina[1]})">Ver Detalhes</button>
               <select class="buttons-tickets select" id="selection-responsavel${chaveTicket}">
                   <option value="">Responsável</option>
                   ${listaMembros.map(membro => {
-      const selected = membro.displayName === responsavelTicket ? "selected" : "";
-      return `<option value="${membro.accountId}" ${selected}>${membro.displayName}</option>`;
-    }).join('')}
+                    const selected = membro.displayName === responsavelTicket ? "selected" : "";
+                    return `<option value="${membro.accountId}" ${selected}>${membro.displayName}</option>`;
+                  }).join('')}
               </select>
               <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel('${chaveTicket}', document.getElementById('selection-responsavel${chaveTicket}').value)">Designar</button>
           </div>
@@ -296,7 +316,7 @@ async function alertasPorComponente() {
     }
   })
 
-  var listaQtdComponentes = [contarTempo, contarRede, contarCPU, contarMemoria, contarDisco, contarBateria]
+  var listaQtdComponentes = [ contarCPU, contarMemoria, contarDisco, contarRede, contarBateria, contarTempo]
 
   divQtd.innerHTML = `<i>Quantidade:</i> <b> ${contarQtd}</b> `
 
@@ -307,7 +327,8 @@ async function alertasPorComponente() {
       width: '100%',
     },
     series: listaQtdComponentes,
-    labels: ['Tempo', 'Rede', 'CPU', 'Memória', 'Disco', 'Bateria'],
+    labels: ['CPU', 'Memória','Disco', 'Rede', 'Bateria', 'Tempo de Uso'],
+    colors: ['#FFA500', '#20C997', '#1E90FF', '#FFD700', '#FF6F61', '#8Bff13'],
     plotOptions: {
       pie: {
         donut: {
@@ -392,10 +413,22 @@ function recorrenciaDeAlertas(tickets) {
   const aliceDiv = document.getElementById('alice');
   let html = '';
 
+  var corReccorencia;
   for (let i = 0; i < Math.min(5, recorrencia.length); i++) {
-    html += `<tr class="tr-posicoes">
+    if(recorrencia[i].quantidade >= 30){
+      corReccorencia = "vermelhao"
+    } else if(recorrencia[i].quantidade >= 15){
+      corReccorencia = "vermelho"
+    } else{
+      corReccorencia = "branco"
+    }
+
+    text = recorrencia[i].tipo.trim().toLowerCase();
+    text = text.charAt(0).toUpperCase() + text.slice(1);
+
+    html += `<tr class="tr-posicoes ${corReccorencia}">
                 <td class="text-posicao">${i + 1}º</td>
-                <td class="text-tipo">${recorrencia[i].tipo}</td>
+                <td class="text-tipo"><b>${text}</b></td>
                 <td class="text-qtd">${recorrencia[i].quantidade}</td>
               </tr>`;
   }
@@ -644,7 +677,7 @@ function graficoQtdHora(tickets) {
         endingShape: 'flat'
       }
     },
-    colors: ['#FDE047', '#4ADE80', '#38BDF8', '#F472B6', '#FB923C'],
+    colors: ['#FFA500', '#20C997', '#1E90FF', '#FFD700', '#FF6F61', '#8Bff13'],
     legend: {
       position: 'top',
     }
