@@ -108,6 +108,10 @@ CREATE TABLE alerta (
 INSERT INTO empresa (razao_social, cnpj, categoria, data_inicio, status) VALUES
 ('Sentinela Tech Solutions Ltda.', '12345678000100', 'Tecnologia', '2023-01-15', 1);
 INSERT INTO endereco_empresa (cep, numero, logradouro, estado, cidade, complemento, fk_endereco_empresa) VALUES
-('01000-000', 123, 'Rua da Tecnologia', 'São Paulo', 'São Paulo', 'Andar 5', 1);
 INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
 ('Vinicius Silva', 'vinicius@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
+insert into colaborador (nome, email, senha, tipo, fk_colaborador_empresa, telefone) values ('Aaron', 'aaron@email.com', sha2('123', 256), 1, 1, 123);
+update empresa set status = 2 where id_empresa > 0;
+select * from empresa;
+
+update maquina set fk_maquina_empresa = 1 where id_maquina > 0;

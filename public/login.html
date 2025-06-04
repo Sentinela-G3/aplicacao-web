@@ -65,9 +65,9 @@
           const statusEmpresa = dados.status;
           // console.log(dados)
 
-          if (statusEmpresa == 1) {
-    alert("O acesso da sua empresa está inativo. Quando o contrato for fechado, seu acesso será liberado.");
-} else {
+//           if (statusEmpresa == 1) {
+//     alert("O acesso da sua empresa está inativo. Quando o contrato for fechado, seu acesso será liberado.");
+// } else {
     sessionStorage.idEmpresa = dados.id_empresa;
     sessionStorage.idUsuario = dados.id_usuario;
     sessionStorage.email = dados.email;
@@ -89,7 +89,7 @@
 
         window.location = paginaDestino;
     }, 1000);
-}
+// }
 
 
         });
