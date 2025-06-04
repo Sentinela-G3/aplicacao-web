@@ -252,7 +252,7 @@ async function renderTicketsGilberto(tickets) {
     container.innerHTML += `<div class="ticket-layout ${brancoOuCinza}">
       <div class="box-urgencia ${styleUrgencia}">
           <div class="div-urgencia ${styleUrgencia}">
-              <span id="text-urgencia">${urgencia.toUpperCase()}</span>
+              <span class="text-urgencia">${urgencia.toUpperCase()}</span>
           </div>
       </div>
       <div class="box-esquerda">
@@ -264,13 +264,13 @@ async function renderTicketsGilberto(tickets) {
       <div class="box-direita">
           <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> ${textoSLA}</span>
           <div class="box-buttons">
-              <button class="buttons-tickets btn" id="button-detalhes" onclick="redirecionar(${maquina[1]})">Ver Detalhes</button>
+              <button class="buttons-tickets btn" id="button-detalhes" onclick="redirecionar('${maquina[1]}')">Ver Detalhes</button>
               <select class="buttons-tickets select" id="selection-responsavel${chaveTicket}">
                   <option value="">Responsável</option>
                   ${listaMembros.map(membro => {
-                    const selected = membro.displayName === responsavelTicket ? "selected" : "";
-                    return `<option value="${membro.accountId}" ${selected}>${membro.displayName}</option>`;
-                  }).join('')}
+      const selected = membro.displayName === responsavelTicket ? "selected" : "";
+      return `<option value="${membro.accountId}" ${selected}>${membro.displayName}</option>`;
+    }).join('')}
               </select>
               <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel('${chaveTicket}', document.getElementById('selection-responsavel${chaveTicket}').value)">Designar</button>
           </div>
@@ -316,7 +316,7 @@ async function alertasPorComponente() {
     }
   })
 
-  var listaQtdComponentes = [ contarCPU, contarMemoria, contarDisco, contarRede, contarBateria, contarTempo]
+  var listaQtdComponentes = [contarCPU, contarMemoria, contarDisco, contarRede, contarBateria, contarTempo]
 
   divQtd.innerHTML = `<i>Quantidade:</i> <b> ${contarQtd}</b> `
 
@@ -327,7 +327,7 @@ async function alertasPorComponente() {
       width: '100%',
     },
     series: listaQtdComponentes,
-    labels: ['CPU', 'Memória','Disco', 'Rede', 'Bateria', 'Tempo de Uso'],
+    labels: ['CPU', 'Memória', 'Disco', 'Rede', 'Bateria', 'Tempo de Uso'],
     colors: ['#FFA500', '#20C997', '#1E90FF', '#FFD700', '#FF6F61', '#8Bff13'],
     plotOptions: {
       pie: {
@@ -368,6 +368,10 @@ async function alertasPorComponente() {
   };
 
   var graficoRoscaTela = new ApexCharts(document.querySelector("#graficoRosca"), graficoRosca);
+
+  const loadingDiv2 = document.getElementById("loading2");
+  if (loadingDiv2) loadingDiv2.remove();
+
   graficoRoscaTela.render();
   recorrenciaDeAlertas(tickets)
 }
@@ -415,11 +419,11 @@ function recorrenciaDeAlertas(tickets) {
 
   var corReccorencia;
   for (let i = 0; i < Math.min(5, recorrencia.length); i++) {
-    if(recorrencia[i].quantidade >= 30){
+    if (recorrencia[i].quantidade >= 30) {
       corReccorencia = "vermelhao"
-    } else if(recorrencia[i].quantidade >= 15){
+    } else if (recorrencia[i].quantidade >= 15) {
       corReccorencia = "vermelho"
-    } else{
+    } else {
       corReccorencia = "branco"
     }
 
@@ -684,6 +688,10 @@ function graficoQtdHora(tickets) {
   };
 
   var timelineAlertasTela = new ApexCharts(document.querySelector("#timelineAlertas"), timelineAlertas);
+
+  const loadingDiv1 = document.getElementById("loading1");
+  if (loadingDiv1) loadingDiv1.remove();
+
   timelineAlertasTela.render();
   renderTicketsGilberto(tickets)
 };
@@ -743,21 +751,41 @@ function pesquisarChaveOuId() {
 }
 
 function redirecionar(serialNumber) {
-  fetch('/maquinas/obterFkModelo', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ serialNumber: serialNumber })
-  })
+  fetch(`/maquinas/serial/${serialNumber}`)
     .then(response => response.json())
     .then(data => {
-      const idMaquina = data.idMaquina; // assumindo que o backend retorna { idMaquina: ... }
-      if (idMaquina) {
+      console.log("Resposta do backend:", data); 
+
+      if (data.length > 0) {
+        const idMaquina = data[0].id_maquina;
         window.location = `./dash_analiseDetalhada.html?id=${idMaquina}`;
       } else {
-        console.error('ID da máquina não encontrado na resposta');
+        console.error('Nenhuma máquina encontrada com esse serial');
       }
     })
-    .catch(error => console.error('Erro:', error));
+    .catch(error => console.error("Erro na requisição:", error));
 }
+
+const inputPesquisa = document.getElementById('search-dispositivo');
+const filtroUrgencia = document.getElementById('select-urgencia');
+const container = document.getElementById('tickets-container');
+
+function filtrarTickets() {
+  const termo = inputPesquisa.value.toLowerCase();
+  const urgenciaSelecionada = filtroUrgencia.value;
+
+  const tickets = container.querySelectorAll('.ticket-layout');
+
+  tickets.forEach(ticket => {
+    const textoTicket = ticket.innerText.toLowerCase();
+    const urgencia = ticket.querySelector('.text-urgencia')?.innerText.trim().toLowerCase();
+
+    const correspondeTexto = textoTicket.includes(termo);
+    const correspondeUrgencia = !urgenciaSelecionada || urgencia === urgenciaSelecionada.toLowerCase();
+
+    ticket.style.display = (correspondeTexto && correspondeUrgencia) ? 'flex' : 'none';
+  });
+}
+
+inputPesquisa.addEventListener('input', filtrarTickets);
+filtroUrgencia.addEventListener('change', filtrarTickets);

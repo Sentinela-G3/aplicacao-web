@@ -268,7 +268,7 @@ body {
     background-color: rgb(0, 208, 255);
 }
 
-#text-urgencia {
+.text-urgencia {
     display: flex;
     height: 100%;
     width: 100%;
@@ -291,6 +291,8 @@ body {
     justify-content: space-evenly;
     flex-direction: column;
 }
+
+
 
 .box-direita {
     padding: 0 20px 0 0;

@@ -30,10 +30,22 @@
         <div class="div-superior">
             <div class="box-grafico">
                 <span class="titulo-grafico">Alertas em Aberto por Hora</span>
+                <div id="loading1"
+                    style="display: flex; height: 91%; width: 100%; justify-content: center; align-items: center;flex-direction: column;">
+                    <img src="../assets/img/loading.gif" alt="Carregando" width="50">
+                    <span
+                        style="font-weight: bold; margin-left: 10px; color: rgb(222, 189, 0); font-size: 12px;">Carregando...</span>
+                </div>
                 <div id="timelineAlertas"></div>
             </div>
             <div class="box-pizza"">
                 <span class=" titulo-grafico">Alertas em Aberto por Componente</span>
+                <div id="loading2"
+                    style="display: flex; height: 91%; width: 100%; justify-content: center; align-items: center;flex-direction: column;">
+                    <img src="../assets/img/loading.gif" alt="Carregando" width="50">
+                    <span
+                        style="font-weight: bold; margin-left: 10px; color: rgb(222, 189, 0); font-size: 12px;">Carregando...</span>
+                </div>
                 <span class="subtitulo-grafico" id="subtitulo-grafico"></span>
                 <div id="graficoRosca"></div>
             </div>
@@ -47,21 +59,49 @@
                         Alertas</span>
                     <div class="filtros-direita">
                         <select id="select-urgencia" class="select-urgencia">
-                            <option value="#">Todos</option>
-                            <option value="Leve" >Leve</option>
+                            <option value="">Todos</option>
+                            <option value="Leve">Leve</option>
                             <option value="Grave">Grave</option>
                             <option value="Crítico">Crítico</option>
                         </select>
-                        <input id="searh-urgencia" type="text" placeholder="Pesquisar dispositivo" class="searh-urgencia">
+                        <input id="search-dispositivo" type="text" placeholder="Pesquisar dispositivo"
+                            class="searh-urgencia">
                     </div>
                 </div>
 
                 <div class="lista-tickets" id="lista-tickets">
-                    <div id="loading" style="display: flex; height: 91%; width: 100%; justify-content: center; align-items: center;flex-direction: column;">
+                    <div id="loading"
+                        style="display: flex; height: 91%; width: 100%; justify-content: center; align-items: center;flex-direction: column;">
                         <img src="../assets/img/loading.gif" alt="Carregando" width="150">
-                        <span style="font-weight: bold; margin-left: 10px; color: rgb(222, 189, 0);" >Carregando...</span>
+                        <span
+                            style="font-weight: bold; margin-left: 10px; color: rgb(222, 189, 0);">Carregando...</span>
                     </div>
                     <div id="tickets-container" style="display:none; flex-direction: column; "></div>
+                    <!-- <div class="ticket-layout">
+                        <div class="box-urgencia">
+                            <div class="div-urgencia">
+                                <span id="text-urgencia">CRITÍCO</span>
+                            </div>
+                        </div>
+                        <div class="box-esquerda">
+                            <span class="text-infos" id="id-dispositivo">ID Dispositivo: FVFZTLKKL40Y</span>
+                            <span class="text-infos" id="recurso">Recurso: <b>Disco</b></span>
+                            <span class="text-infos" id="descricao">Robô sem acesso à internet</span>
+                            <span class="text-infos" id="hrDeAbertura"><i>Aberto em 28/05 às 14:19</i></span>
+                        </div>
+                        <div class="box-direita">
+                            <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
+                                    style="color: red;">20 min e 30 seg</b> </span>
+                            <div class="box-buttons">
+                                <button class="buttons-tickets btn" id="button-detalhes">Ver Detalhes</button>
+                                <select class="buttons-tickets" id="selection-responsavel">
+                                    <option value="">Responsável</option>
+                                </select>
+                                <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel()">Designar</button>
+                            </div>
+                        </div>
+                    </div> -->
+
                     <!-- <div class="ticket-layout">
                         <div class="box-urgencia">
                             <div class="div-urgencia">
@@ -100,6 +140,18 @@
                         </tr>
                     </thead>
                     <tbody id="alice">
+                        <tr class="tr-posicoes">
+                            <td class="text-posicao"></td>
+                            <td class="text-tipo">
+                                <div id="loading"
+                                    style="display: flex; height: 91%; width: 100%; justify-content: center; align-items: center;flex-direction: column;">
+                                    <img src="../assets/img/loading.gif" alt="Carregando" width="50">
+                                    <span
+                                        style="font-weight: bold; margin-left: 10px; color: rgb(222, 189, 0); font-size: 12px;">Carregando...</span>
+                                </div>
+                            </td>
+                            <td class="text-qtd"></td>
+                        </tr>
                         <!-- <tr class="tr-posicoes">
                             <td class="text-posicao">1º</td>
                             <td class="text-tipo">Alimentos</td>

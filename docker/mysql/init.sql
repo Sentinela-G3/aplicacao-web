@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-CREATE DATABASE Sentinela;
-USE Sentinela;
-=======
 create database sentinela;
 use sentinela;
 
->>>>>>> 1482ad44585692dc2801b8d0313e0e033c6b8ec7
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY AUTO_INCREMENT,
     razao_social VARCHAR(100) NOT NULL,
@@ -44,11 +39,6 @@ CREATE TABLE colaborador (
         ON DELETE CASCADE 
 );
 
-<<<<<<< HEAD
-CREATE TABLE maquina (
-    id_maquina INT PRIMARY KEY AUTO_INCREMENT,
-    modelo VARCHAR(100) NOT NULL,
-=======
 CREATE TABLE modelo (
     id_modelo INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100)
@@ -57,7 +47,6 @@ CREATE TABLE modelo (
 CREATE TABLE maquina (
     id_maquina INT PRIMARY KEY AUTO_INCREMENT,
     modelo INT,
->>>>>>> 1482ad44585692dc2801b8d0313e0e033c6b8ec7
     so VARCHAR(100) NOT NULL,
     serial_number VARCHAR(100) NOT NULL,
     setor VARCHAR(50) NOT NULL,
@@ -69,17 +58,6 @@ CREATE TABLE maquina (
 
 CREATE TABLE componente (
     id_componente INT PRIMARY KEY AUTO_INCREMENT,
-<<<<<<< HEAD
-    tipo VARCHAR(50) NOT NULL,
-    modelo VARCHAR(100) NOT NULL,
-    valor FLOAT NOT NULL,
-    minimo FLOAT NOT NULL,
-    maximo FLOAT NOT NULL,
-    fk_componente_maquina INT NOT NULL,
-    FOREIGN KEY (fk_componente_maquina)
-        REFERENCES maquina(id_maquina) 
-        ON DELETE CASCADE -- Exclui componentes quando a máquina for excluída
-=======
     tipo VARCHAR(50) NULL,
     modelo VARCHAR(100),
     valor FLOAT NOT NULL,
@@ -93,18 +71,13 @@ CREATE TABLE componente (
     FOREIGN KEY (fk_componente_maquina)
         REFERENCES maquina(id_maquina) 
         ON DELETE CASCADE 
->>>>>>> 1482ad44585692dc2801b8d0313e0e033c6b8ec7
 );
 
 CREATE TABLE comandos_agente (
     id_comando INT PRIMARY KEY AUTO_INCREMENT,
     id_maquina VARCHAR(255) NOT NULL, 
     pid_processo INT NOT NULL,         
-<<<<<<< HEAD
-    tipo_comando VARCHAR(50) NOT NULL DEFAULT 'encerrar_processo', -
-=======
     tipo_comando VARCHAR(50) NOT NULL DEFAULT 'encerrar_processo', 
->>>>>>> 1482ad44585692dc2801b8d0313e0e033c6b8ec7
     status VARCHAR(50) NOT NULL DEFAULT 'pendente', 
     data_solicitacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     data_execucao DATETIME NULL,
