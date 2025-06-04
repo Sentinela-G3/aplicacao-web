@@ -135,7 +135,7 @@ function kpiMaisAlertas(machines, alerts) {
 
             if (resumo && resumo.value) {
                 const partes = resumo.value.split(' ');
-                numeroSerial = partes[partes.length - 1];
+                numeroSerial = partes[partes.length - 1]
                 seriais.push(numeroSerial);
             }
 
@@ -145,6 +145,7 @@ function kpiMaisAlertas(machines, alerts) {
         seriais.forEach(serial => {
             contagem.set(serial, (contagem.get(serial) || 0) + 1);
         });
+
         let maquinaMaisAlerts = null;
         let maxAlertas = 0;
 
@@ -164,7 +165,6 @@ function kpiMaisAlertas(machines, alerts) {
             alertaDetalhes.style.backgroundColor = "var(--color-alerta-vermelho)";
             alertaDetalhes.style.color = "#fff";
         }
-
         const ultimaMaquina = machines.find(maquinas => maquinas.serial_number === maquinaMaisAlerts);
 
         if (ultimaMaquina) {
@@ -223,7 +223,7 @@ async function buscarMetricas(idMaquina) {
 
 function calcularStatus(metrics) {
     const temDados = metrics.dados && !Array.isArray(metrics.dados);
-    if (!temDados) return { statusText: "Sem dados", statusColor: "gray", segundos: null };
+    if (!temDados) return { statusText: "Inativo", statusColor: "gray", segundos: null };
 
     for (const tipo in metrics.dados) {
         const dadosTipo = metrics.dados[tipo];
@@ -241,7 +241,7 @@ function calcularStatus(metrics) {
         }
     }
 
-    return { statusText: "Sem dados", statusColor: "gray", segundos: null };
+    return { statusText: "Inativo", statusColor: "gray", segundos: null };
 }
 
 function calcularAlertas(machine, alerts) {
@@ -252,7 +252,7 @@ function calcularAlertas(machine, alerts) {
 }
 
 function extrairUltimoAlerta(alertasMaquina) {
-     const alertaMaisRecente = alertasMaquina.reduce((maisRecente, alerta) => {
+    const alertaMaisRecente = alertasMaquina.reduce((maisRecente, alerta) => {
         const alertaData = alerta.createdDate?.iso8601 ? new Date(alerta.createdDate.iso8601) : null;
         if (!alertaData) return maisRecente;
         if (!maisRecente) return alerta;
@@ -277,15 +277,14 @@ function extrairUltimoAlerta(alertasMaquina) {
         cor = "#d32f2f"
     }
 
-    return alertasMaquina.length > 0
-        ? ` <a href="${alertasMaquina[0]._links?.web || "#"}" 
+    return alertasMaquina.length > 0 ?
+        ` <a href="${alertasMaquina[0]._links?.web || "#"}" 
             target="_blank" 
             title="Clique para abrir o chamado no Jira" 
             style="text-decoration: none; color: ${cor};">
             ${`há ${minutos} min` || "N/A"} 🔗
-                </a>
-            `
-        : "Nenhum";
+            </a>
+            ` : `Nenhum`;
 }
 
 function getValor(metrics, tipo) {
