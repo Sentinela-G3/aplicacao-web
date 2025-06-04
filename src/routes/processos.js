@@ -11,5 +11,9 @@ router.get('/:id_maquina', (req, res) => {
     processosController.obterProcessos(req, res);
 });
 
+router.post('/matarprocesso/:id_maquina', (req, res) => {
+    processosController.matarProcesso(req, res)
+})
+
 
 module.exports = router;

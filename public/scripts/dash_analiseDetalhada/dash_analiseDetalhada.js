@@ -5,7 +5,7 @@ const BASE_URL = window.location.hostname === "localhost"
     ? "localhost:3333"
     : "18.208.5.45:3333";
 
-let chartCPU, chartMemoria, chartRede, chartDisco, chartDownload, chartUpload;
+let chartCPU, chartMemoria, chartRede, chartDisco, chartDownload;
 let intervaloAtualizacao;
 let thresholdData = [];
 let estadoOrdenacao = {
@@ -100,119 +100,110 @@ async function buscarThreshold(idMaquina) {
     }
 }
 
+function getUnitForTipo(tipo) {
+    if (tipo.includes('_percent')) return '%';
+    if (tipo.includes('_gb')) return 'GB';
+    if (tipo.includes('_mbps')) return 'Mbps';
+    if (tipo.includes('_ghz')) return 'GHz';
+    if (tipo.includes('_hours')) return 'h';
+    // Adicione mais unidades conforme necessário para outros tipos de métricas
+    return ''; // Retorna string vazia se nenhuma unidade específica for encontrada
+}
+
+function criarAnotacoesThreshold(thresholdValues, tipoMetrica) {
+    const annotations = [];
+    const unit = getUnitForTipo(tipoMetrica);
+
+    // Define cores e textos para cada nível de threshold
+    const thresholdLevels = [
+        { key: 'leve', color: '#FFC300', label: 'Leve', offsetY: 0 },       // Amarelo
+        { key: 'grave', color: '#FF5733', label: 'Grave', offsetY: -15 },  // Laranja/Vermelho claro
+        { key: 'critico', color: '#E02519', label: 'Crítico', offsetY: 15 } // Vermelho escuro
+    ];
+
+    thresholdLevels.forEach(levelInfo => {
+        const value = thresholdValues[levelInfo.key];
+        if (value !== null && typeof value !== 'undefined') {
+            annotations.push({
+                y: value,
+                borderColor: levelInfo.color,
+                label: {
+                    borderColor: levelInfo.color, // Opcional: borda no label
+                    style: {
+                        color: '#fff', // Cor do texto do label
+                        background: levelInfo.color, // Cor de fundo do label
+                        fontSize: '10px',
+                        fontWeight: 'normal',
+                        padding: { // Adiciona um pouco de padding ao label
+                            left: 5,
+                            right: 5,
+                            top: 2,
+                            bottom: 2
+                        }
+                    },
+                    text: `${levelInfo.label} (${value}${unit})`,
+                    position: 'right', // Posição do label ('left' ou 'right')
+                    offsetX: 5,       // Deslocamento horizontal do label
+                    offsetY: levelInfo.offsetY // Deslocamento vertical para evitar sobreposição
+                }
+            });
+        }
+    });
+    return annotations;
+}
+
 function atualizarGraficosComThreshold() {
-    chartCPU.updateOptions({
-        annotations: {
-            yaxis: [
-                {
-                    y: getThreshold('cpu_percent').max,
-                    borderColor: '#E02519',
-                    label: {
-                        text: `Threshold (${getThreshold('cpu_percent').max}%)`,
-                        style: {
-                            color: '#E02519',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
-            ]
-        }
-    });
+    if (!thresholdData || thresholdData.length === 0) {
+        console.warn("Dados de threshold ainda não carregados ou vazios.");
+        return;
+    }
 
-    chartMemoria.updateOptions({
-        annotations: {
-            yaxis: [
-                {
-                    y: getThreshold('ram_percent').max,
-                    borderColor: '#E02519',
-                    label: {
-                        text: `Threshold (${getThreshold('ram_percent').max}%)`,
-                        style: {
-                            color: '#E02519',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
-            ]
-        }
-    });
+    // Mapeamento dos tipos de métrica para as instâncias dos gráficos
+    const graficosParaAtualizar = [
+        { chart: chartCPU, tipo: 'cpu_percent' },
+        { chart: chartMemoria, tipo: 'ram_percent' },
+        { chart: chartDownload, tipo: 'net_download' },   // Ajuste o tipo se necessário
+        { chart: chartDisco, tipo: 'disk_percent' }
+        // Adicione outros gráficos e seus tipos correspondentes aqui
+        // Ex: { chart: chartNetUsage, tipo: 'net_usage_percent'}
+    ];
 
-    chartDownload.updateOptions({
-        annotations: {
-            yaxis: [
-                {
-                    y: getThreshold('net_download').max,
-                    borderColor: '#E02519',
-                    label: {
-                        text: `Threshold (${getThreshold('net_download').max}%)`,
-                        style: {
-                            color: '#E02519',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
-            ]
-        }
-    });
+    graficosParaAtualizar.forEach(item => {
+        if (item.chart) { // Verifica se a instância do gráfico existe
+            const thresholdValues = getThreshold(item.tipo);
+            const yaxisAnnotations = criarAnotacoesThreshold(thresholdValues, item.tipo);
 
-    chartUpload.updateOptions({
-        annotations: {
-            yaxis: [
-                {
-                    y: getThreshold('net_upload').max,
-                    borderColor: '#E02519',
-                    label: {
-                        text: `Threshold (${getThreshold('net_upload').max}%)`,
-                        style: {
-                            color: '#E02519',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }
-                    }
+            item.chart.updateOptions({
+                annotations: {
+                    yaxis: yaxisAnnotations.length > 0 ? yaxisAnnotations : [] // Garante que não passamos undefined
                 }
-            ]
-        }
-    });
-
-    chartDisco.updateOptions({
-        annotations: {
-            yaxis: [
-                {
-                    y: getThreshold('disk_percent').max,
-                    borderColor: '#E02519',
-                    label: {
-                        text: `Threshold (${getThreshold('disk_percent').max}%)`,
-                        style: {
-                            color: '#E02519',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
-            ]
+            });
+        } else {
+            console.warn(`Instância do gráfico para o tipo '${item.tipo}' não encontrada.`);
         }
     });
 }
 
 const getThreshold = (tipo) => {
-    const threshold = thresholdData.find(item => item.tipo === tipo);
-    if (threshold) {
-        return { max: threshold.maximo };
+    const thresholdConfig = thresholdData.find(item => item.tipo === tipo);
+    if (thresholdConfig) {
+        return {
+            leve: thresholdConfig.threshold_leve,
+            grave: thresholdConfig.threshold_grave,
+            critico: thresholdConfig.threshold_critico
+        };
     } else {
-        console.error(`Threshold não encontrado para o tipo: ${tipo}`);
-        return { max: 100 };
+        console.warn(`Threshold não encontrado para o tipo: ${tipo}. Nenhum limite será plotado.`);
+        return { leve: null, grave: null, critico: null }; // Retorna nulls para não plotar nada
     }
-}
+};
 
 function inicializarGraficos() {
     chartCPU = new ApexCharts(document.querySelector("#chart"), {
         series: [{ name: "CPU %", data: [] }],
         chart: {
             type: 'line',
-            height: 350
+            height: 200
         },
         annotations: {
             yaxis: [
@@ -242,7 +233,7 @@ function inicializarGraficos() {
         series: [{ name: "Memória %", data: [] }],
         chart: {
             type: 'line',
-            height: 350
+            height: 200
         },
         annotations: {
             yaxis: [
@@ -272,61 +263,47 @@ function inicializarGraficos() {
         series: [{ name: "Download (Mbps)", data: [] }],
         chart: {
             type: 'line',
-            height: 350
+            height: 200
         },
         xaxis: {
             categories: []
         },
         yaxis: {
-            title: { text: 'Velocidade (Mbps)' }
+            title: { text: 'Porcentagem (%)' }
         }
     });
     chartDownload.render();
 
-    chartUpload = new ApexCharts(document.querySelector("#chartUpload"), {
-        series: [{ name: "Upload (Mbps)", data: [] }],
-        chart: {
-            type: 'line',
-            height: 350
-        },
-        xaxis: {
-            categories: []
-        },
-        yaxis: {
-            title: { text: 'Velocidade (Mbps)' }
-        }
-    });
-    chartUpload.render();
 
-    chartDisco = new ApexCharts(document.querySelector("#chart6"), {
-        series: [{ name: "Disco %", data: [] }],
-        chart: {
-            type: 'line',
-            height: 350
-        },
-        annotations: {
-            yaxis: [
-                {
-                    y: 100,
-                    borderColor: '#E02519',
-                    label: {
-                        text: 'Valor máximo',
-                        style: {
-                            color: '#E02519',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
-            ]
-        },
-        xaxis: { categories: [] },
-        yaxis: {
-            title: { text: 'Porcentagem (%)' },
-            max: 100,
-        }
-    });
-    chartDisco.render();
+    // chartDisco = new ApexCharts(document.querySelector("#chart6"), {
+    //     series: [{ name: "Disco %", data: [] }],
+    //     chart: {
+    //         type: 'line',
+    //         height: 200
+    //     },
+    //     annotations: {
+    //         yaxis: [
+    //             {
+    //                 y: 100,
+    //                 borderColor: '#E02519',
+    //                 label: {
+    //                     text: 'Valor máximo',
+    //                     style: {
+    //                         color: '#E02519',
+    //                         fontSize: '12px',
+    //                         fontWeight: 'bold'
+    //                     }
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     xaxis: { categories: [] },
+    //     yaxis: {
+    //         title: { text: 'Porcentagem (%)' },
+    //         max: 100,
+    //     }
+    // });
+    // chartDisco.render();
 }
 
 async function buscarMetricas(idMaquina) {
@@ -348,10 +325,10 @@ async function buscarMetricas(idMaquina) {
         const ramTotal = dados.ram_total ?? null;
         const ramPercent = dados.ram_percent?.[0]?.valor ?? null;
         const netDownload = dados.net_download?.[0]?.valor ?? null;
-        const netUpload = dados.net_upload?.[0]?.valor ?? null;
         const diskUsage = dados.disk_percent?.length > 0 ? dados.disk_percent.at(-1) : null;
         const diskUsedGB = dados.disk_usage_gb?.length > 0 ? dados.disk_usage_gb.at(-1) : null;
         const uptime = dados.uptime_hours?.length > 0 ? dados.uptime_hours.at(-1) : null;
+        const netUsage = dados.net_usage_percent?.[0]?.valor ?? null;
 
         if (
             cpuFreq !== null ||
@@ -364,20 +341,18 @@ async function buscarMetricas(idMaquina) {
             netUpload !== null ||
             diskUsage !== null ||
             diskUsedGB !== null ||
-            uptime !== null
+            uptime !== null ||
+            netUsage !== null
         ) {
             atualizarBoxes({
-                cpu_freq: cpuFreq,
                 cpu_percent: cpuPercent,
                 cpu_uptime: cpuUptime,
                 ram_used: ramUsed,
                 ram_total: ramTotal,
                 ram_percent: ramPercent,
                 net_download: netDownload,
-                net_upload: netUpload,
-                disk_usage: diskUsage,
-                disk_used_gb: diskUsedGB,
-                uptime: uptime
+                uptime: uptime,
+                net_usage_percent: netUsage
             });
         }
 
@@ -386,17 +361,15 @@ async function buscarMetricas(idMaquina) {
             Array.isArray(dados.cpu_percent) &&
             Array.isArray(dados.ram_percent) &&
             Array.isArray(dados.net_download) &&
-            Array.isArray(dados.net_upload) &&
-            Array.isArray(dados.disk_percent)
+            Array.isArray(dados.net_usage_percent)
         ) {
             const timestamps = dados.cpu_percent.map(item => new Date(item.timestamp).toLocaleTimeString('pt-BR', { hour12: false }));
             const cpu = dados.cpu_percent.map(item => item.valor);
             const memoria = dados.ram_percent.map(item => item.valor);
-            const download = dados.net_download.map(item => (item.valor * 1024).toFixed(2));
-            const upload = dados.net_upload.map(item => (item.valor * 1024).toFixed(2));
-            const disco = dados.disk_percent.map(item => item.valor);
+            const netUsage = dados.net_usage_percent.map(item => item.valor);
+            // const disco = dados.disk_percent.map(item => item.valor);
 
-            atualizarGraficos({ cpu, memoria, download, upload, disco, timestamps });
+            atualizarGraficos({ cpu, memoria, timestamps, netUsage });
         }
 
     } catch (error) {
@@ -423,20 +396,9 @@ function atualizarGraficos(dados) {
     chartDownload.updateOptions({
         xaxis: { categories: dados.timestamps }
     });
-    chartDownload.updateSeries([{ name: "Download (Mbps)", data: dados.download }]);
+    chartDownload.updateSeries([{ name: "Download (Mbps)", data: dados.netUsage }]);
     chartDownload.update();
 
-    chartUpload.updateOptions({
-        xaxis: { categories: dados.timestamps }
-    });
-    chartUpload.updateSeries([{ name: "Upload (Mbps)", data: dados.upload }]);
-    chartUpload.update();
-
-    chartDisco.updateOptions({
-        xaxis: { categories: dados.timestamps }
-    });
-    chartDisco.updateSeries([{ name: "Disco %", data: dados.disco }]);
-    chartDisco.update();
 }
 
 function atualizarBoxes(dados) {
@@ -447,7 +409,6 @@ function atualizarBoxes(dados) {
         return parseFloat(dado).toFixed(casasDecimais);
     }
 
-    document.getElementById("cpuFreqKPI").textContent = validarDado(dados.cpu_freq, "Sem dados", 2) + " GHz";
     document.getElementById("cpuPercentKPI").textContent = validarDado(dados.cpu_percent, "Sem dados") + "%";
     document.getElementById("cpuUptimeKPI").textContent =
         dados.uptime && !isNaN(dados.uptime.valor)
@@ -459,13 +420,7 @@ function atualizarBoxes(dados) {
         validarDado(calcularTotalRAM(dados.ram_used[0].valor, dados.ram_percent), "Sem dados", 2) + " GB";
     document.getElementById("ramPercentKPI").textContent = validarDado(dados.ram_percent, "Sem dados") + "%";
 
-    document.getElementById("downloadKPI").textContent = validarDado(dados.net_download, "Sem dados", 6) + " mbps";
-
-    document.getElementById("uploadKPI").textContent = validarDado(dados.net_upload, "Sem dados", 6) + " mbps";
-
-    document.getElementById("diskFreeKPI").textContent = validarDado(calcularCapacidadeDisco(dados.disk_used_gb.valor, dados.disk_usage.valor).capacidadeLivre, "Sem dados", 2) + " GB";
-    document.getElementById("diskUsedKPI").textContent = validarDado(dados.disk_used_gb.valor, "Sem dados", 2) + " GB";
-    document.getElementById("diskTotalKPI").textContent = validarDado(calcularCapacidadeDisco(dados.disk_used_gb.valor, dados.disk_usage.valor).capacidadeTotal, "Sem dados", 2) + " GB";
+    document.getElementById("downloadKPI").textContent = validarDado(dados.net_usage_percent, "Sem dados", 2) + "%";
 }
 
 async function buscarProcessos(idMaquina) {
@@ -523,7 +478,7 @@ async function buscarAlertas(serialNumber) {
         const ticketsFiltrados = data.values
             .filter(ticket =>
                 ticket.summary.includes(serialNumber) &&
-                ticket.requestTypeId === "68"
+                ticket.requestTypeId === "5"
             )
             .map(ticket => {
                 const date = new Date(ticket.createdDate.jira);
@@ -536,9 +491,7 @@ async function buscarAlertas(serialNumber) {
 
                 const descricaoRaw = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value || "";
                 const descricaoSeparada = descricaoRaw.split('*');
-                const descricaoTratada = descricaoSeparada[3]
-                    ? descricaoSeparada[3].charAt(0).toUpperCase() + descricaoSeparada[3].slice(1)
-                    : "Sem descrição";
+                const descricaoTratada = descricaoRaw
 
                 const idDispositivo = ticket.summary.split(" ")[1] || "N/A";
                 const status = ticket.currentStatus?.status || "Desconhecido";
@@ -619,7 +572,7 @@ function gerarCardsAcoes() {
                     cardProcessoAltoConsumo.innerHTML = `
                         <h3>🔥 Alto Consumo: ${processo.nome}</h3>
                         <p>Consumindo aproximadamente <strong>${consumoTotal}%</strong> (CPU + RAM), mais de 90% acima da média dos processos ativos (${mediaConsumo.toFixed(1)}%).</p>
-                        <button onclick="confirmarEncerrarProcesso('${processo.nome}')">Encerrar Processo</button>
+                        <button onclick="confirmarEncerrarProcesso(${processo.pid}, '${processo.nome}')">Encerrar Processo</button>
                     `;
                     container.appendChild(cardProcessoAltoConsumo);
                     algumAlertaGerado = true;
@@ -659,7 +612,7 @@ function gerarCardsAcoes() {
 }
 
 function abrirChamadoJira(issueKey) {
-    const jiraUrlBase = "https://sentinelacomvoce.atlassian.net/browse/";
+    const jiraUrlBase = "https://sentinelacomvc.atlassian.net/browse/";
     window.open(jiraUrlBase + issueKey, '_blank');
 }
 
@@ -804,6 +757,48 @@ function ordenarTabelaAlertasPor(campo) {
 
     const ordenados = ordenarAlertas(alertasAtuais, campo, estadoOrdenacaoAlertas.crescente);
     atualizarTabelaAlertas(ordenados);
+}
+
+function confirmarEncerrarProcesso(pid, nome) {
+    if (confirm(`Tem certeza que deseja encerrar o processo ${nome} (PID: ${pid})?`)) {
+        const id_maquina = id;
+        const tipo_comando = "encerrar_processo";
+
+        fetch(`/processos/matarProcesso/${id_maquina}`, {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                pid: pid,
+                tipo_comando: tipo_comando
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                    throw new Error(errorData.error || 'Erro desconhecido na requisição.');
+                });
+            }
+            return response.json(); 
+        })
+        .then(data => {
+            console.log("Sucesso ao enviar comando:", data);
+            alert("Comando de encerramento enviado com sucesso! O processo será encerrado em breve.");
+
+        })
+        .catch(error => {
+            console.error("Erro ao enviar comando de encerramento:", error);
+            alert(`Erro ao tentar encerrar o processo: ${error.message}. Por favor, tente novamente.`);
+        });
+
+    } else {
+        console.log("Encerramento do processo cancelado pelo usuário.");
+    }
+}
+
+function enviarComandoEncerrarProcesso(pid) {
+
 }
 
 

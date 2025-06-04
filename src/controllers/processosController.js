@@ -1,3 +1,4 @@
+var processoModel = require("../models/processoModel");
 const dadosProcessos = {};
 
 function receberProcessos(req, res) {
@@ -99,7 +100,34 @@ function obterProcessos(req, res) {
     });
 }
 
+function matarProcesso(req, res) {
+    const idMaquina = req.params.id_maquina;
+    const pid = req.body.pid;
+    const tipo_comando = req.body.tipo_comando;
+
+    if (!idMaquina || !pid || !tipo_comando) {
+        return res.status(400).json({ erro: 'Faltam dados no payload' });
+    }
+
+    processoModel.matarProcesso(pid, idMaquina, tipo_comando)
+    .then((resposta => {
+        res.status(200).json({
+            resposta
+        })
+    }))
+    .catch(
+        function (erro) {
+            console.log(erro);
+            console.log("\nHouve um erro ao realizar o encerramento do processo! Erro: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        }
+    );
+
+    
+}
+
 module.exports = {
     obterProcessos,
-    receberProcessos
+    receberProcessos,
+    matarProcesso
 }

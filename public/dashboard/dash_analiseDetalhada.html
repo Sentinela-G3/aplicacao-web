@@ -20,6 +20,7 @@
     <!-- MENU SUPERIOR MOBILE -->
     <div class="navBar-mobile" id="navBar-mobile"></div>
 
+    <div class="sections">
     <div class="section1">
         <div class="first-child">
             <h1>Análise detalhada em tempo real</h1>
@@ -39,10 +40,10 @@
                 <div class="graficos_align">
                     <div class="card-generic">
                         <div class="list-data">
-                            <div class="data-box">
+                            <!-- <div class="data-box">
                                 <span class="data-title">Frequência</span>
                                 <span id="cpuFreqKPI" class="data">Sem dados</span>
-                            </div>
+                            </div> -->
                             <div class="data-box">
                                 <span class="data-title">Porcentagem de Uso</span>
                                 <span id="cpuPercentKPI" class="data">Sem dados</span>
@@ -87,48 +88,29 @@
 
             <div class="containerComponent">
                 <div class="titulo_grafico">
-                    <h3>Velocidade de Download</h3>
+                    <h3>Uso da rede</h3>
                     <span>Uso da rede em tempo real</span>
                 </div>
                 <div class="graficos_align">
                     <div class="card-generic">
                         <div class="list-data">
                             <div class="data-box">
-                                <span class="data-title">Velocidade de Download</span>
+                                <span class="data-title">Uso da rede</span>
                                 <span id="downloadKPI" class="data">Sem dados</span>
                             </div>
                         </div>
                         <div class="chart-box">
-                            <h4>Velocidade de Download</h4>
+                            <h4>Uso da rede</h4>
                             <div id="chartDownload" class="chart-js"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="containerComponent">
-                <div class="titulo_grafico">
-                    <h3>Velocidade de Upload</h3>
-                    <span>Uso da rede em tempo real</span>
-                </div>
-                <div class="graficos_align">
-                    <div class="card-generic">
-                        <div class="list-data">
-                            <div class="data-box">
-                                <span class="data-title">Velocidade de Upload</span>
-                                <span id="uploadKPI" class="data">Sem dados</span>
-                            </div>
-                        </div>
-                        <div class="chart-box">
-                            <h4>Velocidade de Upload</h4>
-                            <div id="chartUpload" class="chart-js"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Disco -->
-            <div class="containerComponent">
+            <!-- <div class="containerComponent">
                 <div class="titulo_grafico">
                     <h3>Disco</h3>
                     <span>Uso do Disco em tempo real</span>
@@ -155,8 +137,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
+
+
+    </div>
+    <div class="section2">
         <div class="containerComponent">
             <div class="titulo_grafico">
                 <h3>Processos em Execução</h3>
@@ -210,8 +196,9 @@
                 </div>
             </div>
         </div>
-
     </div>
+    </div>
+
 
     <script src="../scripts/animacaoMenuMobile.js"></script>
     <script src="../scripts/dash_analiseDetalhada/dash_analiseDetalhada.js"></script>

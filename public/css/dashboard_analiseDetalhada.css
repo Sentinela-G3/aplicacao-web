@@ -41,7 +41,6 @@ body {
 
 h1 {
   font-size: var(--fontsize-heading1);
-  margin-bottom: var(--spacing-md);
   color: var(--textcolor-primary);
   font-weight: 600;
 }
@@ -89,9 +88,21 @@ h4 {
   min-height: 100vh;
   padding: var(--spacing-lg);
   margin-left: var(--sidebar-width);
-  gap: var(--spacing-lg);
   max-width: 100%;
-  overflow-x: hidden; /* Impede scroll horizontal */
+  overflow-x: hidden;
+  gap: 1rem;
+}
+
+.section2 {
+    display: flex;
+  flex-direction: column;
+  width: calc(100% - var(--sidebar-width));
+  min-height: 100vh;
+  padding: var(--spacing-lg);
+  margin-left: var(--sidebar-width);
+  max-width: 100%;
+  overflow-x: hidden;
+  gap: 1rem;
 }
 
 .first-child {
@@ -208,7 +219,7 @@ h4 {
 .list-data {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-lg);
+  gap: 1rem;
 }
 
 .data-box {
@@ -252,7 +263,6 @@ h4 {
 .hero-actions {
     display: flex;
     gap: 16px;
-    margin: 20px 0;
     flex-wrap: wrap;
 }
 .action-card {
@@ -356,6 +366,27 @@ h4 {
   }
 }
 
+@media (min-width: 1400px) { /* Para telas maiores que 1400px */
+    .container-graphs {
+        grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+        gap: var(--spacing-md); /* Reduzir um pouco o gap entre eles */
+    }
+}
+
+@media (min-width: 993px) and (max-width: 1399px) { /* Entre 993px e 1399px */
+    .container-graphs {
+        grid-template-columns: repeat(2, 1fr); /* Mantém 2 colunas */
+        gap: var(--spacing-md);
+    }
+}
+
+/* Mantenha suas media queries existentes para telas menores */
+@media (max-width: 992px) {
+    .container-graphs {
+        grid-template-columns: 1fr; /* 1 coluna em telas menores */
+    }
+}
+
 @media (max-width: 992px) {
   .section1 {
       margin-left: 0;
@@ -438,3 +469,4 @@ h4 {
       min-height: 150px;
   }
 }
+
