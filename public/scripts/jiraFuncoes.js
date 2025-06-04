@@ -124,7 +124,6 @@ async function listarMembrosDoProjeto() {
     const data = await response.json();
 
 
-    console.log('Resposta da API:', data)
     if (data.values) {
       return data
     } else {
@@ -171,10 +170,9 @@ async function setarResponsavel(chaveTicket, idNovoResposnavel) {
 }
 
 async function renderTicketsGilberto(tickets) {
-  const listaMembros = await listarMembrosDoProjeto()
-  const div = document.getElementById("lista-tickets")
-
+  const listaMembros = await listarMembrosDoProjeto();
   const container = document.getElementById("tickets-container");
+  container.innerHTML = "";
 
   const prioridadeUrgencia = {
     "Crítico": 3,
@@ -182,6 +180,7 @@ async function renderTicketsGilberto(tickets) {
     "Leve": 1
   };
 
+  // Ordenar tickets
   tickets.sort((a, b) => {
     const urgenciaA = a.requestFieldValues?.find(f => f.fieldId === "customfield_urgencia")?.value?.value || a.requestFieldValues[3]?.value?.value || "";
     const urgenciaB = b.requestFieldValues?.find(f => f.fieldId === "customfield_urgencia")?.value?.value || b.requestFieldValues[3]?.value?.value || "";
@@ -189,107 +188,83 @@ async function renderTicketsGilberto(tickets) {
     const prioridadeA = prioridadeUrgencia[urgenciaA] || 0;
     const prioridadeB = prioridadeUrgencia[urgenciaB] || 0;
 
-    if (prioridadeB !== prioridadeA) {
-      return prioridadeB - prioridadeA;
-    }
+    if (prioridadeB !== prioridadeA) return prioridadeB - prioridadeA;
 
     const dataA = new Date(a.createdDate.jira);
     const dataB = new Date(b.createdDate.jira);
     return dataA - dataB;
   });
 
-  var contar = 1;
-  for (const ticket of tickets) {
+  // Filtrar tickets para renderizar
+  const ticketsParaRenderizar = tickets.filter(t => t.requestTypeId == "5" && (t.currentStatus.status == "Aberto" || t.currentStatus.status == "Reaberto"));
+
+  // Buscar responsáveis de todos os tickets em paralelo
+  const responsaveisPromises = ticketsParaRenderizar.map(t => buscarResponsavel(t.issueKey));
+  const responsaveis = await Promise.all(responsaveisPromises);
+
+  // Agora renderiza com dados completos
+  let contar = 0;
+  ticketsParaRenderizar.forEach((ticket, index) => {
+    contar++;
+    const responsavelTicket = responsaveis[index];
+
     const date = new Date(ticket.createdDate.jira);
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-    const textHoraAbertura = `${day}/${month} às ${hours}:${minutes}`
+    const textHoraAbertura = `${day}/${month} às ${hours}:${minutes}`;
 
     const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value;
     const maquina = ticket.summary.split(" ");
-
     const status = ticket.currentStatus.status;
-
     const chaveTicket = ticket.issueKey;
-
     const recurso = ticket.requestFieldValues[2].value.value;
-
     const urgencia = ticket.requestFieldValues[3].value.value;
 
-    var styleUrgencia;
+    let styleUrgencia = "";
+    if (urgencia === "Crítico") styleUrgencia = "critico";
+    else if (urgencia === "Grave") styleUrgencia = "grave";
+    else if (urgencia === "Leve") styleUrgencia = "leve";
 
+    const brancoOuCinza = (contar % 2 === 0) ? "par" : "impar";
 
-    if (urgencia == "Crítico") {
-      styleUrgencia = "critico"
-    } else if (urgencia == "Grave") {
-      styleUrgencia = "grave"
-    } else if (urgencia == "Leve") {
-      styleUrgencia = "leve"
-    }
+    container.innerHTML += `<div class="ticket-layout ${brancoOuCinza}">
+      <div class="box-urgencia ${styleUrgencia}">
+          <div class="div-urgencia ${styleUrgencia}">
+              <span id="text-urgencia">${urgencia.toUpperCase()}</span>
+          </div>
+      </div>
+      <div class="box-esquerda">
+          <span class="text-infos" id="id-dispositivo">ID Dispositivo: ${maquina[1]}</span>
+          <span class="text-infos" id="recurso">Recurso: <b>${recurso}</b></span>
+          <span class="text-infos" id="descricao">${descricao}</span>
+          <span class="text-infos" id="hrDeAbertura"><i>Aberto em ${textHoraAbertura}</i></span>
+      </div>
+      <div class="box-direita">
+          <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b style="color: red;">20 min e 30 seg</b></span>
+          <div class="box-buttons">
+              <button class="buttons-tickets btn" id="button-detalhes" onclick="redirecionar(${maquina[1]})">Ver Detalhes</button>
+              <select class="buttons-tickets select" id="selection-responsavel${chaveTicket}">
+                  <option value="">Responsável</option>
+                  ${listaMembros.map(membro => {
+      const selected = membro.displayName === responsavelTicket ? "selected" : "";
+      return `<option value="${membro.accountId}" ${selected}>${membro.displayName}</option>`;
+    }).join('')}
+              </select>
+              <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel('${chaveTicket}', document.getElementById('selection-responsavel${chaveTicket}').value)">Designar</button>
+          </div>
+      </div>
+    </div>`;
+  });
 
-    if (ticket.requestTypeId == "5" && status == "Aberto" || status == "Reaberto") {
-      contar++;
-      var brancoOuCinza;
-      if (contar % 2 == 0) {
-        brancoOuCinza = 'par'
-      } else if (contar % 2 == 1) {
-        brancoOuCinza = 'impar'
-      }
-      container.innerHTML += `<div class="ticket-layout ${brancoOuCinza}">
-                        <div class="box-urgencia ${styleUrgencia}">
-                            <div class="div-urgencia ${styleUrgencia}">
-                                <span id="text-urgencia">${urgencia.toUpperCase()}</span>
-                            </div>
-                        </div>
-                        <div class="box-esquerda">
-                            <span class="text-infos" id="id-dispositivo">ID Dispositivo: ${maquina[1]}</span>
-                            <span class="text-infos" id="recurso">Recurso: <b>${recurso}</b></span>
-                            <span class="text-infos" id="descricao">${descricao}</span>
-                            <span class="text-infos" id="hrDeAbertura"><i>Aberto em ${textHoraAbertura}</i></span>
-                        </div>
-                        <div class="box-direita">
-                            <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
-                                    style="color: red;">20 min e 30 seg</b> </span>
-                            <div class="box-buttons">
-                                <button class="buttons-tickets btn" id="button-detalhes">Ver Detalhes</button>
-                                <select class="buttons-tickets select" id="selection-responsavel${chaveTicket}">
-                                    <option value="" >Responsável</option>
-                                </select>
-                                <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel('${chaveTicket}', document.getElementById('selection-responsavel${chaveTicket}').value)">Designar</button>
-                            </div>
-                        </div>
-                    </div>`;
-
-      const select = document.getElementById(`selection-responsavel${chaveTicket}`)
-
-      var responsavelTicket = await buscarResponsavel(chaveTicket)
-
-      for (let index = 0; index < listaMembros.length; index++) {
-        var element = listaMembros[index];
-        displayName = element?.displayName;
-        AccountId = element?.accountId
-
-        if (displayName == responsavelTicket) {
-          select.innerHTML += `<option value="${AccountId}" selected>${responsavelTicket}</option>`
-        } else {
-          select.innerHTML += `<option value="${AccountId}">${displayName}</option>`
-        }
-
-      }
-    }
-
-  };
   const loadingDiv = document.getElementById("loading");
   if (loadingDiv) loadingDiv.remove();
   container.style.display = "flex";
-
 }
 
 async function alertasPorComponente() {
   const tickets = await fetchTickets()
-  console.log(tickets)
   const divQtd = document.getElementById("subtitulo-grafico")
   var contarTempo = 0;
   var contarRede = 0;
@@ -323,7 +298,6 @@ async function alertasPorComponente() {
 
   var listaQtdComponentes = [contarTempo, contarRede, contarCPU, contarMemoria, contarDisco, contarBateria]
 
-  console.log(contarQtd)
   divQtd.innerHTML = `<i>Quantidade:</i> <b> ${contarQtd}</b> `
 
   var graficoRosca = {
@@ -378,69 +352,58 @@ async function alertasPorComponente() {
 }
 
 function recorrenciaDeAlertas(tickets) {
-  let jsonRecorrencia = []
+  const descricoesBase = [
+    "aumento crítico de cpu",
+    "uso de cpu grave",
+    "leve aumento no uso de cpu",
+    "aumento crítico de ram",
+    "aumento grave de ram",
+    "leve aumento no uso da ram",
+    "uso de disco",
+    "aumento crítico no uso do link",
+    "aumento grave no uso do link",
+    "leve aumento no uso do link",
+    "nível de bateria",
+    "velocidade de upload",
+    "operando por"
+  ];
+
+  const recorrencia = [];
 
   tickets.forEach(ticket => {
-    const descricao = ticket.requestFieldValues?.find(f => f.fieldId == "description")?.value;
+    const descricao = ticket.requestFieldValues?.find(f => f.fieldId === "description")?.value?.toLowerCase();
+    if (!descricao) return;
 
-    const itemExistente = jsonRecorrencia.find(item => item.tipo === descricao);
-
-    if (itemExistente) {
-      itemExistente.quantidade += 1;
-    } else {
-      jsonRecorrencia.push({ tipo: descricao, quantidade: 1 });
-    }
-
-  })
-
-  for (let index = 0; index < jsonRecorrencia.length - 1; index++) {
-    let minIdex = index;
-
-    for (let index2 = index + 1; index2 < jsonRecorrencia.length; index2++) {
-      if (jsonRecorrencia[index2].quantidade > jsonRecorrencia[minIdex].quantidade) {
-        minIdex = index2;
+    for (const base of descricoesBase) {
+      if (descricao.includes(base)) {
+        const itemExistente = recorrencia.find(item => item.tipo === base);
+        if (itemExistente) {
+          itemExistente.quantidade += 1;
+        } else {
+          recorrencia.push({ tipo: base, quantidade: 1 });
+        }
+        break; // considera só a primeira correspondência
       }
     }
+  });
 
-    if (minIdex != index) {
-      let temporario = jsonRecorrencia[index];
-      jsonRecorrencia[index] = jsonRecorrencia[minIdex];
-      jsonRecorrencia[minIdex] = temporario;
-    }
+  recorrencia.sort((a, b) => b.quantidade - a.quantidade);
+
+  const aliceDiv = document.getElementById('alice');
+  let html = '';
+
+  for (let i = 0; i < Math.min(5, recorrencia.length); i++) {
+    html += `<tr class="tr-posicoes">
+                <td class="text-posicao">${i + 1}º</td>
+                <td class="text-tipo">${recorrencia[i].tipo}</td>
+                <td class="text-qtd">${recorrencia[i].quantidade}</td>
+              </tr>`;
   }
-  console.log(jsonRecorrencia)
 
-  aliceDiv = document.getElementById('alice')
+  aliceDiv.innerHTML = html;
 
-  aliceDiv.innerHTML = `<tr class="tr-posicoes">
-                        <td class="text-posicao">1º</td>
-                        <td class="text-tipo">${jsonRecorrencia[0].tipo}</td>
-                        <td class="text-qtd">${jsonRecorrencia[0].quantidade}</td>
-                    </tr>
-                    <tr class="tr-posicoes">
-                        <td class="text-posicao">2º</td>
-                        <td class="text-tipo">${jsonRecorrencia[1].tipo}</td>
-                        <td class="text-qtd">${jsonRecorrencia[1].quantidade}</td>
-                    </tr>
-                    <tr class="tr-posicoes">
-                        <td class="text-posicao">3º</td>
-                        <td class="text-tipo">${jsonRecorrencia[2].tipo}</td>
-                        <td class="text-qtd">${jsonRecorrencia[2].quantidade}</td>
-                    </tr>
-                    <tr class="tr-posicoes">
-                        <td class="text-posicao">4º</td>
-                        <td class="text-tipo">${jsonRecorrencia[3].tipo}</td>
-                        <td class="text-qtd">${jsonRecorrencia[3].quantidade}</td>
-                    </tr>
-                    <tr class="tr-posicoes">
-                        <td class="text-posicao">5º</td>
-                        <td class="text-tipo">${jsonRecorrencia[4].tipo}</td>
-                        <td class="text-qtd">${jsonRecorrencia[4].quantidade}</td>
-                    </tr>`
-
-  graficoQtdHora(tickets)
+  graficoQtdHora(tickets);
 }
-
 
 function graficoQtdHora(tickets) {
   const agora = new Date();
@@ -448,7 +411,7 @@ function graficoQtdHora(tickets) {
   function horaMenos(n) {
     const novaData = new Date(agora);
     novaData.setHours(agora.getHours() - n);
-    
+
     return novaData.getHours();
   }
 
@@ -510,7 +473,6 @@ function graficoQtdHora(tickets) {
     const horaAberturaStr = horaDoTicket.value || horaDoTicket.renderedValue;
     const dataHora = new Date(horaAberturaStr);
     var horaTicket = dataHora.getHours();
-    console.log(horaTicket,horaAtual)
     if (recurso == "CPU") {
       if (horaTicket == horaAtual) {
         horaAtualCPU++;
@@ -605,12 +567,6 @@ function graficoQtdHora(tickets) {
   const rede = [horaMenos5Rede, horaMenos4Rede, horaMenos3Rede, horaMenos2Rede, horaMenos1Rede, horaAtualRede]
   const tempo = [horaMenos5Tempo, horaMenos4Tempo, horaMenos3Tempo, horaMenos2Tempo, horaMenos1Tempo, horaAtualTempo]
 
-  console.log(cpu,
-    memoria,
-    disco,
-    bateria,
-    tempo)
-
   var timelineAlertas = {
     grid: {
       padding: {
@@ -699,7 +655,6 @@ function graficoQtdHora(tickets) {
   renderTicketsGilberto(tickets)
 };
 
-
 function filtrarAlertas() {
   const statusSelecionado = document.getElementById('select-status').value.toLowerCase();
   const dataInicioInput = document.getElementById('periodoInicio').value;
@@ -754,6 +709,22 @@ function pesquisarChaveOuId() {
   });
 }
 
-function analiseDetalhada(idMaquina) {
-  window.location = `./dash_analiseDetalhada.html?id=${idMaquina}`;
+function redirecionar(serialNumber) {
+  fetch('/maquinas/obterFkModelo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ serialNumber: serialNumber })
+  })
+    .then(response => response.json())
+    .then(data => {
+      const idMaquina = data.idMaquina; // assumindo que o backend retorna { idMaquina: ... }
+      if (idMaquina) {
+        window.location = `./dash_analiseDetalhada.html?id=${idMaquina}`;
+      } else {
+        console.error('ID da máquina não encontrado na resposta');
+      }
+    })
+    .catch(error => console.error('Erro:', error));
 }
