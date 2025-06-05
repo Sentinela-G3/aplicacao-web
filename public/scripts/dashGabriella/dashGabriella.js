@@ -655,7 +655,7 @@ function PesquisarMaquina(todosOsTickets) {
 
     if (dadosAgregadasDaMaquina.links.length > 0) {
         dadosAgregadasDaMaquina.links.sort((linkA, linkB) => linkB.date - linkA.date);
-        aLinkPrincipal.href = dadosAgregadasDaMaquina.links[0].url;
+        aLinkPrincipal.href = "dadosAgregadasDaMaquina.links[0].url";
     } else {
         aLinkPrincipal.href = "#";
     }
