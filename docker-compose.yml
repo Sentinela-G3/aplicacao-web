@@ -1,6 +1,6 @@
 services:
   site:
-    image: gabilodi/atividade-so:node-app
+    image: henriquedandrade/sprint:node
     ports:
       - "3333:3333"
     networks:
@@ -15,7 +15,7 @@ services:
       DB_DATABASE: Sentinela
     
   db:
-    image: gabilodi/atividade-so:mysql-app
+    image: henriquedandrade/sprint:mysql
     ports:
       - "3307:3306"
     networks:

@@ -196,10 +196,6 @@ h4 {
 
 }
 
-.titulo_grafico {
-  /* margin-bottom: var(--spacing-sm); */
-}
-
 .titulo_grafico span {
   color: var(--textcolor-secondary);
   font-size: var(--fontsize-small);
