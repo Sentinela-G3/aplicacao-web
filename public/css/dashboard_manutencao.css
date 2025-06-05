@@ -20,7 +20,7 @@
 
 body {
   display: flex;
-  background-color: var(--bg-light);
+  background-color: #d1d1d1;
   width: 90%;
   min-height: 100vh;
   overflow-x: hidden;
@@ -124,6 +124,7 @@ body {
   margin: 10px;
   overflow: scroll;
   width: 70vw;
+  background-color: white;
 }
 
 .container-kpis{
@@ -135,6 +136,7 @@ body {
 }
 
 .container-kpi2{
+  background-color: white;
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 12px;
@@ -145,6 +147,7 @@ body {
 }
 
 .container-kpi{
+  background-color: white;
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 12px;
@@ -177,6 +180,7 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid #ccc;
+  background-color: white;
   border-radius: 12px;
   overflow: hidden;
 }

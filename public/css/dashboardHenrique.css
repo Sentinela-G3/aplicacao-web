@@ -33,7 +33,7 @@ h4 {
 
 body {
     display: flex;
-    background-color: #e2e2e2;
+    background-color: #d1d1d1;
 }
 
 .content {
@@ -241,7 +241,7 @@ body {
 }
 
 .box-urgencia.critico{
-    border-left: 3px red solid;
+    border-left: 3px #ff0000 solid;
 }
 
 .box-urgencia.grave{
@@ -249,7 +249,7 @@ body {
 }   
 
 .box-urgencia.leve{
-    border-left: 3px rgb(0, 208, 255) solid;
+    border-left: 3px #f2c94c solid;
 }
 
 .div-urgencia.critico{
@@ -261,7 +261,7 @@ body {
 }
 
 .div-urgencia.leve{
-    background-color: rgb(0, 208, 255);
+    background-color: #f2c94c;
 }
 
 .text-urgencia {
@@ -407,28 +407,29 @@ caption {
 
 .tr-posicoes.vermelhao{
     background-color: red;
+    color: white;
 }
 
 .tr-posicoes.vermelho{
     background-color: rgb(255, 132, 132);
-    
+    color: white;
 }
 
 .text-posicao{
     width: 20%;
-    font-size: 18px;
+    font-size: 20px;
 
 }
 
 .text-tipo{
     width: 60%;
-    font-size: 18px;
+    font-size: 20px;
 
 }
 
 .text-qtd{
     width: 20%;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
 
 }

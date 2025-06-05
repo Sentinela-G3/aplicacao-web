@@ -13,7 +13,7 @@
   --border-color: #dde1e6;
   --bg-light: #f8f9fa;
   --bg-white: #ffffff;
-  --color-alerta-vermelho: #d32f2f;
+  --color-alerta-vermelho: #ff0000;
   --color-alerta-laranja: #f57c00;
   --color-alerta-amarelo-escuro: #f2c94c;
   --color-alerta-amarelo-claro: #fbe969;
@@ -26,7 +26,7 @@
 
 body {
   display: flex;
-  background-color: var(--bg-light);
+  background-color: #d1d1d1;
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;

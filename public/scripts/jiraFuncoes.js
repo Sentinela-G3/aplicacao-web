@@ -318,7 +318,7 @@ async function alertasPorComponente() {
 
   var listaQtdComponentes = [contarCPU, contarMemoria, contarDisco, contarRede, contarBateria, contarTempo]
 
-  divQtd.innerHTML = `<i>Quantidade:</i> <b> ${contarQtd}</b> `
+  divQtd.innerHTML = `<i>Quantidade:</i> <b>${contarQtd} tickets</b> `
 
   var graficoRosca = {
     chart: {

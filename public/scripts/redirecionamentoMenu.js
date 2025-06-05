@@ -72,6 +72,7 @@ function preencherBotoes() {
             { id: 'btn_hist', label: 'Análise detalhada', url: './dash_analiseDetalhada.html' },
             { id: 'btn_geral', label: 'Máquinas em manutenção', url: './dashManutencao.html' },
             { id: 'btn_suporte', label: 'Suporte Operacional', url: './suporteOperacional.html' },
+            { id: 'btn_analitico', label: 'Desempenho Estatistico', url: './desempenhoEstatistico.html' },
             { id: 'btn_func', label: 'Gerenciamento de Funcionário', url: './gerenciar_funcionarios.html' },
             ...botoesPadrao
         ],
