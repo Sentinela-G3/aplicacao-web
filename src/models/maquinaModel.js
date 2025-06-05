@@ -1,7 +1,7 @@
 var database = require("../database/config");
 
 function cadastrar(serial, setor, fkEndereco, fkModelo) {
-  var instrucaoSql = `INSERT INTO maquina (serial, setor, fkEndereco, fkModelo, status) VALUES ('${serial}', '${setor}', '${fkEndereco}', '${fkModelo}', 'ativo');`;
+  var instrucaoSql = `INSERT INTO maquina (serial, setor, fkEndereco, fk_modelo, status) VALUES ('${serial}', '${setor}', '${fkEndereco}', '${fkModelo}', 'ativo');`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
@@ -27,7 +27,7 @@ function obterMaquinaPorSerial(serialNumber) {
 function listarModelosDetalhados(fkEmpresa) {
   var instrucaoSql = `
 SELECT
-    m.modelo as modelo,
+    m.fk_modelo as modelo,
         MAX(CASE WHEN c.tipo = 'cpu_percent' THEN c.modelo ELSE NULL END) AS cpu,
     MAX(CASE WHEN c.tipo = 'ram_usage_gb' THEN round(c.maximo) ELSE NULL END) AS ram_gb,
     MAX(CASE WHEN c.tipo = 'disk_usage_gb' THEN round(c.maximo) ELSE NULL END) AS capacidade_disco_gb,
@@ -37,9 +37,9 @@ FROM
 LEFT JOIN 
     componente c ON m.id_maquina = c.fk_componente_maquina
 GROUP BY
-    m.modelo
+    m.fk_modelo
 ORDER BY 
-    m.modelo;
+    m.fk_modelo;
   `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -52,7 +52,7 @@ function listarTempoAtividadePorMaquina(fkEmpresa) {
     SELECT 
         m.serial_number as serial_number,
         m.SO as sistema_operacional,
-        m.modelo as modelo,
+        m.fk_modelo as modelo,
         COALESCE(
             (
                 SELECT h.valor
