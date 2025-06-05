@@ -563,8 +563,8 @@ button:hover {
 }
 
 .serial-highlight-yellow {
-  border: 1px solid rgba(251, 188, 4, 1);
-  background: linear-gradient(90deg,rgba(251, 188, 4, 1) 12px, rgba(255, 255, 255, 1) 12px);
+  border: 1px solid #f57c00;
+  background: linear-gradient(90deg,#f57c00 12px, rgba(255, 255, 255, 1) 12px);
   padding: 8px 16px;
   border-radius: 8px;
   color: #333;
@@ -573,8 +573,8 @@ button:hover {
 }
 
 .serial-highlight-green {
-  border: 1px solid rgba(118, 198, 126, 1);
-  background: linear-gradient(90deg,rgba(118, 198, 126, 1) 12px, rgba(255, 255, 255, 1) 12px);
+  border: 1px solid #f2c94c;
+  background: linear-gradient(90deg,#f2c94c 12px, rgba(255, 255, 255, 1) 12px);
   padding: 8px 16px;
   border-radius: 8px;
   color: #333;
