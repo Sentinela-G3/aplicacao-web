@@ -63,9 +63,7 @@ function gerarMenuLateral() {
 
 function preencherBotoes() {
     const botoesPadrao = [
-        { id: 'btn_alerta', label: 'Alertas', url: './alertas.html' },
-        { id: 'btn_chamados', label: 'Suporte Técnico', url: './chamados.html' },
-        { id: 'btn_myConta', label: 'Minha Conta', url: './myConta.html' }
+        
     ];
 
     const botoesPorTipo = {

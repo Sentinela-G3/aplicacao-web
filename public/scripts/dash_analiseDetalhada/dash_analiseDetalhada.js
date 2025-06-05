@@ -4,7 +4,7 @@ let id = urlParams.get('id');
 // Lógica de redirecionamento:
 if (!id) {
     console.warn("ID da máquina não fornecido na URL. Redirecionando para a página de lista de máquinas.");
-    window.location.href = '../html/lista_de_maquinas.html'; 
+    window.location.href = '../dashboard/dash_analiseDetalhada.html?id=1'; 
     throw new Error("Redirecionamento: ID da máquina ausente."); 
 }
 
