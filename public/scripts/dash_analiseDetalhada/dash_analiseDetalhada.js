@@ -10,7 +10,7 @@ if (!id) {
 
 const BASE_URL = window.location.hostname === "localhost"
     ? "localhost:3333"
-    : "18.208.5.45:3333";
+    : "54.146.110.146:3333";
 
 let chartCPU, chartMemoria, chartRede, chartDisco, chartDownload;
 let intervaloAtualizacao;
