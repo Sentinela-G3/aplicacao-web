@@ -54,6 +54,9 @@ CREATE TABLE maquina (
     FOREIGN KEY (fk_maquina_empresa)
         REFERENCES empresa(id_empresa) 
         ON DELETE CASCADE 
+    FOREIGN KEY (modelo)
+        REFERENCES modelo(id_modelo) 
+        ON DELETE CASCADE 
 );
 
 CREATE TABLE componente (
