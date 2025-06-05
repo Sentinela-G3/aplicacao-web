@@ -3,7 +3,7 @@ const router = express.Router();
 const bucketController = require("../controllers/bucketController");
 
 router.get("/dados-componente", bucketController.buscarDados);
-
+/*
 const s3Service = require("../../services/aws/s3_export_metrics")
 
 router.get("/dados-componente", bucketController.buscarDados);
@@ -25,6 +25,6 @@ router.get('/exportar', async (req, res) => {
             error: error.message,
         });
     }
-});
+});*/
 
 module.exports = router;

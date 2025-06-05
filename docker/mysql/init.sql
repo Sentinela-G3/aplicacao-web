@@ -46,15 +46,15 @@ CREATE TABLE modelo (
 
 CREATE TABLE maquina (
     id_maquina INT PRIMARY KEY AUTO_INCREMENT,
-    modelo INT,
+    fk_modelo INT,
     so VARCHAR(100) NOT NULL,
     serial_number VARCHAR(100) NOT NULL,
     setor VARCHAR(50) NOT NULL,
     fk_maquina_empresa INT NOT NULL,
     FOREIGN KEY (fk_maquina_empresa)
         REFERENCES empresa(id_empresa) 
-        ON DELETE CASCADE 
-    FOREIGN KEY (modelo)
+        ON DELETE CASCADE,
+    FOREIGN KEY (fk_modelo)
         REFERENCES modelo(id_modelo) 
         ON DELETE CASCADE 
 );

@@ -128,7 +128,7 @@ body {
 
 .container-kpis{
   display: flex;
-  height: 40vh;
+  height: 50vh;
   width: 70vw;
   flex-direction: row;
   margin-top: 25px;

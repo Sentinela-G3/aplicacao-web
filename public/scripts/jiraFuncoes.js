@@ -323,7 +323,7 @@ async function alertasPorComponente() {
   var graficoRosca = {
     chart: {
       type: 'donut',
-      height: '80%',
+      height: '85%',
       width: '100%',
     },
     series: listaQtdComponentes,
@@ -342,7 +342,7 @@ async function alertasPorComponente() {
       },
       style: {
         colors: ['#000'],
-        fontSize: '14px',
+        fontSize: '16px',
       }
     },
     legend: {
@@ -350,11 +350,11 @@ async function alertasPorComponente() {
       horizontalAlign: 'center',
       offsetY: -10,
       offsetX: 30,
+      fontSize: '14px',
+      fontWeight: 'bold',
       labels: {
         colors: ['#000'],
-        useSeriesColors: false,
-        fontSize: '20px',
-        fontWeight: 700
+        useSeriesColors: false
       }
     },
     responsive: [{
@@ -614,7 +614,7 @@ function graficoQtdHora(tickets) {
     },
     chart: {
       type: 'bar',
-      height: '100%',
+      height: '90%',
       width: '100%',
       toolbar: {
         show: false
@@ -623,7 +623,7 @@ function graficoQtdHora(tickets) {
     dataLabels: {
       enabled: true,
       style: {
-        fontSize: '12px',
+        fontSize: '13px',
         colors: ['#000']
       },
       dropShadow: {
@@ -677,12 +677,14 @@ function graficoQtdHora(tickets) {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '80%',
+        columnWidth: '90%',
         endingShape: 'flat'
       }
     },
     colors: ['#FFA500', '#20C997', '#1E90FF', '#FFD700', '#FF6F61', '#8Bff13'],
     legend: {
+      fontSize: '12px',
+      fontWeight: 'bold',
       position: 'top',
     }
   };
