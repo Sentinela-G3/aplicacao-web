@@ -90,41 +90,19 @@ function editar(setor, fkEndereco, idMaquina) {
 }
 
 function dadosModeloComponente(modelo) {
-  let instrucaoSql = `SELECT 
-    m.id_modelo,
-    m.nome AS nome_modelo,
-    c_cpu.modelo AS modelo_cpu,
-    c_cpu.minimo AS usoComumCpu,
-    c_cpu.maximo AS usoMaximoCpu,
-    c_ram.modelo AS modelo_ram,
-    c_ram.minimo AS usoComumRam,
-    c_ram.maximo AS usoMaximoRam,
-    c_bateria.modelo AS modelo_bateria,
-    c_bateria.minimo AS usoComumBateria,
-    c_bateria.maximo AS usoMaximoBateria,
-    c_rede.modelo AS modelo_placaRede,
-    c_rede.minimo AS usoComumRede,
-    c_rede.maximo AS usoMaximoRede,
-    c_disco.modelo AS modelo_disco,
-    c_disco.minimo AS usoComumDisco,
-    c_disco.maximo AS usoMaximoDisco
-FROM modelo m
-JOIN componente c_cpu ON m.fk_componente_cpu = c_cpu.id_componente
-JOIN componente c_ram ON m.fk_componente_ram = c_ram.id_componente
-JOIN componente c_bateria ON m.fk_componente_bateria = c_bateria.id_componente
-JOIN componente c_rede ON m.fk_componente_placaRede = c_rede.id_componente
-JOIN componente c_disco ON m.fk_componente_disco = c_disco.id_componente
-WHERE m.id_modelo = ${modelo};`;
+  let instrucaoSql = `SELECT c.*
+FROM componente c
+JOIN maquina ma ON c.fk_componente_maquina = ma.id_maquina
+WHERE ma.fk_modelo = ${modelo};`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql)
 }
 
 function obterModelosMaquina(empresa) {
-  let instrucaoSql = `SELECT m.id_modelo AS idModelo,
-  m.nome as nomeModelo
-  FROM modelo m
-  JOIN empresa id_empresa ON m.fk_empresa_modelo
-  WHERE empresa =  ${empresa};`
+  let instrucaoSql = `SELECT DISTINCT m.id_modelo, m.nome
+FROM modelo m
+JOIN maquina ma ON ma.fk_modelo = m.id_modelo
+WHERE ma.fk_maquina_empresa = ${empresa};`
   console.log("Executando a instrução SQL: \n" + instrucaoSql)
   return database.executar(instrucaoSql)
 }

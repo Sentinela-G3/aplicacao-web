@@ -35,32 +35,33 @@ window.onload = async () => {
     return;
   }
 
-  const [modelosRetornados, dados] = await Promise.all([
-    carregarModelos(empresa),
-    carregarDadosS3(empresa)
+  const [modelosRetornados/*, dados*/] = await Promise.all([
+    carregarModelos(empresa)/*,
+    carregarDadosS3(empresa)*/
   ]);
 
   
   modelos = modelosRetornados
   
-  if (modelos.length === 0 || dados.length === 0) return;
+  if (modelos.length === 0 /*|| dados.length === 0*/) return;
 
   preencherSelectModelos(modelos);
 
   modeloSelecionado = modelos[0];
-  dadosS3 = dados;
+  // dadosS3 = dados;
 
   atualizarGraf();
 };
 
 async function carregarModelos(empresa) {
   try {
-    const response = await fetch(`/modelos/buscarModelos/${empresa}`);
-    const json = await response.json();
-    return json;
+    const res = await fetch(`/maquinas/obterModelosMaquina/${empresa}`, { method: 'GET' });
+    if (!res.ok) throw new Error("Erro na requisição");
+    const json = await res.json();
+    return json;  // retorna o array de modelos
   } catch (err) {
     console.error("Erro ao carregar modelos:", err);
-    return [];
+    return [];  // retorna array vazio em caso de erro
   }
 }
 
@@ -137,7 +138,7 @@ function preencherPagina(modelos) {
             </div>`
 
     contGraficos.innerHTML += `<div class="container">
-        <h3 id="comp_${modelo.tipo}">${modelo.modelo}</h3>
+        <h3 id="comp_${modelo.tipo}">${modelo.tipo} ${modelo.modelo}</h3>
         <div class="desempenhoComponente">
           <div class="kpisComponente">
             <div class="kpiBox">
@@ -148,7 +149,7 @@ function preencherPagina(modelos) {
                 <div class="conjunto">
                   <div class="tipometrica"><span>Esperado</span></div>
                   <div class="metrica">
-                    <div class="valorMet" id="met-esp_${modelo.tipo}">${modelo.minimo_esperado}</div>
+                    <div class="valorMet" id="met-esp_${modelo.tipo}">${modelo.minimo}</div>
                   </div>
                 </div>
                 <div class="conjunto">
@@ -168,7 +169,7 @@ function preencherPagina(modelos) {
                 <div class="conjunto">
                   <div class="tipometrica"><span>Esperado</span></div>
                   <div class="metrica">
-                    <div class="valorMet" id="met-esp-max_${modelo.tipo}">${modelo.maximo_esperado}</div>
+                    <div class="valorMet" id="met-esp-max_${modelo.tipo}">${modelo.maximo}</div>
                   </div>
                 </div>
                 <div class="conjunto">
