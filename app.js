@@ -1,4 +1,4 @@
-var ambiente_processo = 'producao';
+var ambiente_processo = 'local';
 // var ambiente_processo = 'local';
 
 var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';

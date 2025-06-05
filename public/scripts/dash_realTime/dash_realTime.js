@@ -53,7 +53,8 @@ async function buscarMaquina() {
             alertsResponse.json(),
         ]);
 
-        const allAlerts = (alertsData.values || []).filter(
+          console.log("Dados de Alertas da API:", alertsData); 
+        const allAlerts = (Array.isArray(alertsData) ? alertsData : []).filter(
             (ticket) => ticket && String(ticket.requestTypeId) === "5"
         );
 
