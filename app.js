@@ -35,7 +35,7 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/empresas", empresasRouter);
-app.use("/modelos", modeloRouter);
+// app.use("/modelos", modeloRouter);
 app.use("/medidas", medidasRouter)
 app.use("/maquinas", maquinasRouter);
 app.use("/jira", jiraRouter);
