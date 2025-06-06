@@ -59,10 +59,10 @@ async function carregarModelos(empresa) {
     const res = await fetch(`/maquinas/obterModelosMaquina/${empresa}`, { method: 'GET' });
     if (!res.ok) throw new Error("Erro na requisição");
     const json = await res.json();
-    return json; 
+    return json;
   } catch (err) {
     console.error("Erro ao carregar modelos:", err);
-    return []; 
+    return [];
   }
 }
 
@@ -259,8 +259,6 @@ async function atualizarGraf() {
 
   const periodoReal = Math.min(periodoValue, dadosS3[0].mediasMensais.length);
 
-  let i = -1;
-
   const mapaMetricas = {
     "CPU": "cpu_percent",
     "Temperatura": "cpu_freq",
@@ -281,11 +279,9 @@ async function atualizarGraf() {
 
   componentes.forEach((componente, i) => {
     let canvas = document.getElementById(idsGraph[i]);
-
     let labels = [];
     let dataValues = [];
     let dataMaximos = [];
-
     let tipoGraf = 'line';
 
     const metricasPermitidas = [
@@ -301,11 +297,7 @@ async function atualizarGraf() {
     );
 
     let metricaSelecionada = idsGraph[i].split("_").slice(1).join("_");
-    console.log(metricaSelecionada);
-
     const metricaInterna = mapaMetricas[metricaSelecionada];
-    console.log("Tipo selecionado:", metricaSelecionada);
-    console.log("Métrica interna:", metricaInterna);
 
     if (!metricasPermitidas.includes(metricaInterna)) {
       console.log(`Pulando componente ${componente.tipo} pois métrica ${metricaInterna} não permitida.`);
@@ -356,7 +348,7 @@ async function atualizarGraf() {
       const contagemAcima95 = dadosPeriodo.reduce((acc, cur) => acc + (cur.contadorAcima95 || 0), 0);
 
       const eficiencia = totalUptime > 0 ? ((totalUptime - uptimePico) / totalUptime) * 100 : 0;
-      const sobrecarga = (contagemAcima95 / periodoRealUsado) * 100;
+      const sobrecarga = totalUptime > 0 ? (contagemAcima95 / totalUptime) * 100 : 0;
 
       const elemEfi = document.getElementById(`met_efi${componente.tipo}`);
       const elemSobre = document.getElementById(`met_sobre${componente.tipo}`);
@@ -372,7 +364,7 @@ async function atualizarGraf() {
         const contagemAcima95Ant = periodoAnterior.reduce((acc, cur) => acc + (cur.contadorAcima95 || 0), 0);
 
         const eficienciaAnt = totalUptimeAnt > 0 ? ((totalUptimeAnt - uptimePicoAnt) / totalUptimeAnt) * 100 : 0;
-        const sobrecargaAnt = (contagemAcima95Ant / periodoRealUsado) * 100;
+        const sobrecargaAnt = totalUptimeAnt > 0 ? (contagemAcima95Ant / totalUptimeAnt) * 100 : 0;
 
         eficienciasPeriodoAnterior.push(eficienciaAnt);
 
@@ -385,51 +377,33 @@ async function atualizarGraf() {
         if (elemAntEfi) {
           const prefixo = diffEfi >= 0 ? "+" : "";
           elemAntEfi.textContent = `${prefixo}${diffEfi.toFixed(2)}%`;
-          elemAntEfi.classList.remove("valor-positivo", "valor-negativo");
-          if (diffEfi >= 0) {
-            elemAntEfi.classList.add("valor-positivo"); 
-          } else {
-            elemAntEfi.classList.add("valor-negativo");  
-          }
+          elemAntEfi.classList.toggle("valor-positivo", diffEfi >= 0);
+          elemAntEfi.classList.toggle("valor-negativo", diffEfi < 0);
         }
 
         if (elemAntSobre) {
           const prefixo = diffSobre >= 0 ? "+" : "";
-          elemAntSobre.textContent = `${prefixo}${diffSobre.toFixed(2)}`;
-          elemAntSobre.classList.remove("valor-positivo", "valor-negativo");
-          if (diffSobre >= 0) {
-            elemAntSobre.classList.add("valor-negativo"); 
-          } else {
-            elemAntSobre.classList.add("valor-positivo");  
-          }
+          elemAntSobre.textContent = `${prefixo}${diffSobre.toFixed(2)}%`;
+          elemAntSobre.classList.toggle("valor-negativo", diffSobre >= 0);
+          elemAntSobre.classList.toggle("valor-positivo", diffSobre < 0);
         }
       } else {
         const elemAntEfi = document.getElementById(`ant_efi${componente.tipo}`);
         const elemAntSobre = document.getElementById(`ant_sobre${componente.tipo}`);
-
-        if (elemAntEfi) {
-          elemAntEfi.textContent = "";
-          elemAntEfi.classList.remove("valor-positivo", "valor-negativo");
-        }
-        if (elemAntSobre) {
-          elemAntSobre.textContent = "";
-          elemAntSobre.classList.remove("valor-positivo", "valor-negativo");
-        }
+        if (elemAntEfi) elemAntEfi.textContent = "";
+        if (elemAntSobre) elemAntSobre.textContent = "";
       }
     } else {
-      const elemAti = document.getElementById(`met-ati_${componente.tipo}`);
-      const elemAtiMax = document.getElementById(`met-ati-max_${componente.tipo}`);
-      const elemEfi = document.getElementById(`met_efi${componente.tipo}`);
-      const elemSobre = document.getElementById(`met_sobre${componente.tipo}`);
-      const elemAntEfi = document.getElementById(`ant_efi${componente.tipo}`);
-      const elemAntSobre = document.getElementById(`ant_sobre${componente.tipo}`);
-
-      if (elemAti) elemAti.textContent = "0";
-      if (elemAtiMax) elemAtiMax.textContent = "0";
-      if (elemEfi) elemEfi.textContent = "0";
-      if (elemSobre) elemSobre.textContent = "0";
-      if (elemAntEfi) elemAntEfi.textContent = "";
-      if (elemAntSobre) elemAntSobre.textContent = "";
+      const idsLimpar = [`met-ati_${componente.tipo}`, `met-ati-max_${componente.tipo}`, `met_efi${componente.tipo}`, `met_sobre${componente.tipo}`];
+      idsLimpar.forEach(id => {
+        const elem = document.getElementById(id);
+        if (elem) elem.textContent = "0";
+      });
+      const idsLimparAnt = [`ant_efi${componente.tipo}`, `ant_sobre${componente.tipo}`];
+      idsLimparAnt.forEach(id => {
+        const elem = document.getElementById(id);
+        if (elem) elem.textContent = "";
+      });
     }
 
     if (labels.length === 0) {
@@ -437,77 +411,59 @@ async function atualizarGraf() {
       return;
     }
 
-    if (eficienciasPeriodoAtual.length > 0) {
-      const mediaEficienciaAtual = eficienciasPeriodoAtual.reduce((a, b) => a + b, 0) / eficienciasPeriodoAtual.length;
-      const elemEfiMod = document.getElementById("met_efiMod");
-      if (elemEfiMod) elemEfiMod.textContent = mediaEficienciaAtual.toFixed(2);
-
-      if (eficienciasPeriodoAnterior.length === eficienciasPeriodoAtual.length) {
-        const mediaEficienciaAnterior = eficienciasPeriodoAnterior.reduce((a, b) => a + b, 0) / eficienciasPeriodoAnterior.length;
-        const diff = mediaEficienciaAtual - mediaEficienciaAnterior;
-        const prefixo = diff >= 0 ? "+" : "";
-        const elemAntEfiMod = document.getElementById("ant_efiMod");
-        if (elemAntEfiMod) elemAntEfiMod.textContent = `${prefixo}${diff.toFixed(2)}`;
-      } else {
-        const elemAntEfiMod = document.getElementById("ant_efiMod");
-        if (elemAntEfiMod) elemAntEfiMod.textContent = "";
-      }
-    } else {
-      const elemEfiMod = document.getElementById("met_efiMod");
-      const elemAntEfiMod = document.getElementById("ant_efiMod");
-      if (elemEfiMod) elemEfiMod.textContent = "0";
-      if (elemAntEfiMod) elemAntEfiMod.textContent = "";
-    }
-
     const chart = new Chart(canvas, {
       type: tipoGraf,
       data: {
         labels: labels,
-        datasets: [
-          {
-            label: 'Consumo de Componente (%)',
-            data: dataValues,
-            borderColor: "rgb(74, 45, 245)",
-            backgroundColor: "rgba(74, 45, 245, 0.5)",
-            borderWidth: 2,
-            tension: 0.05,
-            pointStyle: false
-          },
-          {
-            label: 'Consumo Máximo de Componente (%)',
-            data: dataMaximos,
-            borderColor: "rgb(254, 73, 78)",
-            backgroundColor: "rgba(254, 73, 78, 0.5)",
-            borderWidth: 2,
-            tension: 0.05,
-            pointStyle: false
-          }
-        ]
+        datasets: [{
+          label: 'Consumo de Componente (%)',
+          data: dataValues,
+          borderColor: "rgb(74, 45, 245)",
+          backgroundColor: "rgba(74, 45, 245, 0.5)",
+          borderWidth: 2,
+          tension: 0.05,
+          pointStyle: false
+        }, {
+          label: 'Consumo Máximo de Componente (%)',
+          data: dataMaximos,
+          borderColor: "rgb(254, 73, 78)",
+          backgroundColor: "rgba(254, 73, 78, 0.5)",
+          borderWidth: 2,
+          tension: 0.05,
+          pointStyle: false
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: '% de uso'
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            position: 'top'
-          },
-          title: {
-            display: true,
-            text: `${componente.tipo}`
-          }
-        }
+        scales: { y: { beginAtZero: true, title: { display: true, text: '% de uso' } } },
+        plugins: { legend: { position: 'top' }, title: { display: true, text: `${componente.tipo}` } }
       }
     });
 
     ctxsContent.push(chart);
-  });
+  }); // Fim do loop forEach
+
+  // ESTE É O LOCAL CORRETO para calcular a eficiência média do modelo, após o loop
+  if (eficienciasPeriodoAtual.length > 0) {
+    const mediaEficienciaAtual = eficienciasPeriodoAtual.reduce((a, b) => a + b, 0) / eficienciasPeriodoAtual.length;
+    const elemEfiMod = document.getElementById("met_efiMod");
+    if (elemEfiMod) elemEfiMod.textContent = mediaEficienciaAtual.toFixed(2);
+
+    if (eficienciasPeriodoAnterior.length === eficienciasPeriodoAtual.length) {
+      const mediaEficienciaAnterior = eficienciasPeriodoAnterior.reduce((a, b) => a + b, 0) / eficienciasPeriodoAnterior.length;
+      const diff = mediaEficienciaAtual - mediaEficienciaAnterior;
+      const prefixo = diff >= 0 ? "+" : "";
+      const elemAntEfiMod = document.getElementById("ant_efiMod");
+      if (elemAntEfiMod) elemAntEfiMod.textContent = `${prefixo}${diff.toFixed(2)}%`;
+    } else {
+      const elemAntEfiMod = document.getElementById("ant_efiMod");
+      if (elemAntEfiMod) elemAntEfiMod.textContent = "";
+    }
+  } else {
+    const elemEfiMod = document.getElementById("met_efiMod");
+    const elemAntEfiMod = document.getElementById("ant_efiMod");
+    if (elemEfiMod) elemEfiMod.textContent = "0";
+    if (elemAntEfiMod) elemAntEfiMod.textContent = "";
+  }
 }
