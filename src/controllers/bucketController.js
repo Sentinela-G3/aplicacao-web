@@ -1,17 +1,20 @@
-// const { buscarArquivoDoS3 } = require("../services/s3Service");
+const { buscarArquivoDoS3 } = require("../services/aws/s3Service");
 
-const { buscarArquivoDoS3 } = require("../../services/aws/s3Service");
+async function buscarDados4Anos(req, res) {
+  const empresa = req.params.empresa;
+  console.log("Empresa: ", empresa)
+  
+  const nomeArquivo = `${empresa}/${empresa}_4-anos_medias-4-anos.json`;
 
-async function buscarDados(req, res) {
   try {
-    const conteudo = await buscarArquivoDoS3("sentinela-client", "dados.json");
+    const conteudo = await buscarArquivoDoS3("clientbuckets3-spt", nomeArquivo);
     res.status(200).json(JSON.parse(conteudo));
   } catch (err) {
     console.error("Erro ao buscar no S3:", err);
-    res.status(500).send("Erro ao acessar o S3");
+    res.status(404).send("Arquivo não encontrado no S3");
   }
 }
 
 module.exports = {
-  buscarDados
+  buscarDados4Anos
 };

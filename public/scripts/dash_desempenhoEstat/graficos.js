@@ -7,6 +7,9 @@ let dadosS3 = [];
 let modeloSelecionado = "";
 let ctxsContent = [];
 let modelos = [];
+let componentes = [];
+let ids = [];
+let idsGraph = [];
 
 const sltModelo = document.getElementById("slt_modelo");
 const sltPeriodo = document.getElementById("slt_periodo");
@@ -23,11 +26,11 @@ sltPeriodo.addEventListener("change", () => {
 sltModelo.addEventListener("change", () => {
   modeloSelecionado = sltModelo.value;
   modelosComponentes(modeloSelecionado)
-  atualizarGraf();
 });
 
 window.onload = async () => {
   const empresa = sessionStorage.getItem("idEmpresa");
+  const nomeEmpresa = sessionStorage.getItem("empresa");
 
   if (!empresa) {
     alert("Sessão expirada. Faça login novamente.");
@@ -35,22 +38,20 @@ window.onload = async () => {
     return;
   }
 
-  const [modelosRetornados/*, dados*/] = await Promise.all([
-    carregarModelos(empresa)/*,
-    carregarDadosS3(empresa)*/
+  const [modelosRetornados, dados] = await Promise.all([
+    carregarModelos(empresa),
+    carregarDadosS3(nomeEmpresa)
   ]);
 
-  
+
   modelos = modelosRetornados
-  
-  if (modelos.length === 0 /*|| dados.length === 0*/) return;
+
+  if (modelos.length === 0 || dados.length === 0) return;
 
   preencherSelectModelos(modelos);
 
   modeloSelecionado = modelos[0];
-  // dadosS3 = dados;
-
-  atualizarGraf();
+  dadosS3 = dados;
 };
 
 async function carregarModelos(empresa) {
@@ -58,10 +59,10 @@ async function carregarModelos(empresa) {
     const res = await fetch(`/maquinas/obterModelosMaquina/${empresa}`, { method: 'GET' });
     if (!res.ok) throw new Error("Erro na requisição");
     const json = await res.json();
-    return json;  // retorna o array de modelos
+    return json; 
   } catch (err) {
     console.error("Erro ao carregar modelos:", err);
-    return [];  // retorna array vazio em caso de erro
+    return []; 
   }
 }
 
@@ -69,19 +70,40 @@ async function modelosComponentes(idModelo) {
   try {
     const response = await fetch(`/modelos/modelosComponentes/${idModelo}`);
     const json = await response.json();
-    preencherPagina(json)
+    componentes = json
+    console.log(json)
+    preencherPagina()
   } catch (err) {
     console.error("Erro ao carregar modelos:", err);
   }
 }
 
-async function carregarDadosS3(empresa) {
+async function carregarDadosS3(nomeEmpresa) {
   try {
-    const response = await fetch(`/s3/${empresa}/4anos`);
-    if (!response.ok) throw new Error(`Erro ${response.status}`);
+    if (!nomeEmpresa) throw new Error("nomeEmpresa não foi fornecido");
+
+    let empresa = nomeEmpresa.replaceAll(" ", "-");
+    const response = await fetch(`/bucket/dados/${empresa}`);
+
+    if (!response.ok) throw new Error(`Erro ${response.status}: ${response.statusText}`);
+
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.warn("Tipo de conteúdo não é JSON, forçando leitura como texto");
+    }
+
     const blob = await response.blob();
     const texto = await blob.text();
-    return JSON.parse(texto);
+
+    try {
+      let json = JSON.parse(texto)
+      console.log(json)
+      return json;
+    } catch (jsonErr) {
+      console.error("Erro ao fazer parse do JSON:", jsonErr);
+      throw new Error("Resposta não é JSON válido.");
+    }
+
   } catch (err) {
     console.error("Erro ao buscar dados S3:", err);
     return [];
@@ -110,11 +132,25 @@ function preencherSelectModelos(jsonModelo) {
   modelosComponentes(modeloInicial)
 }
 
-function preencherPagina(modelos) {
+function preencherPagina() {
   kpisGerais.innerHTML = ""
   contGraficos.innerHTML = ""
 
-  modelos.forEach(modelo => {
+  ids = []
+  idsGraph = []
+
+  componentes.forEach(modelo => {
+    console.log(modelo)
+    ids.push(`met_efi${modelo.tipo}`)
+    ids.push(`ant_efi${modelo.tipo}`)
+    ids.push(`met_sobre${modelo.tipo}`)
+    ids.push(`ant_sobre${modelo.tipo}`)
+    ids.push(`comp_${modelo.tipo}`)
+    ids.push(`met-esp_${modelo.tipo}`)
+    ids.push(`met-ati_${modelo.tipo}`)
+    ids.push(`met-esp-max_${modelo.tipo}`)
+    ids.push(`met-ati-max_${modelo.tipo}`)
+    idsGraph.push(`graf_${modelo.tipo}`)
     kpisGerais.innerHTML += `<div class="kpi">
               <div class="kpiBox">
                 <h3>${modelo.tipo}</h3>
@@ -187,6 +223,8 @@ function preencherPagina(modelos) {
         </div>
       </div>`
   });
+
+  atualizarGraf()
 }
 
 function preencherSelectModelos(modelos) {
@@ -217,23 +255,209 @@ async function atualizarGraf() {
   ctxsContent.forEach(grafico => grafico.destroy());
   ctxsContent = [];
 
-  const periodoReal = Math.min(periodoValue, dadosS3.length);
+  let dados4anos = JSON.parse(JSON.stringify(dadosS3[0]));
 
-  modelos.forEach(modelo => {
-    const tipo = modelo.tipo;
-    const canvas = document.getElementById(`graf_${tipo}`);
+  const periodoReal = Math.min(periodoValue, dadosS3[0].mediasMensais.length);
 
-    if (!canvas) return;
+  let i = -1;
 
-    const dadosFiltrados = dadosS3
-      .filter(item => item.modelo === modeloSelecionado && item.componente === tipo)
-      .slice(0, periodoReal);
+  const mapaMetricas = {
+    "CPU": "cpu_percent",
+    "Temperatura": "cpu_freq",
+    "Memória RAM": "ram_percent",
+    "Memória": "ram_percent",
+    "RAM": "ram_percent",
+    "Disco": "disk_percent",
+    "RAM (GB)": "ram_usage_gb",
+    "Disco (GB)": "disk_usage_gb",
+    "Upload": "net_upload",
+    "Download": "net_download",
+    "Rede": "net_usage",
+    "Uptime": "uptime_hours"
+  };
 
-    const labels = dadosFiltrados.map(item => `${item.mes} ${item.ano}`);
-    const dataValues = dadosFiltrados.map(item => Number(item.consumo));
-    const dataMaximos = dadosFiltrados.map(item => Number(item.maximo));
+  const eficienciasPeriodoAtual = [];
+  const eficienciasPeriodoAnterior = [];
 
-    const tipoGraf = (periodoReal === 1) ? 'bar' : 'line';
+  componentes.forEach((componente, i) => {
+    let canvas = document.getElementById(idsGraph[i]);
+
+    let labels = [];
+    let dataValues = [];
+    let dataMaximos = [];
+
+    let tipoGraf = 'line';
+
+    const metricasPermitidas = [
+      "cpu_percent",
+      "ram_percent",
+      "disk_percent",
+      "net_usage",
+      "uptime_hours"
+    ];
+
+    let mediasFiltradas = dados4anos.mediasMensais.filter(dado =>
+      metricasPermitidas.includes(dado.metrica)
+    );
+
+    let metricaSelecionada = idsGraph[i].split("_").slice(1).join("_");
+    console.log(metricaSelecionada);
+
+    const metricaInterna = mapaMetricas[metricaSelecionada];
+    console.log("Tipo selecionado:", metricaSelecionada);
+    console.log("Métrica interna:", metricaInterna);
+
+    if (!metricasPermitidas.includes(metricaInterna)) {
+      console.log(`Pulando componente ${componente.tipo} pois métrica ${metricaInterna} não permitida.`);
+      return;
+    }
+
+    let dadosFiltrados = mediasFiltradas.filter(dado => dado.metrica === metricaInterna);
+
+    if (dadosFiltrados.length === 0) {
+      console.log(`Sem dados para a métrica ${metricaInterna}, pulando componente ${componente.tipo}.`);
+      return;
+    }
+
+    let periodoRealUsado = Math.min(periodoReal, dadosFiltrados.length);
+
+    if (periodoRealUsado === 1) {
+      tipoGraf = 'bar';
+      let ultimoIndice = dadosFiltrados.length - 1;
+      if (dadosFiltrados[ultimoIndice]?.data) {
+        labels.push(dadosFiltrados[ultimoIndice].data);
+        dataValues.push(dadosFiltrados[ultimoIndice].mediaGeral);
+        dataMaximos.push(dadosFiltrados[ultimoIndice].mediaPico);
+      }
+    } else {
+      for (let j = 0; j < periodoRealUsado; j++) {
+        if (dadosFiltrados[j]?.data) {
+          labels.push(dadosFiltrados[j].data);
+          dataValues.push(dadosFiltrados[j].mediaGeral);
+          dataMaximos.push(dadosFiltrados[j].mediaPico);
+        } else {
+          console.warn(`Dado sem data na posição ${j} para métrica ${metricaInterna}`);
+        }
+      }
+    }
+
+    if (dataValues.length > 0 && dataMaximos.length > 0) {
+      const mediaGeralPeriodo = dataValues.reduce((a, b) => a + b, 0) / dataValues.length;
+      const mediaPicoPeriodo = dataMaximos.reduce((a, b) => a + b, 0) / dataMaximos.length;
+
+      const elemAti = document.getElementById(`met-ati_${componente.tipo}`);
+      const elemAtiMax = document.getElementById(`met-ati-max_${componente.tipo}`);
+      if (elemAti) elemAti.textContent = mediaGeralPeriodo.toFixed(2);
+      if (elemAtiMax) elemAtiMax.textContent = mediaPicoPeriodo.toFixed(2);
+
+      const dadosPeriodo = dadosFiltrados.slice(0, periodoRealUsado);
+      const totalUptime = dadosPeriodo.reduce((acc, cur) => acc + (cur.uptimeTotal || 0), 0);
+      const uptimePico = dadosPeriodo.reduce((acc, cur) => acc + (cur.uptimePico || 0), 0);
+      const contagemAcima95 = dadosPeriodo.reduce((acc, cur) => acc + (cur.contadorAcima95 || 0), 0);
+
+      const eficiencia = totalUptime > 0 ? ((totalUptime - uptimePico) / totalUptime) * 100 : 0;
+      const sobrecarga = (contagemAcima95 / periodoRealUsado) * 100;
+
+      const elemEfi = document.getElementById(`met_efi${componente.tipo}`);
+      const elemSobre = document.getElementById(`met_sobre${componente.tipo}`);
+      if (elemEfi) elemEfi.textContent = eficiencia.toFixed(2);
+      if (elemSobre) elemSobre.textContent = sobrecarga.toFixed(2);
+
+      eficienciasPeriodoAtual.push(eficiencia);
+
+      if (dadosFiltrados.length >= periodoRealUsado * 2) {
+        const periodoAnterior = dadosFiltrados.slice(periodoRealUsado, periodoRealUsado * 2);
+        const totalUptimeAnt = periodoAnterior.reduce((acc, cur) => acc + (cur.uptimeTotal || 0), 0);
+        const uptimePicoAnt = periodoAnterior.reduce((acc, cur) => acc + (cur.uptimePico || 0), 0);
+        const contagemAcima95Ant = periodoAnterior.reduce((acc, cur) => acc + (cur.contadorAcima95 || 0), 0);
+
+        const eficienciaAnt = totalUptimeAnt > 0 ? ((totalUptimeAnt - uptimePicoAnt) / totalUptimeAnt) * 100 : 0;
+        const sobrecargaAnt = (contagemAcima95Ant / periodoRealUsado) * 100;
+
+        eficienciasPeriodoAnterior.push(eficienciaAnt);
+
+        const diffEfi = eficiencia - eficienciaAnt;
+        const diffSobre = sobrecarga - sobrecargaAnt;
+
+        const elemAntEfi = document.getElementById(`ant_efi${componente.tipo}`);
+        const elemAntSobre = document.getElementById(`ant_sobre${componente.tipo}`);
+
+        if (elemAntEfi) {
+          const prefixo = diffEfi >= 0 ? "+" : "";
+          elemAntEfi.textContent = `${prefixo}${diffEfi.toFixed(2)}%`;
+          elemAntEfi.classList.remove("valor-positivo", "valor-negativo");
+          if (diffEfi >= 0) {
+            elemAntEfi.classList.add("valor-positivo"); 
+          } else {
+            elemAntEfi.classList.add("valor-negativo");  
+          }
+        }
+
+        if (elemAntSobre) {
+          const prefixo = diffSobre >= 0 ? "+" : "";
+          elemAntSobre.textContent = `${prefixo}${diffSobre.toFixed(2)}`;
+          elemAntSobre.classList.remove("valor-positivo", "valor-negativo");
+          if (diffSobre >= 0) {
+            elemAntSobre.classList.add("valor-negativo"); 
+          } else {
+            elemAntSobre.classList.add("valor-positivo");  
+          }
+        }
+      } else {
+        const elemAntEfi = document.getElementById(`ant_efi${componente.tipo}`);
+        const elemAntSobre = document.getElementById(`ant_sobre${componente.tipo}`);
+
+        if (elemAntEfi) {
+          elemAntEfi.textContent = "";
+          elemAntEfi.classList.remove("valor-positivo", "valor-negativo");
+        }
+        if (elemAntSobre) {
+          elemAntSobre.textContent = "";
+          elemAntSobre.classList.remove("valor-positivo", "valor-negativo");
+        }
+      }
+    } else {
+      const elemAti = document.getElementById(`met-ati_${componente.tipo}`);
+      const elemAtiMax = document.getElementById(`met-ati-max_${componente.tipo}`);
+      const elemEfi = document.getElementById(`met_efi${componente.tipo}`);
+      const elemSobre = document.getElementById(`met_sobre${componente.tipo}`);
+      const elemAntEfi = document.getElementById(`ant_efi${componente.tipo}`);
+      const elemAntSobre = document.getElementById(`ant_sobre${componente.tipo}`);
+
+      if (elemAti) elemAti.textContent = "0";
+      if (elemAtiMax) elemAtiMax.textContent = "0";
+      if (elemEfi) elemEfi.textContent = "0";
+      if (elemSobre) elemSobre.textContent = "0";
+      if (elemAntEfi) elemAntEfi.textContent = "";
+      if (elemAntSobre) elemAntSobre.textContent = "";
+    }
+
+    if (labels.length === 0) {
+      console.log(`Nenhuma label válida para o componente ${componente.tipo}, pulando gráfico.`);
+      return;
+    }
+
+    if (eficienciasPeriodoAtual.length > 0) {
+      const mediaEficienciaAtual = eficienciasPeriodoAtual.reduce((a, b) => a + b, 0) / eficienciasPeriodoAtual.length;
+      const elemEfiMod = document.getElementById("met_efiMod");
+      if (elemEfiMod) elemEfiMod.textContent = mediaEficienciaAtual.toFixed(2);
+
+      if (eficienciasPeriodoAnterior.length === eficienciasPeriodoAtual.length) {
+        const mediaEficienciaAnterior = eficienciasPeriodoAnterior.reduce((a, b) => a + b, 0) / eficienciasPeriodoAnterior.length;
+        const diff = mediaEficienciaAtual - mediaEficienciaAnterior;
+        const prefixo = diff >= 0 ? "+" : "";
+        const elemAntEfiMod = document.getElementById("ant_efiMod");
+        if (elemAntEfiMod) elemAntEfiMod.textContent = `${prefixo}${diff.toFixed(2)}`;
+      } else {
+        const elemAntEfiMod = document.getElementById("ant_efiMod");
+        if (elemAntEfiMod) elemAntEfiMod.textContent = "";
+      }
+    } else {
+      const elemEfiMod = document.getElementById("met_efiMod");
+      const elemAntEfiMod = document.getElementById("ant_efiMod");
+      if (elemEfiMod) elemEfiMod.textContent = "0";
+      if (elemAntEfiMod) elemAntEfiMod.textContent = "";
+    }
 
     const chart = new Chart(canvas, {
       type: tipoGraf,
@@ -278,7 +502,7 @@ async function atualizarGraf() {
           },
           title: {
             display: true,
-            text: `${tipo} - ${modeloSelecionado}`
+            text: `${componente.tipo}`
           }
         }
       }

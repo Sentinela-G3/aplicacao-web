@@ -1,5 +1,6 @@
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, GetObjectCommand, ListObjectsV2Command } = require("@aws-sdk/client-s3");
 
+require('dotenv').config();
 const s3 = new S3Client({
   region: "us-east-1",
   credentials: {
@@ -26,4 +27,7 @@ async function buscarArquivoDoS3(bucket, key) {
   return content;
 }
 
-module.exports = { buscarArquivoDoS3, listarArquivosPrefixo };
+module.exports = {
+  buscarArquivoDoS3,
+  listarArquivosPrefixo
+};
