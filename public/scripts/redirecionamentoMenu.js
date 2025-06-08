@@ -9,7 +9,7 @@ function gerarMenuLateral() {
 
     const nomeUsuario = sessionStorage.nomeUsuario || "Usuário";
     const fotoPerfil = sessionStorage.fotoPerfil ? `../imagens_de_perfil/${sessionStorage.fotoPerfil}` : "../assets/img/img_perfil_nav.jpg";
-
+    console.log(sessionStorage.nomeUsuario)
     const perfilHTML = (idFoto) => `
         <div class="imagem_perfil">
             <img id="${idFoto}" src="${fotoPerfil}">

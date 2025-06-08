@@ -118,13 +118,13 @@ INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_cr
 ('Administrador', 'adm@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
 
 INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
-('Mariana Campos', 'mariana@email.com', '11987654321', SHA2('123456', 256), NULL, NULL, '2023-01-20', 1);
+('Mariana Campos', 'mariana@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
 
 INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
-('Gilberto Silva', 'gilberto@email.com', '11987654321', SHA2('123456', 256), NULL, NULL, '2023-01-20', 1);
+('Gilberto Silva', 'gilberto@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
 
 INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
-('Ronaldo Alves', 'ronaldo@email.com', '11987654321', SHA2('123456', 256), NULL, NULL, '2023-01-20', 1);
+('Ronaldo Alves', 'ronaldo@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
 
 update empresa set status = 2 where id_empresa > 0;
 

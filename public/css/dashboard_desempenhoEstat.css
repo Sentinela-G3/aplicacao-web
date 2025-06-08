@@ -22,7 +22,7 @@
 
 body {
   display: flex;
-  background-color: var(--bg-light);
+  background-color: #d1d1d1;
   width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
@@ -37,6 +37,7 @@ body {
   transition: var(--transition);
   padding-right: 3%;
 }
+
 
 .container {
   width: 100%;
@@ -58,6 +59,10 @@ body {
   }
 }
 
+.container.titulos{
+  background-color: #d1d1d1;
+}
+
 .tipometrica {
   display: flex;
   justify-content: center;
@@ -74,9 +79,7 @@ body {
     box-shadow: none;
     padding: 0%;
 
-    & h1 {
-      margin-left: 3%;
-    }
+    
 
     & .container {
       flex-direction: row;
@@ -121,7 +124,7 @@ body {
 .seletor {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  align-items: flex-end;
 }
 
 select {
@@ -136,11 +139,16 @@ select {
   margin-right: 2%;
   border-bottom: 2px solid #C1C7CD;
   height: 6vh;
-  width: 35%;
+  width: 40%;
   background: url(../assets/svg/select\ icon\ Container.svg) no-repeat right;
   padding-right: 4%;
   padding-left: 0.5%;
   background-position-x: 100%;
+  border-radius: 5px;
+}
+
+#slt_modelo, #slt_periodo{
+  background-color: white;
 }
 
 .desempenhoGeral {

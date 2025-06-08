@@ -1,7 +1,7 @@
 var ambiente_processo = 'local';
 // var ambiente_processo = 'producao';
 
-var caminho_env = ambiente_processo === 'producao' ?  '.env' : '.env.dev';
+var caminho_env = ambiente_processo === 'producao' ?   '.env.dev' : '.env' ;
 // Acima, temos o uso do operador ternário para definir o caminho do. arquivo .env
 // A sintaxe do operador ternário é: condição ? valor_se_verdadeiro : valor_se_falso
 
