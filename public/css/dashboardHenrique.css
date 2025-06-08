@@ -411,7 +411,6 @@ caption {
 @media (max-width: 450px) {
 
     /* --- 1. AJUSTES GERAIS E LAYOUT PRINCIPAL --- */
-
     body {
         display: block;
     }
@@ -551,8 +550,8 @@ caption {
         gap: 8px;
     }
 
-    #descricao{
-        padding: 6px  ;
+    #descricao {
+        padding: 6px;
     }
 
     #prazoSLA {

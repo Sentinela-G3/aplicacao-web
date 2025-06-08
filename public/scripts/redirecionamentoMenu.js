@@ -74,6 +74,7 @@ function preencherBotoes() {
             { id: 'btn_suporte', label: 'Suporte Operacional', url: './suporteOperacional.html' },
             { id: 'btn_analitico', label: 'Desempenho Estatistico', url: './desempenhoEstatistico.html' },
             { id: 'btn_func', label: 'Gerenciamento de Funcionário', url: './gerenciar_funcionarios.html' },
+            { id: 'btn_minhaConta', label: 'Minha Conta', url: './myConta.html' },
             ...botoesPadrao
         ],
         2: [ // Monitoramento
