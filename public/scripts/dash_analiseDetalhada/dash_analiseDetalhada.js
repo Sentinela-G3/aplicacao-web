@@ -53,7 +53,7 @@ document.getElementById("th-data").addEventListener("click", () => ordenarTabela
 
 async function obterSerialPorId(id) {
     try {
-        const response = await fetch(`http://${BASE_URL}/maquinas/obterSerialPorId`, {
+        const response = await fetch(`/maquinas/obterSerialPorId`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -91,7 +91,7 @@ function calcularTotalRAM(usoGB, percentualUso) {
 
 async function buscarThreshold(idMaquina) {
     try {
-        const response = await fetch(`http://${BASE_URL}/medidas/thresholds/${idMaquina}`);
+        const response = await fetch(`/medidas/thresholds/${idMaquina}`);
         const json = await response.json();
         thresholdData = json;
 
@@ -272,7 +272,7 @@ function inicializarGraficos() {
 
 async function buscarMetricas(idMaquina) {
     try {
-        const response = await fetch(`http://${BASE_URL}/medidas/${idMaquina}`);
+        const response = await fetch(`/medidas/${idMaquina}`);
         const json = await response.json();
         const dados = json.dados;
 
@@ -373,7 +373,7 @@ function atualizarBoxes(dados) {
 
 async function buscarProcessos(idMaquina) {
     try {
-        const response = await fetch(`http://${BASE_URL}/processos/${idMaquina}`);
+        const response = await fetch(`/processos/${idMaquina}`);
         const json = await response.json();
 
         const chaves = Object.keys(json.dados || {}); 
@@ -392,7 +392,7 @@ async function buscarProcessos(idMaquina) {
         document.getElementById("hero-actions").style.display = 'flex'; 
 
         processosAtuais = processos_vetor;
-        gerarCardsAcoes('loaded'); // Chama com 'loaded' para popular os cards de ação
+        gerarCardsAcoes('loaded'); 
         const processosOrdenados = ordenarProcessos(processosAtuais, estadoOrdenacao.campo || 'cpu_percent', estadoOrdenacao.crescente);
         atualizarTabelaProcessos(processosOrdenados);
 
@@ -411,7 +411,7 @@ async function buscarAlertas(serialNumber) {
     // const containerHeroActions = document.getElementById("hero-actions"); // Não é mais necessário aqui
     
     try {
-        const response = await fetch(`http://${BASE_URL}/jira/tickets`);
+        const response = await fetch(`/jira/tickets`);
 
         if (!response.ok) {
             throw new Error(`Erro na requisição: ${response.statusText}`);
@@ -423,7 +423,7 @@ async function buscarAlertas(serialNumber) {
             console.warn("A resposta não contém um array de tickets válidos.");
             hasAlertData = false;
             document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none'; 
-            gerarCardsAcoes('no_alerts'); // Chama com 'no_alerts' para exibir o card de "sem chamados"
+            gerarCardsAcoes('no_alerts'); 
             return;
         }
 
@@ -460,7 +460,7 @@ async function buscarAlertas(serialNumber) {
             console.warn("Nenhum alerta filtrado para este serial number.");
             hasAlertData = false;
             document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none';
-            gerarCardsAcoes('no_alerts'); // Chama com 'no_alerts'
+            gerarCardsAcoes('no_alerts'); 
             return;
         }
 
@@ -476,13 +476,13 @@ async function buscarAlertas(serialNumber) {
         );
 
         atualizarTabelaAlertas(ordenados);
-        gerarCardsAcoes('loaded'); // Chama com 'loaded' após sucesso
+        gerarCardsAcoes('loaded'); 
 
     } catch (error) {
         console.error("Erro ao buscar tickets:", error);
         hasAlertData = false;
         document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none'; 
-        gerarCardsAcoes('error'); // Chama com 'error' em caso de falha
+        gerarCardsAcoes('error'); 
     } finally {
         checkOverallDataStatus(); 
     }
@@ -514,7 +514,7 @@ function gerarCardsAcoes(status = 'loaded') { // Adicionado parâmetro 'status'
                 <p>Aguarde enquanto buscamos os dados.</p>
             </div>
         `;
-        return; // Sai da função para não popular outros cards
+        return; 
     } else if (status === 'error') {
         container.innerHTML = `
             <div class="action-card critical" style="text-align: center; width: 100%;">
@@ -522,7 +522,7 @@ function gerarCardsAcoes(status = 'loaded') { // Adicionado parâmetro 'status'
                 <p>Não foi possível carregar os chamados ou processos. Tente novamente mais tarde.</p>
             </div>
         `;
-        return; // Sai da função
+        return; 
     }
 
     // Lógica para Chamados Abertos (agora dentro do status 'loaded' ou 'no_alerts')
@@ -779,7 +779,7 @@ function confirmarEncerrarProcesso(pid, nome) {
         const id_maquina = id;
         const tipo_comando = "encerrar_processo";
 
-        fetch(`http://${BASE_URL}/processos/matarProcesso/${id_maquina}`, {
+        fetch(`/processos/matarProcesso/${id_maquina}`, {
             method: "POST", 
             headers: {
                 "Content-Type": "application/json"
