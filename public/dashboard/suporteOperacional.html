@@ -25,7 +25,14 @@
     <script src="../scripts/redirecionamentoMenu.js"></script>
 
     <div class="content">
-        <h1>Painel de Suporte Operacional</h1>
+        <div class="titulo-screen">
+            <h1>Painel de Suporte Operacional</h1>
+            <div class="att-screen">
+                <div class="icon-verde">
+                </div>
+                <span id="text-atualizado"></span>
+            </div>
+        </div>
 
         <div class="div-superior">
             <div class="box-grafico">
@@ -54,9 +61,7 @@
         <div class="div-central">
             <div class="box-tickets">
                 <div class="alertas-com-filtros">
-                    <span class="titulo-grafico"
-                        style="width: 50%; justify-content: left; padding-left: 20px; box-sizing: border-box;">Lista de
-                        Alertas</span>
+                    <span id="title-lista" class="titulo-grafico">Lista de Alertas</span>
                     <div class="filtros-direita">
                         <select id="select-urgencia" class="select-urgencia">
                             <option value="">Todos</option>
@@ -77,55 +82,32 @@
                             style="font-weight: bold; margin-left: 10px; color: rgb(222, 189, 0);">Carregando...</span>
                     </div>
                     <div id="tickets-container" style="display:none; flex-direction: column; "></div>
-                    <!-- <div class="ticket-layout">
-                        <div class="box-urgencia">
-                            <div class="div-urgencia">
-                                <span id="text-urgencia">CRITÍCO</span>
+                        <!-- <div class="ticket-layout">
+                            <div class="box-urgencia">
+                                <div class="div-urgencia">
+                                    <span id="text-urgencia">CRITÍCO</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="box-esquerda">
-                            <span class="text-infos" id="id-dispositivo">ID Dispositivo: FVFZTLKKL40Y</span>
-                            <span class="text-infos" id="recurso">Recurso: <b>Disco</b></span>
-                            <span class="text-infos" id="descricao">Robô sem acesso à internet</span>
-                            <span class="text-infos" id="hrDeAbertura"><i>Aberto em 28/05 às 14:19</i></span>
-                        </div>
-                        <div class="box-direita">
-                            <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
-                                    style="color: red;">20 min e 30 seg</b> </span>
-                            <div class="box-buttons">
-                                <button class="buttons-tickets btn" id="button-detalhes">Ver Detalhes</button>
-                                <select class="buttons-tickets" id="selection-responsavel">
-                                    <option value="">Responsável</option>
-                                </select>
-                                <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel()">Designar</button>
+                            <div class="box-esquerda">
+                                <span class="text-infos" id="id-dispositivo">ID Dispositivo: FVFZTLKKL40Y</span>
+                                <span class="text-infos" id="recurso">Recurso: <b>Disco</b></span>
+                                <span class="text-infos" id="descricao">Robô sem acesso à internet</span>
+                                <span class="text-infos" id="hrDeAbertura"><i>Aberto em 28/05 às 14:19</i></span>
                             </div>
-                        </div>
-                    </div> -->
+                            <div class="box-direita">
+                                <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
+                                        style="color: red;">20 min e 30 seg</b> </span>
+                                <div class="box-buttons">
+                                    <button class="buttons-tickets btn" id="button-detalhes">Ver Detalhes</button>
+                                    <select class="buttons-tickets" id="selection-responsavel">
+                                        <option value="">Responsável</option>
+                                    </select>
+                                    <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel()">Designar</button>
+                                </div>
+                            </div>
+                        </div> -->
 
-                    <!-- <div class="ticket-layout">
-                        <div class="box-urgencia">
-                            <div class="div-urgencia">
-                                <span id="text-urgencia">CRITÍCO</span>
-                            </div>
-                        </div>
-                        <div class="box-esquerda">
-                            <span class="text-infos" id="id-dispositivo">ID Dispositivo: FVFZTLKKL40Y</span>
-                            <span class="text-infos" id="recurso">Recurso: <b>Disco</b></span>
-                            <span class="text-infos" id="descricao">Robô sem acesso à internet</span>
-                            <span class="text-infos" id="hrDeAbertura"><i>Aberto em 28/05 às 14:19</i></span>
-                        </div>
-                        <div class="box-direita">
-                            <span class="text-infos" id="prazoSLA">Prazo para cumprimento da SLA <br> <b
-                                    style="color: red;">20 min e 30 seg</b> </span>
-                            <div class="box-buttons">
-                                <button class="buttons-tickets btn" id="button-detalhes">Ver Detalhes</button>
-                                <select class="buttons-tickets" id="selection-responsavel">
-                                    <option value="">Responsável</option>
-                                </select>
-                                <button class="buttons-tickets btn" id="btn-designar" onclick="setarResponsavel()">Designar</button>
-                            </div>
-                        </div>
-                    </div> -->
+                        
                 </div>
             </div>
 
@@ -186,6 +168,16 @@
 
         <script src="../scripts/jiraFuncoes.js" style="padding: 0;"></script>
         <script>
+            function padZero(num) {
+                return num < 10 ? '0' + num : num;
+            }
+
+            const divAtt = document.getElementById("text-atualizado")
+            const agora = new Date();
+            const horas = padZero(agora.getHours());
+            const minutos = padZero(agora.getMinutes());
+
+            divAtt.innerHTML = `Atualizado às ${horas}:${minutos}`
             alertasPorComponente()
         </script>
 </body>

@@ -109,12 +109,23 @@ CREATE TABLE alerta (
 );
 
 INSERT INTO empresa (razao_social, cnpj, categoria, data_inicio, status) VALUES
-('Sentinela Tech Solutions Ltda.', '12345678000100', 'Tecnologia', '2023-01-15', 1);
+('Amazon Robotics', '12345678000100', 'Tecnologia', '2023-01-15', 1);
+
 INSERT INTO endereco_empresa (cep, numero, logradouro, estado, cidade, complemento, fk_endereco_empresa) VALUES
+('01414-001', '595', 'Rua Haddock Lobo', 'SP', 'São Paulo', 'Cerqueira César', 1);
+
 INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
-('Vinicius Silva', 'vinicius@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
-insert into colaborador (nome, email, senha, tipo, fk_colaborador_empresa, telefone) values ('Aaron', 'aaron@email.com', sha2('123', 256), 1, 1, 123);
+('Administrador', 'adm@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
+
+INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
+('Mariana Campos', 'mariana@email.com', '11987654321', SHA2('123456', 256), NULL, NULL, '2023-01-20', 1);
+
+INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
+('Gilberto Silva', 'gilberto@email.com', '11987654321', SHA2('123456', 256), NULL, NULL, '2023-01-20', 1);
+
+INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
+('Ronaldo Alves', 'ronaldo@email.com', '11987654321', SHA2('123456', 256), NULL, NULL, '2023-01-20', 1);
+
 update empresa set status = 2 where id_empresa > 0;
-select * from empresa;
 
 update maquina set fk_maquina_empresa = 1 where id_maquina > 0;

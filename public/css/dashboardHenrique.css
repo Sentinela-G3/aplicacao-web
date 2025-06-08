@@ -7,33 +7,40 @@
 }
 
 :root {
-    --borda-padrao-box: 0.35vh #dde1e6 solid;
     --fontsize-tipo1: 2.5rem;
     --fontsize-tipo2: 2rem;
     --fontsize-tipo3: 1.75rem;
     --fontsize-tipo4: 1.5rem;
     --fontsize-tipo5: 1rem;
     --fontsize-tipo6: 0.9rem;
-    --textcolor-cinza1: #697077;
     --color-amarelo: #fae969;
-    --color-cinza1: #dde1e6;
-}
-
-h2 {
-    font-size: var(--fontsize-tipo3);
-}
-
-h3 {
-    font-size: var(--fontsize-tipo4);
-}
-
-h4 {
-    font-size: var(--fontsize-tipo5);
 }
 
 body {
     display: flex;
     background-color: #d1d1d1;
+}
+
+.titulo-screen {
+    height: auto;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.att-screen {
+    display: flex;
+    align-items: center;
+}
+
+.icon-verde {
+    background-color: rgb(0, 196, 0);
+    height: 15px;
+    width: 15px;
+    border-radius: 15px;
+    margin-right: 5px;
+    box-sizing: border-box;
 }
 
 .content {
@@ -42,16 +49,17 @@ body {
     width: 100vw;
     display: flex;
     flex-direction: column;
-    padding: 2%;
+    padding: 2% 2% 0 2%;
     box-sizing: border-box;
 }
 
 .div-superior {
-    height: 35%;
+    height: 40%;
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 1%;
+    min-height: 0;
 }
 
 .box-grafico {
@@ -72,6 +80,7 @@ body {
     max-height: 90%;
     padding: 0;
     margin: 0;
+    min-height: 0;
 }
 
 #graficoRosca {
@@ -96,21 +105,21 @@ body {
 .span-dado {
     font-size: 26px;
     font-weight: 600;
-
 }
 
 .span-obs {
     font-size: 14px;
     opacity: 50%;
-
 }
 
 .div-central {
-    height: 65%;
+    height: 60%;
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin: 1% 0;
+    flex-grow: 1;
+    min-height: 0;
 }
 
 .box-tickets {
@@ -121,6 +130,7 @@ body {
     box-shadow: 5px 5px 15px rgb(194, 194, 194);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .box-ranking {
@@ -133,30 +143,23 @@ body {
     flex-direction: column;
 }
 
-
-
-.div-inferior {
-    height: 20%;
-    width: 100%;
-    background-color: white;
-    display: flex;
-    border-radius: 10px;
-    box-shadow: 5px 5px 15px rgb(194, 194, 194);
-    justify-content: space-between;
-}
-
-
 .titulo-grafico {
     width: 100%;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-
     border-radius: 5px 5px 0 0;
     font-size: 18px;
     font-weight: bold;
     background-color: var(--color-amarelo);
+}
+
+#title-lista {
+    width: 50%;
+    justify-content: left;
+    padding-left: 20px;
+    box-sizing: border-box;
 }
 
 .subtitulo-grafico {
@@ -164,7 +167,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
+    flex-shrink: 0;
     font-size: 14px;
 }
 
@@ -173,11 +176,10 @@ body {
     display: flex;
     border-radius: 5px 5px 0 0;
     align-items: center;
-    height: 30px;
-
+    height: 8%;
 }
 
-.filtros-direita{
+.filtros-direita {
     width: 50%;
     height: 100%;
     display: flex;
@@ -186,7 +188,7 @@ body {
     padding-right: 10px;
 }
 
-.select-urgencia{
+.select-urgencia {
     border-radius: 5px;
     width: 30%;
     height: 80%;
@@ -195,7 +197,7 @@ body {
     margin-right: 5px;
 }
 
-.searh-urgencia{
+.searh-urgencia {
     border-radius: 5px;
     width: 50%;
     height: 80%;
@@ -204,11 +206,12 @@ body {
     box-sizing: border-box;
 }
 
-.lista-tickets{
+.lista-tickets {
     width: 100%;
-    height: 43vh;
+    height: 92%;
     overflow-y: auto;
-    border-radius:   0 0 10px 10px;
+    border-radius: 0 0 10px 10px;
+    min-height: 0;
 }
 
 .ticket-layout {
@@ -240,27 +243,27 @@ body {
     align-items: center;
 }
 
-.box-urgencia.critico{
+.box-urgencia.critico {
     border-left: 3px #ff0000 solid;
 }
 
-.box-urgencia.grave{
+.box-urgencia.grave {
     border-left: 3px rgb(255, 174, 0) solid;
-}   
+}
 
-.box-urgencia.leve{
+.box-urgencia.leve {
     border-left: 3px #f2c94c solid;
 }
 
-.div-urgencia.critico{
+.div-urgencia.critico {
     background-color: red;
 }
 
-.div-urgencia.grave{
+.div-urgencia.grave {
     background-color: rgb(255, 174, 0);
 }
 
-.div-urgencia.leve{
+.div-urgencia.leve {
     background-color: #f2c94c;
 }
 
@@ -277,7 +280,6 @@ body {
     font-size: 14px;
 }
 
-
 .box-esquerda {
     padding: 0 0 0 20px;
     box-sizing: border-box;
@@ -287,8 +289,6 @@ body {
     justify-content: space-evenly;
     flex-direction: column;
 }
-
-
 
 .box-direita {
     padding: 0 20px 0 0;
@@ -303,12 +303,11 @@ body {
 
 .text-infos {
     font-size: 14px;
-
-
 }
 
 #id-dispositivo {
     font-weight: bold;
+    white-space: nowrap;
 }
 
 #hrDeAbertura {
@@ -325,7 +324,6 @@ body {
     border-radius: 5px;
     height: 25px;
     cursor: pointer;
-
 }
 
 .btn {
@@ -334,44 +332,23 @@ body {
     width: 90px;
     font-weight: bold;
     transition: 0.2s all;
-
-
 }
 
 .btn:hover {
     background-color: #fbe328;
-
 }
 
-#btn-designar{
+#btn-designar {
     width: 70px;
 }
 
-
-.buttons-tickets.select{
+.buttons-tickets.select {
     max-width: 120px;
     text-align: center;
     border: 2px solid #fbe328;
 }
 
-
 /* RECORRENCIA DE ALERTAS */
-.box-lista {
-    width: 100%;
-    height: 91%;
-}
-
-.div-lista {
-    width: 100%;
-    height: 20%;
-    background-color: rgb(255, 18, 18);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-}
-
-
 .box-ranking table {
     width: 100%;
     border-collapse: collapse;
@@ -383,16 +360,15 @@ thead {
     background-color: #fae969;
 }
 
-tbody{
+tbody {
     flex: 1;
 }
 
-th,td {
+th,
+td {
     padding: 8px;
     text-align: center;
 }
-
-
 
 caption {
     caption-side: top;
@@ -401,35 +377,226 @@ caption {
     font-size: 1.2em;
 }
 
-.tr-posicoes{
+.tr-posicoes {
     height: 20%;
 }
 
-.tr-posicoes.vermelhao{
+.tr-posicoes.vermelhao {
     background-color: red;
     color: white;
 }
 
-.tr-posicoes.vermelho{
+.tr-posicoes.vermelho {
     background-color: rgb(255, 132, 132);
     color: white;
 }
 
-.text-posicao{
+.text-posicao {
     width: 20%;
     font-size: 20px;
-
 }
 
-.text-tipo{
+.text-tipo {
     width: 60%;
     font-size: 20px;
-
 }
 
-.text-qtd{
+.text-qtd {
     width: 20%;
     font-weight: bold;
     font-size: 20px;
-
 }
+
+/* --- INÍCIO DA VERSÃO RESPONSIVA PARA DISPOSITIVOS MÓVEIS --- */
+@media (max-width: 450px) {
+
+    /* --- 1. AJUSTES GERAIS E LAYOUT PRINCIPAL --- */
+
+    body {
+        display: block;
+    }
+
+    .content {
+        margin-left: 0;
+        width: 100%;
+        height: auto;
+        padding: 4% 3% 0 3%;
+    }
+
+    .titulo-screen {
+        margin-top: 6vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .titulo-screen h1 {
+        font-size: 1.7rem;
+    }
+
+    .div-superior,
+    .div-central {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+    }
+
+    .box-grafico,
+    .box-pizza,
+    .box-tickets,
+    .box-ranking {
+        width: 100%;
+        height: auto;
+    }
+
+    /* ALTERAÇÃO DE ORDEM PARA O MOBILE */
+    .box-ranking {
+        order: 1;
+        /* Define a Recorrência como o primeiro item */
+    }
+
+    .box-tickets {
+        order: 2;
+        /* Define a Lista de Tickets como o segundo item */
+    }
+
+
+    /* --- 2. AJUSTES NA LISTA DE ALERTAS (TICKETS) --- */
+
+    .ticket-layout {
+        flex-direction: column;
+        height: auto;
+        padding: 10px 0;
+        gap: 10px;
+    }
+
+    .box-urgencia {
+        height: 20px;
+        width: 100%;
+        border-left: none;
+        border-top: 5px solid;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .text-urgencia {
+        justify-content: center;
+        align-items: center;
+        writing-mode: horizontal-tb;
+    }
+
+    .div-urgencia {
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    .box-urgencia.critico {
+        border-top-color: #ff0000;
+    }
+
+    .box-urgencia.grave {
+        border-top-color: rgb(255, 174, 0);
+    }
+
+    .box-urgencia.leve {
+        border-top-color: #f2c94c;
+    }
+
+    .titulo-grafico {
+        font-size: 1rem;
+    }
+
+    #title-lista {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .filtros-direita {
+        width: 100%;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .alertas-com-filtros {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #search-dispositivo {
+        width: auto;
+        height: 85%;
+        text-align: center;
+    }
+
+    #select-urgencia {
+        height: 85%;
+        width: 30%;
+        margin-right: 5px;
+    }
+
+    .box-esquerda,
+    .box-direita {
+        width: 100%;
+        padding: 5px;
+        padding: 0;
+        box-sizing: border-box;
+        align-items: center;
+        grid-area: 2px;
+    }
+
+    .box-direita {
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    #descricao{
+        padding: 6px  ;
+    }
+
+    #prazoSLA {
+        text-align: center;
+        width: 100%;
+    }
+
+    .box-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .buttons-tickets.select {
+        max-width: 150px;
+        margin: 0 5px;
+    }
+
+    /* --- 3. AJUSTES NOS GRÁFICOS E TABELAS --- */
+
+    .box-grafico {
+        min-height: 250px;
+    }
+
+
+
+    .box-pizza {
+        min-height: 300px;
+    }
+
+    .box-ranking {
+        overflow-x: auto;
+    }
+
+    .box-ranking table {
+        width: auto;
+        min-width: 100%;
+    }
+
+    .text-posicao,
+    .text-tipo,
+    .text-qtd {
+        font-size: 0.9rem;
+    }
+}
+
+/* --- FIM DA VERSÃO RESPONSIVA --- */

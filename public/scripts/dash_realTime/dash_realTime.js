@@ -41,8 +41,8 @@ async function carregarMaquinas() {
 async function buscarMaquina() {
     try {
         const [machinesResponse, alertsResponse] = await Promise.all([
-            fetch(`http://${BASE_URL}/maquinas/${usuario.idEmpresa}`),
-            fetch(`http://${BASE_URL}/jira/tickets`),
+            fetch(`/maquinas/${usuario.idEmpresa}`),
+            fetch(`/jira/tickets`),
         ]);
 
         if (!machinesResponse.ok) throw new Error("Erro ao buscar dados das máquinas");
@@ -218,7 +218,7 @@ function ordenarLista(machines, alerts) {
 }
 
 async function buscarMetricas(idMaquina) {
-    const res = await fetch(`http://${BASE_URL}/medidas/${idMaquina}`);
+    const res = await fetch(`/medidas/${idMaquina}`);
     return res.ok ? await res.json() : {};
 }
 

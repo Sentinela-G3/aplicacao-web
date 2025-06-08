@@ -1,6 +1,6 @@
 services:
   site:
-    image: henriquedandrade/sprint:node
+    image: henriquedandrade/sentinela:node-app
     ports:
       - "3333:3333"
     networks:
@@ -9,13 +9,13 @@ services:
       - db
     environment:
       DB_HOST: db
-      DP_PORT: 3306
+      DB_PORT: 3306
       DB_USER: root
-      DB_PASSWORD: urubu100
-      DB_DATABASE: Sentinela
+      DB_PASSWORD: senha123
+      DB_DATABASE: sentinela
     
   db:
-    image: henriquedandrade/sprint:mysql
+    image: henriquedandrade/sentinela:mysql-app
     ports:
       - "3307:3306"
     networks:
