@@ -5,9 +5,10 @@ async function buscarDados4Anos(req, res) {
   console.log("Empresa: ", empresa)
   
   const nomeArquivo = `${empresa}/${empresa}_4-anos_medias-4-anos.json`;
+  console.log(nomeArquivo)
 
   try {
-    const conteudo = await buscarArquivoDoS3("clientbuckets3-spt", nomeArquivo);
+    const conteudo = await buscarArquivoDoS3("sentinela-client-bucket", nomeArquivo);
     res.status(200).json(JSON.parse(conteudo));
   } catch (err) {
     console.error("Erro ao buscar no S3:", err);

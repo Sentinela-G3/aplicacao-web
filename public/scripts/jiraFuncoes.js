@@ -256,7 +256,7 @@ async function renderTicketsGilberto(tickets) {
           </div>
       </div>
       <div class="box-esquerda">
-          <span class="text-infos" id="id-dispositivo"><b style="margin-right: 20px; color blue;">${chaveTicket}</b>ID Dispositivo: ${maquina[1]}</span>
+          <span class="text-infos" id="id-dispositivo">ID Dispositivo: ${maquina[1]}</span>
           <span class="text-infos" id="recurso">Recurso: <b>${recurso}</b></span>
           <span class="text-infos" id="descricao">${descricao}</span>
           <span class="text-infos" id="hrDeAbertura"><i>Aberto em ${textHoraAbertura}</i></span>
@@ -342,7 +342,7 @@ async function alertasPorComponente() {
       },
       style: {
         colors: ['#000'],
-        fontSize: '20px',
+        fontSize: '16px',
       }
     },
     legend: {
@@ -419,10 +419,9 @@ function recorrenciaDeAlertas(tickets) {
 
   var corReccorencia;
   for (let i = 0; i < Math.min(5, recorrencia.length); i++) {
-    if (recorrencia[i].quantidade >= 35
-    ) {
+    if (recorrencia[i].quantidade >= 30) {
       corReccorencia = "vermelhao"
-    } else if (recorrencia[i].quantidade >= 20) {
+    } else if (recorrencia[i].quantidade >= 15) {
       corReccorencia = "vermelho"
     } else {
       corReccorencia = "branco"
@@ -460,20 +459,7 @@ function graficoQtdHora(tickets) {
   const horaMenos4 = horaMenos(4);
   const horaMenos5 = horaMenos(5);
 
-  function formatarHora(hora) {
-    const prefixo = hora < 10 ? '0' + hora : hora;
-    const sufixo = hora === 1 ? 'hr' : 'hrs';
-    return prefixo + sufixo;
-  }
-
-  const horas = [
-    formatarHora(horaMenos5),
-    formatarHora(horaMenos4),
-    formatarHora(horaMenos3),
-    formatarHora(horaMenos2),
-    formatarHora(horaMenos1),
-    formatarHora(horaAtual)
-  ];
+  const horas = [horaMenos5, horaMenos4, horaMenos3, horaMenos2, horaMenos1, horaAtual]
 
   var horaAtualCPU = 0;
   var horaMenos1CPU = 0;
@@ -637,7 +623,7 @@ function graficoQtdHora(tickets) {
     dataLabels: {
       enabled: true,
       style: {
-        fontSize: '14px',
+        fontSize: '13px',
         colors: ['#000']
       },
       dropShadow: {
@@ -673,7 +659,7 @@ function graficoQtdHora(tickets) {
     xaxis: {
       categories: horas,
       title: {
-        text: 'HORÁRIO',
+        text: 'Hora',
         offsetY: -10,
         style: {
           fontWeight: 'bold'
@@ -683,7 +669,7 @@ function graficoQtdHora(tickets) {
     },
     yaxis: {
       title: {
-        text: 'QUANTIDADE'
+        text: 'Quantidade'
       },
       min: 0,
       max: 16
@@ -697,7 +683,7 @@ function graficoQtdHora(tickets) {
     },
     colors: ['#FFA500', '#20C997', '#1E90FF', '#FFD700', '#FF6F61', '#8Bff13'],
     legend: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 'bold',
       position: 'top',
     }
@@ -770,7 +756,7 @@ function redirecionar(serialNumber) {
   fetch(`/maquinas/serial/${serialNumber}`)
     .then(response => response.json())
     .then(data => {
-      console.log("Resposta do backend:", data);
+      console.log("Resposta do backend:", data); 
 
       if (data.length > 0) {
         const idMaquina = data[0].id_maquina;

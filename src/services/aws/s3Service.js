@@ -10,6 +10,9 @@ const s3 = new S3Client({
   },
 });
 
+console.log(process.env.AWS_ACCESS_KEY_ID)
+console.log(process.env.AWS_SECRET_ACCESS_KEY)
+console.log(process.env.AWS_SESSION_TOKEN)
 async function listarArquivosPrefixo(bucket, prefix) {
   const command = new ListObjectsV2Command({
     Bucket: bucket,

@@ -68,6 +68,8 @@ async function obterSerialPorId(id) {
         const json = await response.json();
         return json[0]?.serial_number ?? null;
 
+
+
     } catch (error) {
         console.error("Erro ao obter serial number:", error);
         return null;
@@ -841,11 +843,10 @@ function showCustomMessage(message, type = "info") {
     };
 }
 
-
 inicializarGraficos();
 
 // Exibir estado de carregamento ANTES de iniciar todas as buscas
-gerarCardsAcoes('loading'); // <-- Chamada inicial de carregamento
+gerarCardsAcoes('loading'); 
 
 // Chamar todas as funções de busca de dados
 Promise.all([
@@ -854,12 +855,15 @@ Promise.all([
     buscarProcessos(id),
     obterSerialPorId(id).then(serial => {
         if (serial) {
+            // atribuindo serial number à maquina
+            h1_titulo = document.getElementById("h1_titulo");
+            h1_titulo.innerHTML += ` - ${serial}`;
             return buscarAlertas(serial); 
         } else {
             console.warn("Serial não encontrado. Não será possível buscar alertas.");
             hasAlertData = false; 
             document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none';
-            gerarCardsAcoes('no_alerts'); // Exibe o card de "sem chamados" se o serial não for encontrado
+            gerarCardsAcoes('no_alerts'); 
             return Promise.resolve(); 
         }
     })
@@ -883,7 +887,7 @@ intervaloAtualizacao = setInterval(async () => {
                 console.warn("Serial não encontrado. Não será possível buscar alertas.");
                 hasAlertData = false;
                 document.querySelector('.section2 .containerComponent:nth-child(2)').style.display = 'none';
-                gerarCardsAcoes('no_alerts'); // Exibe o card de "sem chamados" se o serial não for encontrado
+                gerarCardsAcoes('no_alerts'); 
                 return Promise.resolve();
             }
         })
