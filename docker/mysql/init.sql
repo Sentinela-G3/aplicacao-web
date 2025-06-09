@@ -68,8 +68,8 @@ CREATE TABLE componente (
     threshold_critico FLOAT,
     threshold_leve FLOAT,
     unidade_medida VARCHAR(10),
-    minimo FLOAT NULL,
-    maximo FLOAT NULL,
+    minimo FLOAT NULL DEFAULT 30.0,
+    maximo FLOAT NULL DEFAULT 70.0,
     fk_componente_maquina INT NOT NULL,
     FOREIGN KEY (fk_componente_maquina)
         REFERENCES maquina(id_maquina) 

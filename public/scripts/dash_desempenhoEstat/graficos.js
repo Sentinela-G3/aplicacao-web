@@ -111,6 +111,7 @@ async function carregarDadosS3(nomeEmpresa) {
 }
 
 function preencherSelectModelos(jsonModelo) {
+
   sltModelo.innerHTML = `<option value="#" disabled>Selecione o Modelo</option>`;
   let primeiro = true
   let modeloInicial = null
@@ -132,28 +133,55 @@ function preencherSelectModelos(jsonModelo) {
   modelosComponentes(modeloInicial)
 }
 
+function capitalizeFirstLetter(text) {
+  if (!text) return '';
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 function preencherPagina() {
+
   kpisGerais.innerHTML = ""
   contGraficos.innerHTML = ""
 
   ids = []
   idsGraph = []
 
+  let tratados = [];
+
   componentes.forEach(modelo => {
     console.log(modelo)
-    ids.push(`met_efi${modelo.tipo}`)
-    ids.push(`ant_efi${modelo.tipo}`)
-    ids.push(`met_sobre${modelo.tipo}`)
-    ids.push(`ant_sobre${modelo.tipo}`)
-    ids.push(`comp_${modelo.tipo}`)
-    ids.push(`met-esp_${modelo.tipo}`)
-    ids.push(`met-ati_${modelo.tipo}`)
-    ids.push(`met-esp-max_${modelo.tipo}`)
-    ids.push(`met-ati-max_${modelo.tipo}`)
-    idsGraph.push(`graf_${modelo.tipo}`)
-    kpisGerais.innerHTML += `<div class="kpi">
+    const tipo = modelo.tipo.split("_")[0];
+    console.log(tipo)
+
+
+    if (tratados.includes(tipo) || modelo.tipo == "net_upload" || modelo.tipo == "net_download" || modelo.tipo == "link_speed_mbps" || modelo.tipo == "uptime_hours") {
+
+    } else {
+      var tipoTratado2 = modelo.tipo.split("_")[0]
+      tipoTratado2 = capitalizeFirstLetter(tipoTratado2)
+
+
+      ids.push(`met_efi${modelo.tipo}`)
+      ids.push(`ant_efi${modelo.tipo}`)
+      ids.push(`met_sobre${modelo.tipo}`)
+      ids.push(`ant_sobre${modelo.tipo}`)
+      ids.push(`comp_${modelo.tipo}`)
+      ids.push(`met-esp_${modelo.tipo}`)
+      ids.push(`met-ati_${modelo.tipo}`)
+      ids.push(`met-esp-max_${modelo.tipo}`)
+      ids.push(`met-ati-max_${modelo.tipo}`)
+      idsGraph.push(`graf_${modelo.tipo}`)
+      
+      
+
+      
+      // tipoTratado2 = tipoTratado2.charAt(0).toUpperCase() + tipoTratado2.slice(1);
+      
+
+
+      kpisGerais.innerHTML += `<div class="kpi">
               <div class="kpiBox">
-                <h3>${modelo.tipo}</h3>
+                <h3>${tipoTratado2}</h3>
                 <div class="titulo">
                   <span>Eficiência (%)</span>
                 </div>
@@ -173,8 +201,8 @@ function preencherPagina() {
               </div>
             </div>`
 
-    contGraficos.innerHTML += `<div class="container">
-        <h3 id="comp_${modelo.tipo}">${modelo.tipo} ${modelo.modelo}</h3>
+      contGraficos.innerHTML += `<div class="container">
+        <h3 id="comp_${modelo.tipo}"> ${modelo.modelo}</h3>
         <div class="desempenhoComponente">
           <div class="kpisComponente">
             <div class="kpiBox">
@@ -222,9 +250,11 @@ function preencherPagina() {
           </div>
         </div>
       </div>`
+      tratados.push(tipo);
+      
+    }
   });
-
-  atualizarGraf()
+  atualizarGraf();
 }
 
 function preencherSelectModelos(modelos) {
@@ -289,15 +319,18 @@ async function atualizarGraf() {
       "ram_percent",
       "disk_percent",
       "net_usage",
-      "uptime_hours"
+      "uptime_hours",
+      "battery_percent"
     ];
 
     let mediasFiltradas = dados4anos.mediasMensais.filter(dado =>
       metricasPermitidas.includes(dado.metrica)
     );
+    
 
     let metricaSelecionada = idsGraph[i].split("_").slice(1).join("_");
-    const metricaInterna = mapaMetricas[metricaSelecionada];
+
+    const metricaInterna = metricaSelecionada;
 
     if (!metricasPermitidas.includes(metricaInterna)) {
       console.log(`Pulando componente ${componente.tipo} pois métrica ${metricaInterna} não permitida.`);

@@ -323,7 +323,7 @@ async function alertasPorComponente() {
   var graficoRosca = {
     chart: {
       type: 'donut',
-      height: '85%',
+      height: '80%',
       width: '100%',
     },
     series: listaQtdComponentes,
@@ -348,8 +348,8 @@ async function alertasPorComponente() {
     legend: {
       position: 'right',
       horizontalAlign: 'center',
-      offsetY: -10,
-      offsetX: 30,
+      offsetY: 15,
+      offsetX: 0,
       fontSize: '14px',
       fontWeight: 'bold',
       labels: {
