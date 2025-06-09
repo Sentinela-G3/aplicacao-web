@@ -486,7 +486,7 @@ function carregarTotais() {
         const pctRobosComAlerta = (totalRobosComAlertas / total) * 100;
         
         if (dados && dados.length > 0) {
-            document.getElementById("totalMaquinas").textContent = `${pctRobosComAlerta}% das máquinas possuem alertas ativos`;
+            document.getElementById("totalMaquinas").textContent = `${pctRobosComAlerta}% das máquinas possuem alertas`;
         } else {
             document.getElementById("totalMaquinas").textContent = 0;
         }
