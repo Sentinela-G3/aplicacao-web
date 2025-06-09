@@ -280,7 +280,7 @@ async function buscarMetricas(idMaquina) {
             (!Array.isArray(dados.cpu_percent) || dados.cpu_percent.length === 0) &&
             (!Array.isArray(dados.ram_percent) || dados.ram_percent.length === 0) &&
             (!Array.isArray(dados.net_download) || dados.net_download.length === 0) &&
-            (!Array.isArray(dados.net_usage_percent) || dados.net_usage_percent.length === 0)
+            (!Array.isArray(dados.net_usage) || dados.net_usage.length === 0)
         ) {
             console.warn('Nenhum dado de CPU, RAM ou Rede recebido da API.');
             hasCpuRamNetData = false;
@@ -298,7 +298,7 @@ async function buscarMetricas(idMaquina) {
         const ramTotal = dados.ram_total ?? null; 
         const ramPercent = dados.ram_percent?.[0]?.valor ?? null;
         const netDownload = dados.net_download?.[0]?.valor ?? null;
-        const netUsage = dados.net_usage_percent?.[0]?.valor ?? null;
+        const netUsage = dados.net_usage?.[0]?.valor ?? null;
 
         atualizarBoxes({
             cpu_percent: cpuPercent,
@@ -308,13 +308,13 @@ async function buscarMetricas(idMaquina) {
             ram_percent: ramPercent,
             net_download: netDownload,
             uptime: { valor: cpuUptime }, 
-            net_usage_percent: netUsage
+            net_usage: netUsage
         });
         
         const timestamps = dados.cpu_percent.map(item => new Date(item.timestamp).toLocaleTimeString('pt-BR', { hour12: false }));
         const cpu = dados.cpu_percent.map(item => item.valor);
         const memoria = dados.ram_percent.map(item => item.valor);
-        const netUsageData = dados.net_usage_percent.map(item => item.valor); 
+        const netUsageData = dados.net_usage.map(item => item.valor); 
 
         atualizarGraficos({ cpu, memoria, timestamps, netUsage: netUsageData });
 
@@ -368,7 +368,7 @@ function atualizarBoxes(dados) {
         validarDado(ramTotalCalculado, "Sem dados", 2) + " GB";
     document.getElementById("ramPercentKPI").textContent = validarDado(ramPercentValue, "Sem dados") + "%";
 
-    document.getElementById("downloadKPI").textContent = validarDado(dados.net_usage_percent, "Sem dados", 2) + "%"; 
+    document.getElementById("downloadKPI").textContent = validarDado(dados.net_usage, "Sem dados", 2) + "%"; 
 }
 
 async function buscarProcessos(idMaquina) {
