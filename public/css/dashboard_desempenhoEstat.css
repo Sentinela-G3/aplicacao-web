@@ -333,13 +333,13 @@ canvas {
     flex-direction: row !important;
     overflow-x: auto !important;
     gap: 5% !important;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 1%;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 1% !important;
   }
 
   .kpi {
-    min-width: 280px;
-    scroll-snap-align: start;
+    min-width: 280px !important;
+    scroll-snap-align: start !important;
   }
 }
