@@ -12,7 +12,7 @@
   <script src="../scripts/animacaoMenuMobile.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="../scripts/dashGabriella/dashGabriella.js"></script>
-  
+
 </head>
 
 <body class="body_dashRealTime" id="dash_RT">
@@ -37,6 +37,7 @@
             <i><span class="tooltip2">Porcentagem/Quantidade de máquinas com cada tipo de alerta</span></i>
             <h2>
               Status das máquinas ⓘ
+
             </h2>
           </div>
 
@@ -45,21 +46,34 @@
             <div>
 
               <div style="display: flex; align-items: center; border-radius: 100%;">
-                <div style="height: 40px; background-color: rgb(254, 73, 78); border-radius: 50px;">
+                <div style="height: 40px; background-color: white; border-radius: 50px;">ⓘ
                 </div>
-                <div style="font-size: 23px;" id="pctMaquinasCrit"></div> <i id="qtdMaquinasCrit"></i>
+                <div id="totalMaquinas"></div>
+                <div id="pctMaquinasComAlertas"></div>
+                <div id="maquinasComAlertas"></div>
+                <div style="font-size: 23px;" id="pctMaquinas"></div> <i id="qtdMaquinas"></i>
               </div>
 
-              <div style="display: flex; align-items: center;">
-                <div style="height: 40px; background-color: #f57c00; border-radius: 50px;">
-                </div>
-                <div style="font-size: 23px;" id="pctMaquinasGrave"></div> <i id="qtdMaquinasGrave"></i>
-              </div>
+              <div class="boxPctMaquinas">
 
-              <div style="display: flex; align-items: center;">
-                <div style="height: 40px; background-color: #f2c94c; border-radius: 50px;">
+                <div style="display: flex; align-items: center; border-radius: 100%;">
+                  <div style="height: 40px; background-color: rgb(254, 73, 78); border-radius: 50px;">
+                  </div>
+                  <div style="font-size: 23px;" id="pctMaquinasCrit"></div> <i id="qtdMaquinasCrit"></i>
                 </div>
-                <div style="font-size: 23px;" id="pctMaquinasComuns"></div> <i id="qtdMaquinasComuns"></i>
+
+                <div style="display: flex; align-items: center;">
+                  <div style="height: 40px; background-color: #f57c00; border-radius: 50px;">
+                  </div>
+                  <div style="font-size: 23px;" id="pctMaquinasGrave"></div> <i id="qtdMaquinasGrave"></i>
+                </div>
+
+                <div style="display: flex; align-items: center;">
+                  <div style="height: 40px; background-color: #f2c94c; border-radius: 50px;">
+                  </div>
+                  <div style="font-size: 23px;" id="pctMaquinasComuns"></div> <i id="qtdMaquinasComuns"></i>
+                </div>
+
               </div>
 
             </div>

@@ -590,3 +590,9 @@ hr.solid {
   border: 1px solid #bbb;
   margin: 10px;
 }
+
+.boxPctMaquinas{
+  border: solid 1px;
+  border-radius: 10px;
+  border-color: #888;
+}

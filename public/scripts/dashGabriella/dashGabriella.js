@@ -82,19 +82,19 @@ function kpiUltimoAlerta(machines, alerts) {
         const recurso = ultimoAlerta.requestFieldValues.find(f => f.fieldId === "customfield_10058")?.value?.value || "";
         const urgenciaField = ultimoAlerta.requestFieldValues?.find(f => f.fieldId === "customfield_10059");
         const nivel = urgenciaField?.value?.value;
-        const iconeAlertaT = document.getElementById('icone-alerta');
+        // const iconeAlertaT = document.getElementById('icone-alerta');
         const alertaDetalhe = document.getElementById('alerta-detalhes');
 
         if (nivel === "Leve") {
-            iconeAlertaT.style.color = "var(--color-alerta-amarelo-escuro)";
+            // iconeAlertaT.style.color = "var(--color-alerta-amarelo-escuro)";
             alertaDetalhe.style.backgroundColor = "var(--color-alerta-amarelo-escuro)";
             alertaDetalhe.style.color = "#fff";
         } if (nivel === "Grave") {
-            iconeAlertaT.style.color = "var(--color-alerta-laranja)";
+            // iconeAlertaT.style.color = "var(--color-alerta-laranja)";
             alertaDetalhe.style.backgroundColor = "var(--color-alerta-laranja)";
             alertaDetalhe.style.color = "#fff";
         } if (nivel === "Crítico") {
-            iconeAlertaT.style.color = "var(--color-alerta-vermelho)";
+            // iconeAlertaT.style.color = "var(--color-alerta-vermelho)";
             alertaDetalhe.style.backgroundColor = "var(--color-alerta-vermelho)";
             alertaDetalhe.style.color = "#fff";
 
@@ -153,11 +153,11 @@ function kpiMaisAlertas(machines, alerts) {
         }
 
         const frase = maxAlertas === 1 ? "Alerta Registrado" : "Alertas Registrados";
-        const iconeAlerta = document.getElementById('icone-mais-alertas');
+        // const iconeAlerta = document.getElementById('icone-mais-alertas');
         const alertaDetalhes = document.getElementById('texto-mais-alertas');
 
         if (maxAlertas > 0) {
-            iconeAlerta.style.color = "var(--color-alerta-vermelho)";
+            // iconeAlerta.style.color = "var(--color-alerta-vermelho)";
             alertaDetalhes.style.backgroundColor = "var(--color-alerta-vermelho)";
             alertaDetalhes.style.color = "#fff";
         }
@@ -470,6 +470,31 @@ function formatarHoras(valor) {
 
 function analiseDetalhada(idMaquina) {
     window.location = `./dash_analiseDetalhada.html?id=${idMaquina}`;
+}
+
+function carregarTotais() {
+    fetch(`/robos/obterQtdTotal/${usuario.idEmpresa}`)
+      .then(res => {
+        if (!res.ok) {
+            throw new Error(`Erro na resposta da rede: ${res.statusText}`);
+        }
+        return res.json();
+      })
+      .then(dados => {
+        const total = parseInt(dados[0].qtd_maquinas);
+        const totalRobosComAlertas = parseInt(dados[0].qtd_maquinas_com_alerta);
+        const pctRobosComAlerta = (totalRobosComAlertas / total) * 100;
+        
+        if (dados && dados.length > 0) {
+            document.getElementById("totalMaquinas").textContent = `${pctRobosComAlerta}% das máquinas possuem alertas ativos`;
+        } else {
+            document.getElementById("totalMaquinas").textContent = 0;
+        }
+    })
+    .catch(erro => {
+        console.error("Erro ao obter total de máquinas:", erro);
+        document.getElementById("totalMaquinas").textContent = 'Erro';
+    });
 }
 
 async function fetchTickets() {
@@ -990,6 +1015,8 @@ function renderTickets(tickets) {
 document.addEventListener("DOMContentLoaded", () => {
     carregarMaquinas();
     fetchTickets(); 
+    carregarTotais();
     setInterval(carregarMaquinas, 3000);
     setInterval(fetchTickets, 3000);
+    setInterval(carregarTotais, 3000); 
 });
