@@ -38,7 +38,6 @@ body {
   padding-right: 3%;
 }
 
-
 .container {
   width: 100%;
   height: 40vh;
@@ -49,17 +48,17 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   padding: 1%;
   border-radius: 20px;
-
-  & h1 {
-    padding-bottom: 2%;
-  }
-
-  & h3 {
-    padding-bottom: 0.5%;
-  }
 }
 
-.container.titulos{
+.container h1 {
+  padding-bottom: 2%;
+}
+
+.container h3 {
+  padding-bottom: 0.5%;
+}
+
+.container.titulos {
   background-color: #d1d1d1;
 }
 
@@ -71,48 +70,45 @@ body {
 .cabecalho {
   display: flex;
   justify-content: space-between;
-
-  & .container {
-    height: 15vh;
-    width: 45%;
-    background-color: none;
-    box-shadow: none;
-    padding: 0%;
-
-    
-
-    & .container {
-      flex-direction: row;
-      height: 100%;
-      width: 100%;
-      justify-content: center;
-      background-color: none;
-      box-shadow: none;
-      margin: 0%;
-      padding: 0%;
-    }
-
-    & .kpicontainer {
-      width: 100%;
-
-      & .kpiBox {
-        width: 100%;
-        & .titulo {
-          height: 40%;
-        }
-
-        & .metrica {
-          font-size: 2.5rem;
-        }
-      }
-    }
-  }
 }
 
-.inicio {
-  & .container {
-    height: 37vh;
-  }
+.cabecalho .container {
+  height: 15vh;
+  width: 45%;
+  background-color: none;
+  box-shadow: none;
+  padding: 0%;
+}
+
+.cabecalho .container .container {
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  background-color: none;
+  box-shadow: none;
+  margin: 0%;
+  padding: 0%;
+}
+
+.cabecalho .container .kpicontainer {
+  width: 100%;
+}
+
+.cabecalho .container .kpicontainer .kpiBox {
+  width: 100%;
+}
+
+.cabecalho .container .kpicontainer .kpiBox .titulo {
+  height: 40%;
+}
+
+.cabecalho .container .kpicontainer .kpiBox .metrica {
+  font-size: 2.5rem;
+}
+
+.inicio .container {
+  height: 37vh;
 }
 
 .kpicontainer {
@@ -147,7 +143,8 @@ select {
   border-radius: 5px;
 }
 
-#slt_modelo, #slt_periodo{
+#slt_modelo,
+#slt_periodo {
   background-color: white;
 }
 
@@ -170,7 +167,7 @@ select {
   flex-direction: column;
   width: 90%;
   border: 1px solid #C1C7CD;
-  border-radius: 10px;
+  border-radius: 20px;
   align-items: center;
   padding-bottom: 1%;
   justify-content: space-between;
@@ -181,7 +178,7 @@ select {
   display: flex;
   flex-direction: column;
   width: 95%;
-  border-radius: 10px;
+  border-radius: 20px;
   align-items: center;
 }
 
@@ -205,8 +202,8 @@ select {
   width: 100%;
   height: 100%;
   border: 1px solid #C1C7CD;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
   border-top: none;
 }
 
@@ -239,11 +236,11 @@ select {
   flex-direction: column;
   justify-content: space-around;
   width: 25%;
+}
 
-  & .kpiBox {
-    margin-top: 5%;
-    margin-bottom: 5%;
-  }
+.kpisComponente .kpiBox {
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .kpiContent {
@@ -253,8 +250,8 @@ select {
   flex-direction: row;
   justify-content: space-between;
   border: 1px solid #C1C7CD;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .conjunto {
@@ -262,10 +259,10 @@ select {
   flex-direction: column;
   margin-right: 1%;
   margin-left: 1%;
+}
 
-  & .metrica {
-    border: none;
-  }
+.conjunto .metrica {
+  border: none;
 }
 
 .grafDesempenho {
@@ -286,4 +283,63 @@ canvas {
 
 .valor-negativo {
   color: red;
+}
+
+@media (max-width: 964px) {
+  body {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .dashboard {
+    margin-top: 15% !important;
+    margin-left: 0% !important;
+    width: 95% !important;
+    padding: 0% !important;
+    align-items: center !important;
+  }
+
+  .container {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .cabecalho {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .cabecalho .container {
+    height: 11vh !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .seletor {
+    justify-content: space-around !important;
+  }
+
+  select {
+    width: 45% !important;
+  }
+
+  .inicio .container {
+    height: auto !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .kpicontainer {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    gap: 5% !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1%;
+  }
+
+  .kpi {
+    min-width: 280px;
+    scroll-snap-align: start;
+  }
 }
