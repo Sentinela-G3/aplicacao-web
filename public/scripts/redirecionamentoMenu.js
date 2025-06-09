@@ -8,7 +8,8 @@ function gerarMenuLateral() {
     }
 
     const nomeUsuario = sessionStorage.nomeUsuario || "Usuário";
-    const fotoPerfil = sessionStorage.fotoPerfil ? `../imagens_de_perfil/${sessionStorage.fotoPerfil}` : "../assets/img/img_perfil_nav.jpg";
+    const permissao = sessionStorage.tipoUsuario ;
+    const fotoPerfil = sessionStorage.fotoPerfil != null ? `../imagens_de_perfil/${sessionStorage.fotoPerfil}` : "../assets/img/img_perfil_nav.jpg";
     console.log(sessionStorage.nomeUsuario)
     const perfilHTML = (idFoto) => `
         <div class="imagem_perfil">
@@ -62,34 +63,31 @@ function gerarMenuLateral() {
 }
 
 function preencherBotoes() {
-    const botoesPadrao = [
-        
+    const tipoUsuario = parseInt(sessionStorage.tipoUsuario) || 1;
+
+    const todosBotoes = [
+        { id: 'btn_rt', label: 'Análise em tempo real', url: './dash_realTime.html' },
+        { id: 'btn_hist', label: 'Análise detalhada', url: './dash_analiseDetalhada.html' },
+        { id: 'btn_geral', label: 'Máquinas em manutenção', url: './dashManutencao.html' },
+        { id: 'btn_suporte', label: 'Suporte Operacional', url: './suporteOperacional.html' },
+        { id: 'btn_analitico', label: 'Desempenho Estatistico', url: './desempenhoEstatistico.html' },
+        { id: 'btn_func', label: 'Gerenciamento de Funcionário', url: './gerenciar_funcionarios.html' },
+        { id: 'btn_minhaConta', label: 'Minha Conta', url: './myConta.html' }
     ];
 
-    const botoesPorTipo = {
-        1: [ // Administrador
-            { id: 'btn_rt', label: 'Análise em tempo real', url: './dash_realTime.html' },
-            { id: 'btn_hist', label: 'Análise detalhada', url: './dash_analiseDetalhada.html' },
-            { id: 'btn_geral', label: 'Máquinas em manutenção', url: './dashManutencao.html' },
-            { id: 'btn_suporte', label: 'Suporte Operacional', url: './suporteOperacional.html' },
-            { id: 'btn_analitico', label: 'Desempenho Estatistico', url: './desempenhoEstatistico.html' },
-            { id: 'btn_func', label: 'Gerenciamento de Funcionário', url: './gerenciar_funcionarios.html' },
-            { id: 'btn_minhaConta', label: 'Minha Conta', url: './myConta.html' },
-            ...botoesPadrao
-        ],
-        2: [ // Monitoramento
-            { id: 'btn_rt', label: 'Análise em tempo real', url: './dash_realTime.html' },
-            { id: 'btn_hist', label: 'Análise detalhada', url: './dash_analiseDetalhada.html' },
-            ...botoesPadrao
-        ],
-        3: [ // Analista
-            { id: 'btn_geral', label: 'Análise geral', url: './dash_analiseGeral.html' },
-            ...botoesPadrao
-        ]
-    };
+    let botoes = [];
 
-    const tipoUsuario = parseInt(sessionStorage.tipoUsuario) || 1;
-    const botoes = botoesPorTipo[tipoUsuario] || [];
+    if (tipoUsuario === 1 || tipoUsuario === 2) {
+        // Excluir "Desempenho Estatístico" e "Gerenciamento de Funcionário"
+        botoes = todosBotoes.filter(b =>
+            b.id !== 'btn_analitico' && b.id !== 'btn_func'
+        );
+    } else if (tipoUsuario === 3) {
+        // Mostrar apenas "Desempenho Estatístico", "Gerenciamento de Funcionário" e "Minha Conta"
+        botoes = todosBotoes.filter(b =>
+            b.id === 'btn_analitico' || b.id === 'btn_func' || b.id === 'btn_minhaConta'
+        );
+    }
 
     const gerarHTML = botoes.map(botao => 
         `<li><button id="${botao.id}" onclick="navegar('${botao.url}', '${botao.id}')">${botao.label}</button></li>`
