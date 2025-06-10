@@ -482,9 +482,27 @@ async function carregarTotais() {
 
         if (Array.isArray(tickets)) {
             const maquinasComAlertaAtivo = new Set();
+            const todasAsMaquinas = new Set();
 
             tickets.forEach(ticket => {
                 const status = ticket.currentStatus?.status;
+
+                if (status) {
+                    let numeroSerial = "Desconhecido";
+                    
+                    if (ticket.summary) {
+                        const parts = ticket.summary.trim().split(/\s+/);
+                        if (parts.length >= 2 && parts[0].toLowerCase() === "máquina") {
+                            numeroSerial = parts[1];
+                        } else {
+                            numeroSerial = parts[0]; 
+                        }
+                    }
+                    
+                    if (numeroSerial !== "Desconhecido") {
+                        todasAsMaquinas.add(numeroSerial);
+                    }
+                }
 
                 if (status === "Aberto" || status === "Pendente") {
                     let numeroSerial = "Desconhecido";
@@ -504,47 +522,14 @@ async function carregarTotais() {
                 }
             });
 
-            const total = maquinasComAlertaAtivo.size;
-            const texto = total === 1 ? 'máquina com alerta ativo' : 'máquinas com alertas ativos';
-            
-            document.getElementById("totalMaquinasComAlerta").textContent = `${total} ${texto}`;
+            const totalMaquinas = parseInt(todasAsMaquinas.size);
+            const totalMaquinasComAlertas = parseInt(maquinasComAlertaAtivo.size)
 
+            const pctMaquinasComAlertas = (totalMaquinasComAlertas/totalMaquinas) * 100;
+            
+            document.getElementById("totalMaquinasComAlerta").textContent = `${pctMaquinasComAlertas}% das máquinas estão com alertas ativos`;
         } else {
             document.getElementById("totalMaquinasComAlerta").textContent = "0 máquinas com alertas ativos";
-        }
-
-
-        if (Array.isArray(tickets)) {
-            const maquinasComAlertaAtivo = new Set();
-
-            tickets.forEach(ticket => {
-                const status = ticket.currentStatus?.status;
-
-                if (status === "Em andamento" || status === "Pendente") {
-                    let numeroSerial = "Desconhecido";
-                    
-                    if (ticket.summary) {
-                        const parts = ticket.summary.trim().split(/\s+/);
-                        if (parts.length >= 2 && parts[0].toLowerCase() === "máquina") {
-                            numeroSerial = parts[1];
-                        } else {
-                            numeroSerial = parts[0]; 
-                        }
-                    }
-                    
-                    if (numeroSerial !== "Desconhecido") {
-                        maquinasComAlertaAtivo.add(numeroSerial);
-                    }
-                }
-            });
-
-            const total = maquinasComAlertaAtivo.size;
-            const texto = total === 1 ? 'máquina com alerta ativo' : 'máquinas sem alertas';
-            
-            document.getElementById("totalMaquinasSemAlerta").textContent = `${total} ${texto}`;
-
-        } else {
-            document.getElementById("totalMaquinasSemAlerta").textContent = "0 máquinas sem alertas";
         }
     } catch (erro) {
         console.error("Erro ao obter total de máquinas com alerta:", erro);
