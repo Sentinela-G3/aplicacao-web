@@ -472,29 +472,84 @@ function analiseDetalhada(idMaquina) {
     window.location = `./dash_analiseDetalhada.html?id=${idMaquina}`;
 }
 
-function carregarTotais() {
-    fetch(`/robos/obterQtdTotal/${usuario.idEmpresa}`)
-      .then(res => {
-        if (!res.ok) {
-            throw new Error(`Erro na resposta da rede: ${res.statusText}`);
+async function carregarTotais() {
+    try {
+        const response = await fetch(`http://${BASE_URL}/jira/tickets`);
+        if (!response.ok) {
+            throw new Error(`Erro na resposta da rede: ${response.statusText}`);
         }
-        return res.json();
-      })
-      .then(dados => {
-        const total = parseInt(dados[0].qtd_maquinas);
-        const totalRobosComAlertas = parseInt(dados[0].qtd_maquinas_com_alerta);
-        const pctRobosComAlerta = (totalRobosComAlertas / total) * 100;
-        
-        if (dados && dados.length > 0) {
-            document.getElementById("totalMaquinas").textContent = `${pctRobosComAlerta}% das máquinas possuem alertas`;
+        const tickets = await response.json();
+
+        if (Array.isArray(tickets)) {
+            const maquinasComAlertaAtivo = new Set();
+
+            tickets.forEach(ticket => {
+                const status = ticket.currentStatus?.status;
+
+                if (status === "Aberto" || status === "Pendente") {
+                    let numeroSerial = "Desconhecido";
+                    
+                    if (ticket.summary) {
+                        const parts = ticket.summary.trim().split(/\s+/);
+                        if (parts.length >= 2 && parts[0].toLowerCase() === "máquina") {
+                            numeroSerial = parts[1];
+                        } else {
+                            numeroSerial = parts[0]; 
+                        }
+                    }
+                    
+                    if (numeroSerial !== "Desconhecido") {
+                        maquinasComAlertaAtivo.add(numeroSerial);
+                    }
+                }
+            });
+
+            const total = maquinasComAlertaAtivo.size;
+            const texto = total === 1 ? 'máquina com alerta ativo' : 'máquinas com alertas ativos';
+            
+            document.getElementById("totalMaquinasComAlerta").textContent = `${total} ${texto}`;
+
         } else {
-            document.getElementById("totalMaquinas").textContent = 0;
+            document.getElementById("totalMaquinasComAlerta").textContent = "0 máquinas com alertas ativos";
         }
-    })
-    .catch(erro => {
-        console.error("Erro ao obter total de máquinas:", erro);
-        document.getElementById("totalMaquinas").textContent = 'Erro';
-    });
+
+
+        if (Array.isArray(tickets)) {
+            const maquinasComAlertaAtivo = new Set();
+
+            tickets.forEach(ticket => {
+                const status = ticket.currentStatus?.status;
+
+                if (status === "Em andamento" || status === "Pendente") {
+                    let numeroSerial = "Desconhecido";
+                    
+                    if (ticket.summary) {
+                        const parts = ticket.summary.trim().split(/\s+/);
+                        if (parts.length >= 2 && parts[0].toLowerCase() === "máquina") {
+                            numeroSerial = parts[1];
+                        } else {
+                            numeroSerial = parts[0]; 
+                        }
+                    }
+                    
+                    if (numeroSerial !== "Desconhecido") {
+                        maquinasComAlertaAtivo.add(numeroSerial);
+                    }
+                }
+            });
+
+            const total = maquinasComAlertaAtivo.size;
+            const texto = total === 1 ? 'máquina com alerta ativo' : 'máquinas sem alertas';
+            
+            document.getElementById("totalMaquinasSemAlerta").textContent = `${total} ${texto}`;
+
+        } else {
+            document.getElementById("totalMaquinasSemAlerta").textContent = "0 máquinas sem alertas";
+        }
+    } catch (erro) {
+        console.error("Erro ao obter total de máquinas com alerta:", erro);
+        document.getElementById("totalMaquinas").textContent = 'Erro ao carregar';
+    }
 }
 
 async function fetchTickets() {

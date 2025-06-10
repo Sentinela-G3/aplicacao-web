@@ -25,7 +25,7 @@ var jiraRouter = require("./src/routes/jira");
 var alertaRouter = require("./src/routes/alertas");
 var processoRouter = require("./src/routes/processos");
 var bucketRouter = require("./src/routes/bucket");
-var robosRouter = require("./src/routes/robos")
+// var robosRouter = require("./src/routes/robos")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -45,7 +45,7 @@ app.use("/jira", jiraRouter);
 app.use("/alertas", alertaRouter);
 app.use("/processos", processoRouter);
 app.use("/bucket", bucketRouter);
-app.use("/robos", robosRouter)
+// app.use("/robos", robosRouter)
 
 
 app.listen(PORTA_APP, function () {
