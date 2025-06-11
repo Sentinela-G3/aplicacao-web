@@ -237,7 +237,7 @@ function inicializarGraficos() {
             max: 100,
             labels: {
                 style: {
-                    fontSize: '24px', 
+                    fontSize: '20px', 
                     fontFamily: 'Roboto' 
                 }
             }
@@ -281,7 +281,7 @@ function inicializarGraficos() {
             max: 100, 
             labels: {
                  style: {
-                    fontSize: '24px', 
+                    fontSize: '20px', 
                     fontFamily: 'Roboto' 
                 }
             }
@@ -312,7 +312,7 @@ function inicializarGraficos() {
                 } },
             labels: {
                  style: {
-                    fontSize: '24px', 
+                    fontSize: '20px', 
                     fontFamily: 'Roboto' 
                 }
             }
