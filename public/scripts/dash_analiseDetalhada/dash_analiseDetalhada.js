@@ -194,11 +194,18 @@ const getThreshold = (tipo) => {
 };
 
 function inicializarGraficos() {
+    let chartHeight = 200; // Altura padrão
+
+    // Verifica a resolução da tela
+    if (window.innerWidth === 1920 && window.innerHeight === 1080) {
+        chartHeight = 300; // Altera a altura para um novo valor para 1920x1080
+    }
+
     chartCPU = new ApexCharts(document.querySelector("#chart"), {
         series: [{ name: "CPU %", data: [] }],
         chart: {
             type: 'line',
-            height: 200
+            height: chartHeight
         },
         annotations: {
             yaxis: [
@@ -209,17 +216,31 @@ function inicializarGraficos() {
                         text: 'Valor máximo',
                         style: {
                             color: '#E02519',
-                            fontSize: '12px',
+                            fontSize: '16px',
                             fontWeight: 'bold'
                         }
                     }
                 }
             ]
         },
-        xaxis: { categories: [] },
+        xaxis: { categories: [],  labels: { 
+                style: {
+                    fontSize: '16px', 
+                    fontFamily: 'Roboto' 
+                }
+            } },
         yaxis: {
-            title: { text: 'Porcentagem (%)' },
-            max: 100
+            title: { text: 'Porcentagem (%)',  style: {
+                    fontSize: '16px', 
+                    fontFamily: 'Roboto' 
+                } },
+            max: 100,
+            labels: {
+                style: {
+                    fontSize: '24px', 
+                    fontFamily: 'Roboto' 
+                }
+            }
         }
     });
     chartCPU.render();
@@ -228,7 +249,7 @@ function inicializarGraficos() {
         series: [{ name: "Memória %", data: [] }],
         chart: {
             type: 'line',
-            height: 200
+            height: chartHeight // Usa a altura determinada
         },
         annotations: {
             yaxis: [
@@ -246,10 +267,24 @@ function inicializarGraficos() {
                 }
             ]
         },
-        xaxis: { categories: [] },
+        xaxis: { categories: [], labels: {
+             style: {
+                    fontSize: '16px', 
+                    fontFamily: 'Roboto' 
+                }
+        } },
         yaxis: {
-            title: { text: 'Porcentagem (%)' },
-            max: 100
+            title: { text: 'Porcentagem (%)',  style: {
+                    fontSize: '16px', 
+                    fontFamily: 'Roboto' 
+                } },
+            max: 100, 
+            labels: {
+                 style: {
+                    fontSize: '24px', 
+                    fontFamily: 'Roboto' 
+                }
+            }
         }
     });
     chartMemoria.render();
@@ -258,13 +293,30 @@ function inicializarGraficos() {
         series: [{ name: "Download (Mbps)", data: [] }],
         chart: {
             type: 'line',
-            height: 200
+            height: chartHeight // Usa a altura determinada
         },
         xaxis: {
-            categories: []
+            categories: [], 
+            labels: {
+                 style: {
+                    fontSize: '16px', 
+                    fontFamily: 'Roboto' 
+                }
+            }
+            
         },
         yaxis: {
-            title: { text: 'Porcentagem (%)' }
+            title: { text: 'Porcentagem (%)',  style: {
+                    fontSize: '16px', 
+                    fontFamily: 'Roboto' 
+                } },
+            labels: {
+                 style: {
+                    fontSize: '24px', 
+                    fontFamily: 'Roboto' 
+                }
+            }
+            
         }
     });
     chartDownload.render();

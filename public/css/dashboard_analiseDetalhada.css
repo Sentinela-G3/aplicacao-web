@@ -490,3 +490,48 @@ h4 {
   }
 }
 
+
+@media (width: 1920px) and (height: 1080px) {
+  .first-child h1{
+    font-size: 2rem;
+  }
+  .section1 {
+    gap: 1rem;
+  }
+
+  .action-card {
+    font-size: 2rem;
+  }
+
+  .action-card button {
+    font-size: 1.5rem;
+  }
+
+  .containerComponent {
+    font-size: 1.5rem;
+  }
+
+  .data-title {
+    font-size: 1.5rem;
+  }
+
+  .titulo_grafico h3{
+    font-size: 1.5rem;
+  }
+
+  .titulo_grafico span {
+    font-size: 1.3rem;
+  }
+
+  #cpuPercentKPI, #cpuUptimeKPI, #ramUsedKPI, #ramPercentKPI, #downloadKPI, #chartDownload {
+    font-size: 1.5rem;
+  }
+
+  .chart-box h4{
+    font-size: 1.5rem;
+  }
+
+   table, .table-chamados table, .table-chamados table button {
+    font-size: 1.5rem;
+  }
+}
