@@ -38,20 +38,26 @@ window.onload = async () => {
     return;
   }
 
-  const [modelosRetornados, dados] = await Promise.all([
-    carregarModelos(empresa),
-    carregarDadosS3(nomeEmpresa)
+  const modelosRetornados = await Promise.all([
+    carregarModelos(empresa)
   ]);
-
-
+  
   modelos = modelosRetornados
-
-  if (modelos.length === 0 || dados.length === 0) return;
-
+  
+  if (modelos.length === 0) return;
+  
   preencherSelectModelos(modelos);
-
+  
   modeloSelecionado = modelos[0];
-  dadosS3 = dados;
+  let nomeModelo = modelos[0][0].nome;
+
+  let parametros = [nomeEmpresa, nomeModelo]
+  
+  if (modelos.length === 0) return;
+  
+  dadosS3 = await carregarDadosS3(parametros)
+
+  atualizarGraf()
 };
 
 async function carregarModelos(empresa) {
@@ -71,6 +77,7 @@ async function modelosComponentes(idModelo) {
     const response = await fetch(`/modelos/modelosComponentes/${idModelo}`);
     const json = await response.json();
     componentes = json
+    console.log("resultado de modelos")
     console.log(json)
     preencherPagina()
   } catch (err) {
@@ -78,12 +85,17 @@ async function modelosComponentes(idModelo) {
   }
 }
 
-async function carregarDadosS3(nomeEmpresa) {
+async function carregarDadosS3(parametros) {
   try {
-    if (!nomeEmpresa) throw new Error("nomeEmpresa não foi fornecido");
+    console.log("parametros")
+    console.log(parametros)
+    if (!parametros) throw new Error("parametros não foi fornecido");
 
-    let empresa = nomeEmpresa.replaceAll(" ", "-");
-    const response = await fetch(`/bucket/dados/${empresa}`);
+    let empresa = parametros[0].replaceAll(" ", "-");
+    let modelo = parametros[1].replaceAll(" ", "-");
+
+    console.log(modelo)
+    const response = await fetch(`/bucket/dados/${empresa}/${modelo}`);
 
     if (!response.ok) throw new Error(`Erro ${response.status}: ${response.statusText}`);
 
@@ -110,36 +122,12 @@ async function carregarDadosS3(nomeEmpresa) {
   }
 }
 
-function preencherSelectModelos(jsonModelo) {
-
-  sltModelo.innerHTML = `<option value="#" disabled>Selecione o Modelo</option>`;
-  let primeiro = true
-  let modeloInicial = null
-  jsonModelo.forEach(modelo => {
-    const opt = document.createElement("option");
-    if (primeiro) {
-      primeiro = false
-      opt.selected
-      modeloInicial = modelo.id_modelo
-    }
-    opt.value = modelo.id_modelo;
-    opt.textContent = modelo.nome;
-    sltModelo.appendChild(opt);
-  });
-  if (jsonModelo.length > 0) {
-    sltModelo.value = jsonModelo[0].id_modelo;
-  }
-
-  modelosComponentes(modeloInicial)
-}
-
 function capitalizeFirstLetter(text) {
   if (!text) return '';
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 function preencherPagina() {
-
   kpisGerais.innerHTML = ""
   contGraficos.innerHTML = ""
 
@@ -160,7 +148,6 @@ function preencherPagina() {
       var tipoTratado2 = modelo.tipo.split("_")[0]
       tipoTratado2 = capitalizeFirstLetter(tipoTratado2)
 
-
       ids.push(`met_efi${modelo.tipo}`)
       ids.push(`ant_efi${modelo.tipo}`)
       ids.push(`met_sobre${modelo.tipo}`)
@@ -172,13 +159,6 @@ function preencherPagina() {
       ids.push(`met-ati-max_${modelo.tipo}`)
       idsGraph.push(`graf_${modelo.tipo}`)
       
-      
-
-      
-      // tipoTratado2 = tipoTratado2.charAt(0).toUpperCase() + tipoTratado2.slice(1);
-      
-
-
       kpisGerais.innerHTML += `<div class="kpi">
               <div class="kpiBox">
                 <h3>${tipoTratado2}</h3>
@@ -186,8 +166,8 @@ function preencherPagina() {
                   <span>Eficiência (%)</span>
                 </div>
                 <div class="metrica">
-                  <div class="valorMet" id="met_efi${modelo.tipo}">0</div>
-                  <div class="metComparativa" id="ant_efi${modelo.tipo}">0</div>
+                  <div class="valorMet" id="met_efi${modelo.tipo}"></div>
+                  <div class="metComparativa" id="ant_efi${modelo.tipo}"></div>
                 </div>
               </div>
               <div class="kpiBox">
@@ -195,8 +175,8 @@ function preencherPagina() {
                   <span>Sobrecarga (%)</span>
                 </div>
                 <div class="metrica">
-                  <div class="valorMet" id="met_sobre${modelo.tipo}">0</div>
-                  <div class="metComparativa" id="ant_sobre${modelo.tipo}">0</div>
+                  <div class="valorMet" id="met_sobre${modelo.tipo}"></div>
+                  <div class="metComparativa" id="ant_sobre${modelo.tipo}"></div>
                 </div>
               </div>
             </div>`
@@ -257,26 +237,35 @@ function preencherPagina() {
   atualizarGraf();
 }
 
-function preencherSelectModelos(modelos) {
-  sltModelo.innerHTML = `<option value="#" disabled>Selecione o Modelo</option>`;
-  let primeiro = true
-  let modeloInicial = null
-  modelos.forEach(modelo => {
+function preencherSelectModelos(jsonModelo) {
+  console.log(jsonModelo);
+  sltModelo.innerHTML = `<option value="#" selected disabled>Selecione o Modelo</option>`;
+
+  const modelos = jsonModelo[0]; 
+
+  if (!modelos || modelos.length === 0) {
+    console.warn("Nenhum modelo recebido para preencher o select.");
+    return;
+  }
+  
+  let modeloInicial = null;
+
+  modelos.forEach((modelo, index) => {
     const opt = document.createElement("option");
-    if (primeiro) {
-      primeiro = false
-      opt.selected
-      modeloInicial = modelo.id_modelo
-    }
     opt.value = modelo.id_modelo;
     opt.textContent = modelo.nome;
+    
+    if (index === 0) {
+      opt.selected = true;
+      modeloInicial = modelo.id_modelo;
+    }
+    
     sltModelo.appendChild(opt);
   });
-  if (modelos.length > 0) {
-    sltModelo.value = modelos[0].id_modelo;
-  }
 
-  modelosComponentes(modeloInicial)
+  if (modeloInicial) {
+    modelosComponentes(modeloInicial);
+  }
 }
 
 async function atualizarGraf() {

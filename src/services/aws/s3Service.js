@@ -16,7 +16,7 @@ console.log(process.env.AWS_SESSION_TOKEN)
 async function listarArquivosPrefixo(bucket, prefix) {
   const command = new ListObjectsV2Command({
     Bucket: bucket,
-    Prefix: prefix,
+    Prefix: prefix
   });
 
   const response = await s3.send(command);
