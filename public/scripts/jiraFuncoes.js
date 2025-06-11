@@ -348,8 +348,8 @@ async function alertasPorComponente() {
     legend: {
       position: 'right',
       horizontalAlign: 'center',
-      offsetY: 15,
-      offsetX: 0,
+      offsetY: 0,
+      offsetX: 10,
       fontSize: '14px',
       fontWeight: 'bold',
       labels: {
@@ -459,7 +459,12 @@ function graficoQtdHora(tickets) {
   const horaMenos4 = horaMenos(4);
   const horaMenos5 = horaMenos(5);
 
-  const horas = [horaMenos5, horaMenos4, horaMenos3, horaMenos2, horaMenos1, horaAtual]
+  const horas = [horaMenos5 + ' hrs', 
+    horaMenos4 + ' hrs', 
+    horaMenos3 + ' hrs', 
+    horaMenos2 + ' hrs', 
+    horaMenos1 + ' hrs', 
+    horaAtual + ' hrs']
 
   var horaAtualCPU = 0;
   var horaMenos1CPU = 0;
@@ -659,7 +664,7 @@ function graficoQtdHora(tickets) {
     xaxis: {
       categories: horas,
       title: {
-        text: 'Hora',
+        text: 'Horário',
         offsetY: -10,
         style: {
           fontWeight: 'bold'
