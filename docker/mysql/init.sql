@@ -126,6 +126,28 @@ INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_cr
 INSERT INTO colaborador (nome, email, telefone, senha, fotoPerfil, tipo, data_criacao, fk_colaborador_empresa) VALUES
 ('Ronaldo Alves', 'ronaldo@email.com', '11987654321', SHA2('123456', 256), NULL, 1, '2023-01-20', 1);
 
+INSERT INTO modelo (nome) VALUES
+('X100'),
+('X200');
+
+INSERT INTO maquina (fk_modelo, so, serial_number, setor, fk_maquina_empresa) VALUES
+(1, 'Ubuntu 20.04', 'SN-X100-001', 'Logística', 1),
+(2, 'Windows 10 IoT', 'SN-Z200-002', 'Produção', 1),
+(1, 'Ubuntu 22.04', 'SN-L300-003', 'TI', 1);
+
+INSERT INTO componente (tipo, modelo, valor, threshold_grave, threshold_critico, threshold_leve, unidade_medida, fk_componente_maquina) VALUES
+('battery_percent', 'BatteryPack-A', 85.0, 20.0, 40.0, 60.0, '%', 1),
+('cpu_percent', 'Intel i5', 55.0, 90.0, 75.0, 60.0, '%', 1),
+('ram_percent', '8GB DDR4', 45.0, 90.0, 75.0, 60.0, '%', 1),
+('net_usage', 'Realtek Gigabit', 10.0, 90.0, 75.0, 60.0, 'ms', 1),
+('disk_percent', 'SSD 256GB', 35.0, 90.0, 75.0, 60.0, '%', 1);
+
+INSERT INTO componente (tipo, modelo, valor, threshold_grave, threshold_critico, threshold_leve, unidade_medida, fk_componente_maquina) VALUES
+('cpu_percent', 'Intel i7', 65.0, 90.0, 75.0, 60.0, '%', 2),
+('ram_percent', '16GB DDR4', 60.0, 90.0, 75.0, 60.0, '%', 2),
+('net_usage', 'Intel Ethernet', 8.0, 90.0, 75.0, 60.0, 'ms', 2),
+('disk_percent', 'HDD 1TB', 40.0, 90.0, 75.0, 60.0, '%', 2);
+
 update empresa set status = 2 where id_empresa > 0;
 
 update maquina set fk_maquina_empresa = 1 where id_maquina > 0;
