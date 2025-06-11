@@ -2,7 +2,7 @@ const { buscarArquivoDoS3 } = require("../services/aws/s3Service");
 
 async function buscarDados4Anos(req, res) {
   const empresa = req.params.empresa;
-  const modelo = req.params.nomeModelo;
+  const modelo = req.params.modelo;
   console.log("Empresa: ", empresa)
   console.log("Empresa: ", modelo)
   
