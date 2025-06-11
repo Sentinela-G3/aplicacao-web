@@ -143,6 +143,7 @@ body {
   width: 50%;
   margin: 10px;
   display: flex;
+  height: 100%;
   flex-direction: column;
 }
 
@@ -152,6 +153,7 @@ body {
   padding: 20px;
   border-radius: 12px;
   width: 50%;
+  height: 100%;
   margin: 10px;
   display: flex;
   flex-direction: column;
