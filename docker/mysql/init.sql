@@ -1,5 +1,5 @@
-create database sentinela;
-use sentinela;
+CREATE DATABASE sentinela;
+USE sentinela;
 
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY AUTO_INCREMENT,
@@ -139,33 +139,53 @@ INSERT INTO maquina (fk_modelo, so, serial_number, setor, fk_maquina_empresa) VA
 
 INSERT INTO componente (tipo, modelo, valor, threshold_grave, threshold_critico, threshold_leve, unidade_medida, fk_componente_maquina) VALUES
 ('cpu_percent', 'Intel i5', 55.0, 90.0, 75.0, 60.0, '%', 1),
-('battery_percent', 'BatteryPack-A', 85.0, 20.0, 40.0, 60.0, '%', 1),
 ('ram_percent', '8GB DDR4', 45.0, 90.0, 75.0, 60.0, '%', 1),
 ('net_usage', 'Realtek Gigabit', 10.0, 90.0, 75.0, 60.0, 'ms', 1),
-('disk_percent', 'SSD 256GB', 35.0, 90.0, 75.0, 60.0, '%', 1);
+('disk_percent', 'SSD 256GB', 35.0, 90.0, 75.0, 60.0, '%', 1),
+('uptime_hours', 'Sistema', 55.0, 90.0, 75.0, 60.0, 'hrs', 1),
+('battery_percent', 'Bateria', 55.0, 90.0, 75.0, 60.0, '%', 1),
+('net_upload', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 1),
+('net_download', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 1);
 
 INSERT INTO componente (tipo, modelo, valor, threshold_grave, threshold_critico, threshold_leve, unidade_medida, fk_componente_maquina) VALUES
 ('cpu_percent', 'Intel i7', 65.0, 90.0, 75.0, 60.0, '%', 2),
 ('ram_percent', '16GB DDR4', 60.0, 90.0, 75.0, 60.0, '%', 2),
 ('net_usage', 'Intel Ethernet', 8.0, 90.0, 75.0, 60.0, 'ms', 2),
-('disk_percent', 'HDD 1TB', 40.0, 90.0, 75.0, 60.0, '%', 2);
+('disk_percent', 'HDD 1TB', 40.0, 90.0, 75.0, 60.0, '%', 2),
+('uptime_hours', 'Sistema', 55.0, 90.0, 75.0, 60.0, 'hrs', 2),
+('battery_percent', 'Bateria', 55.0, 90.0, 75.0, 60.0, '%', 2),
+('net_upload', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 2),
+('net_download', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 2);
 
 INSERT INTO componente (tipo, modelo, valor, threshold_grave, threshold_critico, threshold_leve, unidade_medida, fk_componente_maquina) VALUES
 ('cpu_percent', 'Intel i5', 55.0, 90.0, 75.0, 60.0, '%', 3),
-('battery_percent', 'BatteryPack-A', 85.0, 20.0, 40.0, 60.0, '%', 3),
 ('ram_percent', '8GB DDR4', 45.0, 90.0, 75.0, 60.0, '%', 3),
 ('net_usage', 'Realtek Gigabit', 10.0, 90.0, 75.0, 60.0, 'ms', 3),
-('disk_percent', 'SSD 256GB', 35.0, 90.0, 75.0, 60.0, '%', 3);
+('disk_percent', 'SSD 256GB', 35.0, 90.0, 75.0, 60.0, '%', 3),
+('uptime_hours', 'Sistema', 55.0, 90.0, 75.0, 60.0, 'hrs', 3),
+('battery_percent', 'Bateria', 55.0, 90.0, 75.0, 60.0, '%', 3),
+('net_upload', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 3),
+('net_download', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 3);
 
 INSERT INTO componente (tipo, modelo, valor, threshold_grave, threshold_critico, threshold_leve, unidade_medida, fk_componente_maquina) VALUES
 ('cpu_percent', 'Intel i7', 65.0, 90.0, 75.0, 60.0, '%', 4),
 ('ram_percent', '16GB DDR4', 60.0, 90.0, 75.0, 60.0, '%', 4),
 ('net_usage', 'Intel Ethernet', 8.0, 90.0, 75.0, 60.0, 'ms', 4),
-('disk_percent', 'HDD 1TB', 40.0, 90.0, 75.0, 60.0, '%', 4);
+('disk_percent', 'HDD 1TB', 40.0, 90.0, 75.0, 60.0, '%', 4),
+('uptime_hours', 'Sistema', 55.0, 90.0, 75.0, 60.0, 'hrs', 4),
+('battery_percent', 'Bateria', 55.0, 90.0, 75.0, 60.0, '%', 4),
+('net_upload', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 4),
+('net_download', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 4);
 
 INSERT INTO componente (tipo, modelo, valor, threshold_grave, threshold_critico, threshold_leve, unidade_medida, fk_componente_maquina) VALUES
 ('cpu_percent', 'Intel i5', 55.0, 90.0, 75.0, 60.0, '%', 5),
-('battery_percent', 'BatteryPack-A', 85.0, 20.0, 40.0, 60.0, '%', 5),
 ('ram_percent', '8GB DDR4', 45.0, 90.0, 75.0, 60.0, '%', 5),
 ('net_usage', 'Realtek Gigabit', 10.0, 90.0, 75.0, 60.0, 'ms', 5),
-('disk_percent', 'SSD 256GB', 35.0, 90.0, 75.0, 60.0, '%', 5);
+('disk_percent', 'SSD 256GB', 35.0, 90.0, 75.0, 60.0, '%', 5),
+('uptime_hours', 'Sistema', 55.0, 90.0, 75.0, 60.0, 'hrs', 5),
+('battery_percent', 'Bateria', 55.0, 90.0, 75.0, 60.0, '%', 5),
+('net_upload', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 5),
+('net_download', 'Rede (Padrão)', 55.0, 90.0, 75.0, 60.0, 'Mbps', 5);
+
+
+

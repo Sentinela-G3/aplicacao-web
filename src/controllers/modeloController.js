@@ -46,21 +46,34 @@ function buscarModelos(req, res) {
 }
 
 function modelosComponentes(req, res) {
-  var idModelo = req.params.idModelo
+  var idModelo = req.params.idModelo;
 
   if (idModelo == undefined) {
-    res.status(400).send("Seu id do modelo está undefined!")
+    res.status(400).send("Seu id do modelo está undefined!");
+    return; // Importante sair da função aqui para não continuar executando abaixo
   }
 
-  modeloModel.modelosComponentes(idModelo)
-  .then(function (resultado) {
-    res.json(resultado)
-  })
-  .catch(function (erro) {
-    console.log(erro)
-    console.log("\nHouve um erro ao buscar os modelos! Erro:", erro.sqlMessage)
-    res.status(500).json(erro.sqlMessage)
-  })
+  if (idModelo == 1) {
+    modeloModel.modelosComponentes(idModelo)
+      .then(function (resultado) {
+        res.json(resultado);
+      })
+      .catch(function (erro) {
+        console.log(erro);
+        console.log("\nHouve um erro ao buscar os modelos! Erro:", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+      });
+  } else {
+    modeloModel.modelosComponentes2(idModelo)
+      .then(function (resultado) {
+        res.json(resultado);
+      })
+      .catch(function (erro) {
+        console.log(erro);
+        console.log("\nHouve um erro ao buscar os modelos! Erro:", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+      });
+  }
 }
 
 module.exports = {

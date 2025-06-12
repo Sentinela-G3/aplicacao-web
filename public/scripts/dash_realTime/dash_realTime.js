@@ -53,7 +53,7 @@ async function buscarMaquina() {
             alertsResponse.json(),
         ]);
 
-          console.log("Dados de Alertas da API:", alertsData); 
+        // console.log("Dados de Alertas da API:", alertsData);
         const allAlerts = (Array.isArray(alertsData) ? alertsData : []).filter(
             (ticket) => ticket && String(ticket.requestTypeId) === "5"
         );
@@ -69,20 +69,48 @@ async function buscarMaquina() {
     }
 }
 
+function dadosAlerta(valor) {
+    const chave = valor.issueKey || "";
+    const serial = valor.summary || "";
+    const dataCriacaoMillis = valor.createdDate.epochMillis || "";
+    const dataCriacao = valor.createdDate?.iso8601 || "";
+    const status = valor.currentStatus?.status || "";
+    const url = valor._links?.web || "";
+    const campos = {};
+
+    valor.requestFieldValues?.forEach(campo => {
+        if (typeof campo.value === "object" && campo.value !== null && "value" in campo.value) {
+            campos[campo.label] = campo.value.value;
+        } else {
+            campos[campo.label] = campo.value;
+        }
+    })
+
+    return {
+        chave,
+        serial: serial.replace("Máquina ", "") || "",
+        status,
+        dataCriacaoMillis,
+        dataCriacao,
+        descricao: campos["Descrição"] || "",
+        recurso: campos["Recurso"] || "",
+        urgencia: campos["Urgência"] || "",
+        horaAbertura: campos["Hora Abertura"] || "",
+        url
+    }
+
+}
+
 function kpiUltimoAlerta(machines, alerts) {
     try {
-        if (!Array.isArray(alerts) || alerts.length === 0) {
-            console.warn("Nenhum alerta disponível para a KPI.");
-            return;
-        }
         const alertasOrdenados = alerts.sort((a, b) => b.createdDate.epochMillis - a.createdDate.epochMillis);
-        const ultimoAlerta = alertasOrdenados[0];
-        const serialProcurado = ultimoAlerta.summary?.replace("Máquina ", "") || "";
-        const tempoDecorridoMs = Date.now() - ultimoAlerta.createdDate.epochMillis;
+        const alerta = alertasOrdenados[0];
+        const ultimoAlerta = dadosAlerta(alerta);
+        const serialProcurado = ultimoAlerta.serial;
+        const tempoDecorridoMs = Date.now() - ultimoAlerta.dataCriacaoMillis;
         const minutos = Math.floor(tempoDecorridoMs / 60000);
-        const recurso = ultimoAlerta.requestFieldValues.find(f => f.fieldId === "customfield_10058")?.value?.value || "";
-        const urgenciaField = ultimoAlerta.requestFieldValues?.find(f => f.label === "Urgência");
-        const nivel = urgenciaField?.value?.value;
+        const recurso = ultimoAlerta.recurso;
+        const nivel = ultimoAlerta.urgencia;
         const iconeAlertaT = document.getElementById('icone-alerta');
         const alertaDetalhe = document.getElementById('alerta-detalhes');
 
@@ -111,35 +139,28 @@ function kpiUltimoAlerta(machines, alerts) {
             card.style.cursor = "pointer";
         }
 
+        const serial = encurtarSerial(serialProcurado);
         document.getElementById("alerta-recurso").textContent = `Alerta ${nivel} de ${recurso}`;
-        document.getElementById("alerta-detalhes").textContent = `${serialProcurado} • há ${minutos} min`;
+        document.getElementById("alerta-detalhes").textContent = `${serial} • há ${minutos} min`;
 
     } catch (erro) {
         console.error("Erro ao processar KPI do último alerta:", erro);
     }
 }
 
+function encurtarSerial(serial) {
+    return serial.length > 8 ? serial.slice(0, 8) + "..." : serial;
+}
+
 function kpiMaisAlertas(machines, alerts) {
     try {
-        if (!Array.isArray(alerts) || alerts.length === 0) {
-            console.warn("Nenhum alerta disponível para a KPI.");
-            return;
-        }
         const seriais = [];
 
         alerts.forEach(alerta => {
             let numeroSerial = null;
-
-            const resumo = alerta.requestFieldValues.find(
-                campo => campo.fieldId === 'summary'
-            );
-
-            if (resumo && resumo.value) {
-                const partes = resumo.value.split(' ');
-                numeroSerial = partes[partes.length - 1]
-                seriais.push(numeroSerial);
-            }
-
+            const dado = dadosAlerta(alerta);
+            numeroSerial = dado.serial;
+            seriais.push(numeroSerial);
         });
 
         const contagem = new Map();
@@ -175,8 +196,8 @@ function kpiMaisAlertas(machines, alerts) {
             card.onclick = () => analiseDetalhada(idMaquina);
             card.style.cursor = "pointer";
         }
-
-        document.querySelector("#kpi-mais-alertas .kpi-value").textContent = maquinaMaisAlerts;
+        const serial = encurtarSerial(maquinaMaisAlerts);
+        document.querySelector("#kpi-mais-alertas .kpi-value").textContent = serial;
         document.querySelector("#kpi-mais-alertas .kpi-subtitle").textContent = `${maxAlertas} ${frase}`;
 
     } catch (erro) {
@@ -192,8 +213,8 @@ function ordenarLista(machines, alerts) {
         const alertasA = alerts
             .filter(ticket => ticket.summary?.includes(aSerial) || ticket.issueKey?.includes(aSerial))
             .reduce((total, ticket) => {
-                const urgenciaField = ticket.requestFieldValues?.find(f => f.label === "Urgência");
-                const nivel = urgenciaField?.value?.value;
+                const alerta = dadosAlerta(ticket);
+                const nivel = alerta.nivel;
 
                 if (nivel === "Leve") return total + 1;
                 if (nivel === "Grave") return total + 2;
@@ -204,8 +225,8 @@ function ordenarLista(machines, alerts) {
         const alertasB = alerts
             .filter(ticket => ticket.summary?.includes(bSerial) || ticket.issueKey?.includes(bSerial))
             .reduce((total, ticket) => {
-                const urgenciaField = ticket.requestFieldValues?.find(f => f.label === "Urgência");
-                const nivel = urgenciaField?.value?.value;
+                const alerta = dadosAlerta(ticket);
+                const nivel = alerta.nivel;
 
                 if (nivel === "Leve") return total + 1;
                 if (nivel === "Grave") return total + 2;
@@ -230,12 +251,13 @@ function calcularStatus(metrics) {
         const dadosTipo = metrics.dados[tipo];
         if (dadosTipo?.length > 0) {
             const captura = new Date(dadosTipo[dadosTipo.length - 1].timestamp);
+            console.log(captura);
             const agora = new Date();
             const segundos = (agora - captura) / 1000;
 
             if (segundos <= 15) return { statusText: "Ativo", statusColor: "#4caf50", segundos };
             else return {
-                statusText: `Inativo (${captura.toLocaleString("pt-BR")})`,
+                statusText: `Inativo (${captura.toLocaleString('pt-BR')})`,
                 statusColor: "#d32f2f",
                 segundos
             };
@@ -253,22 +275,21 @@ function calcularAlertas(machine, alerts) {
 }
 
 function extrairUltimoAlerta(alertasMaquina) {
-    const alertaMaisRecente = alertasMaquina.reduce((maisRecente, alerta) => {
-        const alertaData = alerta.createdDate?.iso8601 ? new Date(alerta.createdDate.iso8601) : null;
-        if (!alertaData) return maisRecente;
-        if (!maisRecente) return alerta;
-        const maisRecenteData = new Date(maisRecente.createdDate.iso8601);
-        return alertaData > maisRecenteData ? alerta : maisRecente;
-    }, null);
+    if (!alertasMaquina || alertasMaquina.length === 0) return "Nenhum";
 
-    if (!alertaMaisRecente) return;
+    const alertasOrdenados = [...alertasMaquina].sort((a, b) => {
+        return (b.createdDate?.epochMillis || 0) - (a.createdDate?.epochMillis || 0);
+    });
+    const alertaMaisRecente = alertasOrdenados[0];
 
-    const ultimaData = new Date(alertaMaisRecente.createdDate.iso8601);
+    if (!alertaMaisRecente || !alertaMaisRecente.createdDate?.epochMillis) return "Nenhum";
+    const dado = dadosAlerta(alertaMaisRecente)
+    const ultimaData = new Date(dado.dataCriacao);
     const tempoDecorridoMs = Date.now() - ultimaData;
     const minutos = Math.floor(tempoDecorridoMs / 60000);
 
-    const urgenciaField = alertaMaisRecente.requestFieldValues?.find(f => f.label === "Urgência");
-    const nivel = urgenciaField?.value?.value;
+    const nivel = dado.urgencia;
+    const link = dado.url
 
     if (nivel === "Leve") {
         cor = "#f2c94c"
@@ -279,7 +300,7 @@ function extrairUltimoAlerta(alertasMaquina) {
     }
 
     return alertasMaquina.length > 0 ?
-        ` <a href="${alertasMaquina[0]._links?.web || "#"}" 
+        ` <a href="${link || "#"}" 
             target="_blank" 
             title="Clique para abrir o chamado no Jira" 
             style="text-decoration: none; color: ${cor};">

@@ -328,7 +328,7 @@ async function alertasPorComponente() {
     },
     series: listaQtdComponentes,
     labels: ['CPU', 'Memória', 'Disco', 'Rede', 'Bateria', 'Tempo de Uso'],
-    colors: ['#FFA500', '#20C997', '#1E90FF', '#FFD700', '#FF6F61', '#8Bff13'],
+    colors: ['#FFB266', '#20C997', '#ADD8E6', '#A0522D', '#EE82EE', '#8BFF13'],
     plotOptions: {
       pie: {
         donut: {
@@ -459,12 +459,12 @@ function graficoQtdHora(tickets) {
   const horaMenos4 = horaMenos(4);
   const horaMenos5 = horaMenos(5);
 
-  const horas = [horaMenos5 + ' hrs', 
-    horaMenos4 + ' hrs', 
-    horaMenos3 + ' hrs', 
-    horaMenos2 + ' hrs', 
-    horaMenos1 + ' hrs', 
-    horaAtual + ' hrs']
+  const horas = [horaMenos5 + ' hrs',
+  horaMenos4 + ' hrs',
+  horaMenos3 + ' hrs',
+  horaMenos2 + ' hrs',
+  horaMenos1 + ' hrs',
+  horaAtual + ' hrs']
 
   var horaAtualCPU = 0;
   var horaMenos1CPU = 0;
@@ -633,6 +633,12 @@ function graficoQtdHora(tickets) {
       },
       dropShadow: {
         enabled: false
+      },
+      formatter: function (val) {
+        if (val === 0) {
+          return ''; // Retorna uma string vazia se o valor for 0
+        }
+        return val; // Retorna o valor se não for 0
       }
     },
     series: [
@@ -686,7 +692,7 @@ function graficoQtdHora(tickets) {
         endingShape: 'flat'
       }
     },
-    colors: ['#FFA500', '#20C997', '#1E90FF', '#FFD700', '#FF6F61', '#8Bff13'],
+    colors: ['#FFB266', '#20C997', '#ADD8E6', '#A0522D', '#EE82EE', '#8BFF13'],
     legend: {
       fontSize: '12px',
       fontWeight: 'bold',
@@ -761,7 +767,7 @@ function redirecionar(serialNumber) {
   fetch(`/maquinas/serial/${serialNumber}`)
     .then(response => response.json())
     .then(data => {
-      console.log("Resposta do backend:", data); 
+      console.log("Resposta do backend:", data);
 
       if (data.length > 0) {
         const idMaquina = data[0].id_maquina;

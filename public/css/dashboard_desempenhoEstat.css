@@ -221,8 +221,8 @@ select {
   flex-direction: column;
   justify-content: space-around;
   width: 15%;
-  font-size: 0.7rem;
-  color: #BCBCBC;
+  font-size: 0.9rem;
+  color: #000000;
   margin-left: 0.3%;
 }
 
