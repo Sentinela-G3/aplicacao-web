@@ -8,9 +8,13 @@ function gerarMenuLateral() {
     }
 
     const nomeUsuario = sessionStorage.nomeUsuario || "Usuário";
-    const permissao = sessionStorage.tipoUsuario ;
-    const fotoPerfil = sessionStorage.fotoPerfil != null ? `../imagens_de_perfil/${sessionStorage.fotoPerfil}` : "../assets/img/img_perfil_nav.jpg";
-    console.log(sessionStorage.nomeUsuario)
+
+    if(sessionStorage.fotoPerfil == 'null' || sessionStorage.fotoPerfil == null){
+        var fotoPerfil = "../assets/img/img_perfil_nav.jpg"
+    }else{
+        var fotoPerfil =`../imagens_de_perfil/${sessionStorage.fotoPerfil}`
+    }
+
     const perfilHTML = (idFoto) => `
         <div class="imagem_perfil">
             <img id="${idFoto}" src="${fotoPerfil}">
